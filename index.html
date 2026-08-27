@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOST — приём оплат рублём для бизнеса: Грузия и весь мир</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=Golos+Text:wght@400;500;600;700;900&family=Noto+Sans:wght@700&display=swap');
+
+  :root{
+    --bg: #0E2233;
+    --bg-alt: #122A3E;
+    --bg-card: #16324A;
+    --gold: #C9A24B;
+    --gold-bright: #E4C077;
+    --teal: #4FB8A6;
+    --teal-bright: #6ECFC0;
+    --red: #A33B33;
+    --text: #F3EFE4;
+    --text-dim: #93A9BB;
+    --line: rgba(243,239,228,0.12);
+    --radius: 14px;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Golos Text', sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1,h2,h3{ font-family:'PT Serif', serif; font-weight:700; line-height:1.15; letter-spacing: -0.01em; }
+  a{ color: inherit; text-decoration:none; }
+  img,svg{ display:block; max-width:100%; }
+  .wrap{ max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  section{ position: relative; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:7px;
+    font-size: 12px; letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--gold-bright); font-weight:700; margin-bottom:18px;
+    padding: 6px 14px 6px 10px; border-radius: 999px;
+    border: 1px solid rgba(228,192,119,0.35);
+    background: linear-gradient(90deg, rgba(228,192,119,0.10), rgba(110,207,192,0.06));
+  }
+  .eyebrow::before{ content:""; width:6px; height:6px; border-radius:50%; background: var(--gold-bright); flex-shrink:0; animation: eyebrow-pulse 2.4s ease-in-out infinite; }
+  @keyframes eyebrow-pulse{ 0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:0.5; transform:scale(1.35); } }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding: 14px 28px; border-radius: 999px; font-weight:600; font-size:15px;
+    border: 1.5px solid transparent; cursor:pointer;
+    transition: transform .18s ease, opacity .15s ease, background .35s ease, box-shadow .35s ease, border-color .3s ease, color .3s ease;
+    font-family:'Golos Text', sans-serif;
+  }
+  .btn:hover{ transform: translateY(-2px); }
+  .btn-primary{
+    background: var(--gold); color: #1A1206;
+    background-size: 200% 200%; background-position: 0% 50%;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::after{
+    content:""; position:absolute; top:0; left:-60%; width:35%; height:100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: skewX(-20deg);
+    transition: left .55s ease;
+  }
+  .btn-primary:hover::after{ left:130%; }
+  .btn-primary:hover{
+    background: linear-gradient(135deg, var(--gold-bright), var(--teal-bright));
+    background-position: 100% 50%;
+    box-shadow: 0 10px 26px rgba(78,184,166,0.28);
+  }
+  .btn-ghost{
+    background:
+      linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+      linear-gradient(var(--line), var(--line)) border-box;
+    color: var(--text);
+  }
+  .btn-ghost:hover{
+    background:
+      linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+      linear-gradient(135deg, var(--gold-bright), var(--teal-bright)) border-box;
+    color: var(--gold-bright);
+    box-shadow: 0 10px 26px rgba(110,207,192,0.18);
+  }
+  .btn-block{ width:100%; }
+
+  /* NAV */
+  nav{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(14,34,51,0.9); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap{ display:flex; align-items:center; justify-content:space-between; min-height:72px; padding-top:10px; padding-bottom:10px; gap:16px; flex-wrap:wrap; }
+  .logo{ display:flex; align-items:center; gap:10px; font-family:'PT Serif', serif; font-size:22px; font-weight:700; letter-spacing: 0.02em; }
+  .logo-mark{ width:30px; height:30px; flex-shrink:0; }
+  .nav-links{ display:flex; gap:22px; font-size:13px; color: var(--text-dim); }
+  .nav-links a{ position:relative; padding-bottom:3px; }
+  .nav-links a::after{
+    content:""; position:absolute; left:0; bottom:0; width:100%; height:2px;
+    background: linear-gradient(90deg, var(--gold-bright), var(--teal-bright));
+    transform: scaleX(0); transform-origin:left; transition: transform .25s ease;
+  }
+  .nav-links a:hover{ color: var(--text); }
+  .nav-links a:hover::after{ transform: scaleX(1); }
+  .nav-right{ display:flex; align-items:center; gap:14px; }
+  @media (max-width: 860px){ .nav-links{ display:none; } }
+  @media (max-width: 480px){
+    .logo{ font-size:18px; gap:7px; }
+    .logo-mark{ width:24px; height:24px; }
+    .nav-right .btn-primary{ padding:9px 14px; font-size:12.5px; }
+    .lang-btn{ padding:5px 8px; font-size:11px; }
+    nav .wrap{ gap:10px; }
+    .nav-right{ gap:8px; }
+  }
+
+  .lang-switch{ display:flex; gap:2px; border:1px solid var(--line); border-radius:999px; padding:3px; flex-shrink:0; }
+  .lang-btn{ border:none; background:transparent; color:var(--text-dim); font-size:12px; font-weight:700; padding:6px 11px; border-radius:999px; cursor:pointer; font-family:'Golos Text',sans-serif; letter-spacing:.03em; }
+  .lang-btn.active{ background: linear-gradient(135deg, var(--gold-bright), var(--teal-bright)); color:#1A1206; }
+  .lang-btn:not(.active):hover{ color: var(--text); }
+
+  /* HERO */
+  .hero{ padding: 72px 0 40px; overflow:hidden; }
+  .hero-grid{ display:grid; grid-template-columns: 1.05fr 0.95fr; gap:56px; align-items:center; }
+  @media (max-width: 900px){ .hero-grid{ grid-template-columns:1fr; } }
+  .hero h1{ font-size: clamp(32px, 5vw, 52px); margin-bottom:20px; }
+  .hero h1 em{
+    font-style:normal;
+    background: linear-gradient(90deg, var(--gold-bright), var(--teal-bright));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .gradient-text{
+    background: linear-gradient(90deg, var(--gold-bright), var(--teal-bright));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p{ color: var(--text-dim); font-size:18px; max-width: 520px; margin-bottom: 32px; }
+  .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; }
+
+  .bridge-box{ position:relative; }
+  .bridge-labels{ display:flex; justify-content:space-between; flex-wrap:nowrap; padding: 0 0 16px; gap:8px; }
+
+  /* PROBLEM */
+  .problem{ padding: 64px 0; background: var(--bg-alt); }
+  .problem-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items:start; }
+  @media (max-width: 800px){ .problem-grid{ grid-template-columns:1fr; } }
+  .problem h2{ font-size: clamp(26px,3.4vw,36px); }
+  .problem-list{ list-style:none; display:flex; flex-direction:column; gap:12px; }
+  .problem-list li{
+    display:flex; gap:14px; align-items:flex-start; color: var(--text-dim); font-size:15.5px;
+    padding: 14px 16px; border-radius: 10px; border:1px solid var(--line);
+    border-left: 3px solid var(--red); background: rgba(243,239,228,0.02);
+  }
+  .problem-list li::before{ content:"—"; color: var(--red); flex-shrink:0; font-weight:700; }
+
+  /* SHOWCASE (checkout illustration) */
+  .showcase{ padding: 72px 0; }
+  .showcase-grid{ display:grid; grid-template-columns: 0.85fr 1.15fr; gap:52px; align-items:center; }
+  @media (max-width: 900px){ .showcase-grid{ grid-template-columns:1fr; } }
+  .showcase h2{ font-size: clamp(26px,3.4vw,36px); margin-bottom:14px; }
+  .showcase > .wrap > .showcase-grid > div:first-child p{ color: var(--text-dim); font-size:16px; margin-bottom:26px; }
+  .showcase-flow{ display:flex; flex-direction:column; gap:12px; }
+  .showcase-flow-item{
+    display:flex; align-items:center; gap:14px;
+    padding:14px 16px; border-radius:10px; border:1px solid var(--line);
+    background: rgba(243,239,228,0.02);
+  }
+  .showcase-flow-num{ width:32px; height:32px; border-radius:50%; border:1px solid var(--gold); color:var(--gold-bright); font-family:'PT Serif',serif; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .showcase-flow-item span{ color: var(--text-dim); font-size:14.5px; }
+
+  .currency-swap{ display:flex; align-items:stretch; gap:10px; margin-top:24px; flex-wrap:nowrap; }
+  .currency-chip{
+    display:flex; align-items:center; gap:7px; padding:10px 13px;
+    border-radius:12px; border:1px solid; font-size:12px;
+    min-width:0; flex:0 1 auto;
+  }
+  .currency-chip-symbol{ font-family:'PT Serif', 'Noto Sans', serif; font-weight:700; font-size:14.5px; }
+  .currency-chip--from{ border-color: rgba(228,192,119,0.4); background: rgba(228,192,119,0.07); color: var(--text-dim); }
+  .currency-chip--from .currency-chip-symbol{ color: var(--gold-bright); }
+  .currency-chip--to{ border-color: rgba(110,207,192,0.4); background: rgba(110,207,192,0.07); color: var(--text-dim); flex-direction:column; align-items:flex-start; gap:3px; }
+  .currency-chip--to .currency-chip-symbol{ color: var(--teal-bright); }
+  .currency-swap-arrow{ color: var(--text-dim); flex-shrink:0; align-self:center; }
+  @media (max-width: 400px){ .currency-swap{ gap:6px; } .currency-chip{ padding:8px 10px; font-size:10.5px; gap:5px; } .currency-chip-symbol{ font-size:12.5px; } }
+
+  .bridge-labels .currency-chip{ min-width:0; }
+  .bridge-labels .currency-chip span:not(.currency-chip-symbol){ white-space:normal; line-height:1.2; }
+  @media (max-width: 420px){
+    .bridge-labels{ gap:6px; }
+    .bridge-labels .currency-chip{ padding:8px 10px; font-size:10.5px; gap:6px; }
+    .bridge-labels .currency-chip-symbol{ font-size:12.5px; }
+  }
+  .showcase-art{ background: var(--bg-card); border:1px solid var(--line); border-radius: var(--radius); padding: 32px; }
+  @media (max-width: 600px){ .showcase-art{ padding: 16px; } }
+  .showcase-note{ margin-top:18px; text-align:center; color: var(--text-dim); font-size:12.5px; }
+  .showcase-note b{ color: var(--gold-bright); }
+
+  /* STEPS */
+  .steps{ padding: 84px 0; }
+  .section-head{ max-width: 640px; margin: 0 auto 48px; text-align:center; }
+  .section-head .eyebrow{ justify-content:center; }
+  .section-head h2{ font-size: clamp(28px,3.6vw,38px); margin-bottom:14px; }
+  .section-head p{ color: var(--text-dim); font-size:17px; }
+  .steps-row{ display:grid; grid-template-columns: repeat(3,1fr); gap:28px; }
+  @media (max-width: 800px){ .steps-row{ grid-template-columns:1fr; } }
+  .step-card{
+    position:relative; overflow:hidden;
+    background: var(--bg-card); border:1px solid var(--line); border-radius: var(--radius); padding: 30px 26px;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .step-card::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:3px;
+    background: linear-gradient(90deg, var(--gold-bright), var(--teal-bright));
+    transform: scaleX(0); transform-origin:left; transition: transform .35s ease;
+  }
+  .step-card:hover{ transform: translateY(-4px); box-shadow: 0 14px 30px rgba(0,0,0,0.3); border-color: rgba(228,192,119,0.35); }
+  .step-card:hover::before{ transform: scaleX(1); }
+  .step-num{ font-family:'PT Serif', serif; font-weight:700; font-size:14px; color: var(--gold-bright); border:1px solid var(--gold); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:18px; }
+  .step-card h3{ font-size:19px; margin-bottom:8px; }
+  .step-card p{ color: var(--text-dim); font-size:15px; }
+
+  /* SHARED CARD GRIDS (types / benefits / tech) */
+  .card-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:22px; }
+  @media (max-width: 800px){ .card-grid{ grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 560px){ .card-grid{ grid-template-columns: 1fr; } }
+  .info-card{
+    position:relative; overflow:hidden;
+    padding:26px; border-radius: var(--radius); border:1px solid var(--line); background: transparent;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .info-card::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:3px;
+    background: linear-gradient(90deg, var(--gold-bright), var(--teal-bright));
+    transform: scaleX(0); transform-origin:left; transition: transform .35s ease;
+  }
+  .info-card:hover{ transform: translateY(-4px); box-shadow: 0 14px 30px rgba(0,0,0,0.28); border-color: rgba(110,207,192,0.35); }
+  .info-card:hover::before{ transform: scaleX(1); }
+  .info-card svg{ width:26px; height:26px; margin-bottom:16px; color: var(--gold-bright); }
+  .info-card:nth-child(even) svg{ color: var(--teal-bright); }
+  .info-card h3{ font-size:17px; margin-bottom:6px; font-family:'Golos Text',sans-serif; font-weight:700; }
+  .info-card p{ color: var(--text-dim); font-size:14.5px; }
+
+  .types{ padding: 84px 0; background: var(--bg-alt); }
+  .benefits{ padding: 84px 0; }
+  .tech{ padding: 84px 0; background: var(--bg-alt); }
+  .tech .info-card{ background: var(--bg-card); border-color: var(--line); }
+
+  /* CASHBACK */
+  .cashback{ padding: 84px 0; background: linear-gradient(180deg, var(--bg-alt), var(--bg)); }
+  .cashback-top{ display:grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items:center; margin-bottom: 52px; }
+  @media (max-width:900px){ .cashback-top{ grid-template-columns:1fr; } }
+  .cashback h2{ font-size: clamp(28px,3.6vw,40px); margin-bottom:16px; }
+  .cashback-top p{ color: var(--text-dim); font-size:17px; }
+  .cashback-figure{
+    background:
+      linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+      linear-gradient(135deg, var(--gold-bright), var(--teal-bright)) border-box;
+    border: 1.5px solid transparent;
+    border-radius: var(--radius); padding:28px; text-align:center;
+  }
+  .cashback-figure .big{ font-family:'PT Serif', serif; font-weight:700; font-size: 52px; font-variant-numeric: tabular-nums; }
+  .cashback-figure .cap{ color: var(--text-dim); font-size:14px; margin-top:6px; }
+
+  .table-wrap{ border:1px solid var(--line); border-radius: var(--radius); overflow:hidden; overflow-x:auto; }
+  table{ width:100%; border-collapse: collapse; font-size:15px; min-width:480px; }
+  @media (max-width: 520px){
+    table{ min-width:0; font-size:12.5px; }
+    th, td{ padding: 12px 8px; }
+  }
+  th,td{ padding: 16px 20px; text-align:left; }
+  thead th{ background: var(--bg-card); color: var(--gold-bright); font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:.04em; border-bottom:1px solid var(--line); }
+  tbody tr:not(:last-child) td{ border-bottom:1px solid var(--line); }
+  tbody tr:hover{ background: rgba(201,162,75,0.06); }
+  td.num{ color: var(--gold-bright); font-family:'PT Serif', serif; font-weight:700; }
+  .table-note{ margin-top:14px; color: var(--text-dim); font-size:13.5px; }
+
+  /* TRUST */
+  .trust{ padding: 76px 0; }
+  .trust-stats-caption{ text-align:center; color: var(--text-dim); font-size:12.5px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:32px; }
+  .trust-stats-row{ display:grid; grid-template-columns: repeat(4,1fr); gap:16px; text-align:center; margin-bottom:48px; }
+  @media (max-width:700px){ .trust-stats-row{ grid-template-columns: repeat(2,1fr); } }
+  .trust-stat{ padding: 20px 12px; border-radius: 12px; border:1px solid var(--line); background: rgba(243,239,228,0.02); }
+  .trust-stat.count-done{ animation: stat-pulse .7s ease; }
+  @keyframes stat-pulse{
+    0%{ box-shadow: 0 0 0 0 rgba(228,192,119,0); border-color: var(--line); }
+    45%{ box-shadow: 0 0 0 7px rgba(228,192,119,0.10); border-color: rgba(228,192,119,0.4); }
+    100%{ box-shadow: 0 0 0 0 rgba(228,192,119,0); border-color: var(--line); }
+  }
+  .trust-stat .num{
+    font-family:'PT Serif', serif; font-weight:700; font-size:30px;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(90deg, var(--gold-bright), var(--teal-bright));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .trust-stat .lbl{ color: var(--text-dim); font-size:12.5px; margin-top:5px; }
+  .trust-divider{ height:1px; background: var(--line); margin-bottom:40px; }
+  .trust-row{ display:flex; justify-content:space-between; flex-wrap:wrap; gap: 28px; }
+  .trust-item{ display:flex; align-items:center; gap:12px; color: var(--text-dim); font-size:14.5px; }
+  .trust-item svg{ width:20px; height:20px; color: var(--gold-bright); flex-shrink:0; }
+  .trust-item:nth-child(even) svg{ color: var(--teal-bright); }
+
+  /* FORM */
+  .apply{ padding: 84px 0; }
+  .apply-grid{ display:grid; grid-template-columns: 0.9fr 1.1fr; gap:52px; }
+  @media (max-width:900px){ .apply-grid{ grid-template-columns:1fr; } }
+  .apply h2{ font-size: clamp(28px,3.6vw,38px); margin-bottom:16px; }
+  .apply p{ color: var(--text-dim); font-size:16px; margin-bottom:24px; }
+  .direct-contacts{ display:flex; flex-direction:column; gap:12px; }
+  @media (max-width: 520px){ .direct-contacts .btn{ width:100%; } }
+
+  .form-card{
+    background:
+      linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+      linear-gradient(135deg, rgba(228,192,119,0.5), rgba(110,207,192,0.5)) border-box;
+    border: 1.5px solid transparent;
+    border-radius: var(--radius); padding: 32px;
+  }
+  .field{ margin-bottom:18px; }
+  .field label{ display:block; font-size:13px; color: var(--text-dim); margin-bottom:7px; }
+  .field input, .field select{
+    width:100%; padding: 13px 14px; border-radius:8px; border:1px solid var(--line);
+    background: var(--bg-alt); color: var(--text); font-size:15px; font-family:'Golos Text',sans-serif;
+    transition: border-color .2s ease, box-shadow .2s ease;
+  }
+  .field input:focus, .field select:focus{ outline:none; border-color: var(--gold-bright); box-shadow: 0 0 0 3px rgba(228,192,119,0.15); }
+  .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:520px){ .field-row{ grid-template-columns:1fr; } }
+  .consent{ font-size:12.5px; color: var(--text-dim); margin: 14px 0 20px; }
+  .form-success{ display:none; text-align:center; padding: 30px 10px; }
+  .form-success h3{ font-size:22px; margin-bottom:10px; }
+  .form-success p{ color: var(--text-dim); }
+
+  /* FOOTER */
+  footer{ padding: 40px 0; border-top:1px solid var(--line); }
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  .footer-row .logo{ font-size:18px; }
+  .footer-note{ color: var(--text-dim); font-size:13px; max-width:560px; }
+  .footer-links{ display:flex; gap:20px; font-size:13.5px; color: var(--text-dim); }
+  .footer-links a:hover{ color: var(--text); }
+
+  ::selection{ background: var(--gold); color:#1A1206; }
+
+  /* scroll-reveal: classes are added by JS only, so content is visible by default */
+  .reveal{ opacity:0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.revealed{ opacity:1; transform:none; }
+
+  /* soft fading section dividers, instead of hard 1px lines */
+  .problem, .types, .tech, .trust{ position:relative; }
+  .problem::before, .types::before, .tech::before, .trust::before,
+  .problem::after, .types::after, .tech::after, .trust::after{
+    content:""; position:absolute; left:0; right:0; height:1px;
+    background: linear-gradient(90deg, transparent, var(--line) 15%, var(--line) 85%, transparent);
+  }
+  .problem::before, .types::before, .tech::before, .trust::before{ top:0; }
+  .problem::after, .types::after, .tech::after, .trust::after{ bottom:0; }
+
+  /* subtle grain texture — adds tactile depth instead of flat digital gradients */
+  .grain-overlay{
+    position: fixed; inset:0; pointer-events:none; z-index: 999;
+    opacity: 0.035; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ambient glow — soft blurred color blobs behind key sections for depth */
+  .ambient-glow{ position:absolute; border-radius:50%; filter: blur(90px); pointer-events:none; z-index:0; }
+  .hero{ overflow:hidden; }
+  .hero .ambient-glow{ width:420px; height:420px; top:-160px; right:-100px; background: var(--gold); opacity:0.24; }
+  .cashback{ overflow:hidden; }
+  .cashback .ambient-glow{ width:460px; height:460px; bottom:-200px; left:-140px; background: var(--teal); opacity:0.22; }
+  .hero > .wrap, .cashback > .wrap{ position:relative; z-index:1; }
+</style>
+</head>
+<body>
+
+<div class="grain-overlay"></div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E4C077"/>
+      <stop offset="1" stop-color="#6ECFC0"/>
+    </linearGradient>
+    <linearGradient id="bridgeArcGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E4C077"/>
+      <stop offset="1" stop-color="#6ECFC0"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 30 30" fill="none">
+        <path d="M2 22C2 22 8 12 15 12C22 12 28 22 28 22" stroke="url(#logoGrad)" stroke-width="2.4" stroke-linecap="round"/>
+        <line x1="2" y1="22" x2="28" y2="22" stroke="#93A9BB" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="gradient-text">MOST</span>
+    </div>
+    <div class="nav-links">
+      <a href="#how" data-i18n="nav.how">Как работает</a>
+      <a href="#types" data-i18n="nav.types">Кому подходит</a>
+      <a href="#benefits" data-i18n="nav.benefits">Преимущества</a>
+      <a href="#cashback" data-i18n="nav.cashback">Кэшбек</a>
+      <a href="#apply" data-i18n="nav.apply">Заявка</a>
+    </div>
+    <div class="nav-right">
+      <div class="lang-switch">
+        <button class="lang-btn" data-lang="ru" onclick="applyLang('ru')">RU</button>
+        <button class="lang-btn" data-lang="en" onclick="applyLang('en')">EN</button>
+        <button class="lang-btn" data-lang="ka" onclick="applyLang('ka')">GE</button>
+      </div>
+      <a href="#apply" class="btn btn-primary" data-i18n="nav.cta">Подключить бизнес</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="ambient-glow"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow" data-i18n="hero.eyebrow">приём оплат для бизнеса: Грузия и весь мир</div>
+      <h1 data-i18n-html="hero.h1">Постройте <em>моsт</em> между рублём и вашей выручкой</h1>
+      <p data-i18n="hero.p">Клиент сканирует QR и платит рублём с любой карты РФ. Деньги приходят вам на следующий день — в лари, долларах, евро или USDT. А сверху — кэшбек с каждой оплаты, которую вы принимаете.</p>
+      <div class="hero-ctas">
+        <a href="#apply" class="btn btn-primary" data-i18n="hero.cta1">Оставить заявку</a>
+        <a href="#how" class="btn btn-ghost" data-i18n="hero.cta2">Как это работает</a>
+      </div>
+    </div>
+    <div class="bridge-box">
+      <div class="bridge-labels">
+        <div class="currency-chip currency-chip--from">
+          <span class="currency-chip-symbol">₽</span>
+          <span data-i18n="bridge.left">клиент</span>
+        </div>
+        <div class="currency-chip currency-chip--to">
+          <span class="currency-chip-symbol">GEL · $ · € · USDT</span>
+          <span data-i18n="bridge.right">ваш счёт</span>
+        </div>
+      </div>
+      <svg id="bridgeSvg" viewBox="0 0 560 320" width="100%">
+        <path id="archPath" d="M15,280 C15,75 545,75 545,280" fill="none" stroke="none"/>
+        <line x1="5" y1="290" x2="555" y2="290" stroke="#93A9BB" stroke-opacity="0.35" stroke-width="1.5"/>
+        <path d="M15,280 C15,75 545,75 545,280" fill="none" stroke="url(#bridgeArcGrad)" stroke-width="3" stroke-linecap="round"/>
+        <g id="struts"></g>
+        <g id="dots" filter="url(#dotGlow)"></g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="problem">
+  <div class="wrap problem-grid">
+    <div>
+      <div class="eyebrow" data-i18n="problem.eyebrow">почему это важно</div>
+      <h2 data-i18n="problem.h2">Ваши клиенты уже здесь. Деньги — нет.</h2>
+    </div>
+    <ul class="problem-list">
+      <li data-i18n="problem.li1">Карта «Мир» не работает за пределами России — клиент физически не может расплатиться на кассе</li>
+      <li data-i18n="problem.li2">Он идёт искать обменник или снимает наличные с потерей на курсе — а часть таких клиентов просто уходит без покупки</li>
+      <li data-i18n="problem.li3">Каждая несостоявшаяся оплата — это выручка, которая прошла мимо вашей кассы</li>
+      <li data-i18n="problem.li4">QR-приём закрывает это за два касания, без новой кассы и без смены процессов</li>
+    </ul>
+  </div>
+</section>
+
+<section class="showcase">
+  <div class="wrap showcase-grid">
+    <div>
+      <div class="eyebrow" data-i18n="showcase.eyebrow">как это выглядит</div>
+      <h2 data-i18n="showcase.h2">Оплата в два касания — глазами клиента</h2>
+      <p data-i18n="showcase.p">Никакого нового терминала на кассе. Клиент просто достаёт телефон.</p>
+      <div class="showcase-flow">
+        <div class="showcase-flow-item"><div class="showcase-flow-num">1</div><span data-i18n="showcase.f1">Кассир показывает QR-код на экране или чеке</span></div>
+        <div class="showcase-flow-item"><div class="showcase-flow-num">2</div><span data-i18n="showcase.f2">Клиент сканирует его камерой в приложении своего банка — это стандартный QR СБП</span></div>
+        <div class="showcase-flow-item"><div class="showcase-flow-num">3</div><span data-i18n="showcase.f3">Оплата подтверждена — деньги уже в пути на ваш счёт</span></div>
+      </div>
+      <div class="currency-swap">
+        <div class="currency-chip currency-chip--from">
+          <span class="currency-chip-symbol">₽</span>
+          <span data-i18n="showcase.clientPays">клиент платит</span>
+        </div>
+        <svg class="currency-swap-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        <div class="currency-chip currency-chip--to">
+          <span class="currency-chip-symbol">GEL · $ · € · USDT</span>
+          <span data-i18n="showcase.youReceive">вы получаете</span>
+        </div>
+      </div>
+    </div>
+    <div class="showcase-art">
+      <svg id="showcaseSvg" viewBox="0 0 560 320" width="100%">
+        <defs>
+          <linearGradient id="counterGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#1B3A55"/>
+            <stop offset="1" stop-color="#0E2233"/>
+          </linearGradient>
+          <linearGradient id="phoneGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#15304A"/>
+            <stop offset="1" stop-color="#0A1A28"/>
+          </linearGradient>
+          <filter id="softShadow" x="-40%" y="-40%" width="180%" height="180%">
+            <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.35"/>
+          </filter>
+          <filter id="dotGlow" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="1.8" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- checkout terminal -->
+        <g filter="url(#softShadow)">
+          <rect x="24" y="148" width="114" height="112" rx="12" fill="url(#counterGrad)" stroke="#93A9BB" stroke-opacity="0.35" stroke-width="1.2"/>
+        </g>
+        <rect x="39" y="161" width="84" height="46" rx="5" fill="#0A1826" stroke="#E4C077" stroke-opacity="0.55" stroke-width="1.2"/>
+        <line x1="49" y1="176" x2="99" y2="176" stroke="#E4C077" stroke-opacity="0.55" stroke-width="1.6" stroke-linecap="round"/>
+        <line x1="49" y1="188" x2="83" y2="188" stroke="#E4C077" stroke-opacity="0.35" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="53" cy="222" r="4" fill="#E4C077" fill-opacity="0.35"/>
+        <circle cx="68" cy="222" r="4" fill="#E4C077" fill-opacity="0.35"/>
+        <circle cx="83" cy="222" r="4" fill="#E4C077" fill-opacity="0.35"/>
+        <circle cx="98" cy="222" r="4" fill="#E4C077" fill-opacity="0.35"/>
+        <rect x="45" y="238" width="70" height="8" rx="4" fill="#0A1826" stroke="#93A9BB" stroke-opacity="0.3" stroke-width="1"/>
+        <text x="81" y="286" text-anchor="middle" fill="#93A9BB" font-family="Golos Text, sans-serif" font-size="12" data-i18n="showcase.counterLabel">касса</text>
+
+        <!-- flow dots from register to phone -->
+        <path id="showcasePath" d="M140,195 C230,195 250,140 358,138" fill="none" stroke="none"/>
+        <path d="M140,195 C230,195 250,140 358,138" fill="none" stroke="#93A9BB" stroke-opacity="0.3" stroke-width="1.4" stroke-dasharray="1 7" stroke-linecap="round"/>
+        <g id="showcaseDots" filter="url(#dotGlow)"></g>
+
+        <!-- phone -->
+        <g filter="url(#softShadow)">
+          <rect x="355" y="35" width="155" height="266" rx="27" fill="url(#phoneGrad)" stroke="#E4C077" stroke-width="2"/>
+        </g>
+        <circle cx="432" cy="51" r="2.4" fill="#93A9BB" fill-opacity="0.6"/>
+        <rect x="369" y="64" width="127" height="197" rx="6" fill="#0A1826" stroke="#93A9BB" stroke-opacity="0.22" stroke-width="1"/>
+
+        <!-- QR card -->
+        <rect id="qrCard" x="378" y="78" width="110" height="110" rx="10" fill="#F3EFE4"/>
+        <g id="qrPattern"></g>
+
+        <!-- SBP badge — original colorful mark (not the official NSPK logo), paired with the text label -->
+        <rect x="396" y="196" width="78" height="20" rx="10" fill="none" stroke="#93A9BB" stroke-opacity="0.35" stroke-width="1.2"/>
+        <circle cx="409" cy="203" r="2.1" fill="#E4C077"/>
+        <circle cx="415" cy="203" r="2.1" fill="#6ECFC0"/>
+        <circle cx="409" cy="209" r="2.1" fill="#8E7CC3"/>
+        <circle cx="415" cy="209" r="2.1" fill="#E2725B"/>
+        <text x="425" y="210" text-anchor="start" fill="#F3EFE4" font-family="Golos Text, sans-serif" font-size="10.5" font-weight="700" letter-spacing="0.06em" data-i18n="showcase.sbpBadge">СБП</text>
+
+        <text x="435" y="238" text-anchor="middle" fill="#F3EFE4" font-family="PT Serif, serif" font-size="15" data-i18n="showcase.amount">1 038 ₽</text>
+        <text x="435" y="253" text-anchor="middle" fill="#93A9BB" font-family="Golos Text, sans-serif" font-size="10.5" data-i18n="showcase.amountLabel">к оплате</text>
+
+        <rect x="415" y="279" width="40" height="4" rx="2" fill="#93A9BB" fill-opacity="0.5"/>
+
+        <circle cx="503" cy="272" r="23" fill="none" stroke="#6ECFC0" stroke-width="2" opacity="0.5">
+          <animate attributeName="r" values="23;34" dur="2.2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.5;0" dur="2.2s" repeatCount="indefinite"/>
+        </circle>
+        <g filter="url(#softShadow)">
+          <circle cx="503" cy="272" r="23" fill="#16324A" stroke="#6ECFC0" stroke-width="2"/>
+        </g>
+        <path d="M493,272 l6.5,6.5 l13,-15" fill="none" stroke="#6ECFC0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p class="showcase-note" data-i18n-html="showcase.sbpNote">QR построен по стандарту <b>СБП</b> — его понимает банковское приложение любого клиента из России</p>
+    </div>
+  </div>
+</section>
+
+<section class="steps" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" data-i18n="steps.eyebrow">как подключиться</div>
+      <h2 data-i18n="steps.h2">Три шага — и вы принимаете оплату</h2>
+      <p data-i18n="steps.p">От заявки до первой транзакции — без сложной интеграции и новой техники на кассе. Всё подключение проходит удалённо, из любой точки мира.</p>
+    </div>
+    <div class="steps-row">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3 data-i18n="steps.s1t">Оставляете заявку</h3>
+        <p data-i18n="steps.s1d">Короткая форма или сообщение в Telegram — 2 минуты, минимум полей.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3 data-i18n="steps.s2t">Подключаем приём</h3>
+        <p data-i18n="steps.s2d">Понадобятся учредительные документы, ID директора и адрес точки — мы собираем пакет вместе с вами. Подключение проходит удалённо; для бизнеса в Грузии возможна и личная встреча в офисе — если так удобнее или у вас особый случай, который проще обсудить вживую.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3 data-i18n="steps.s3t">Принимаете оплату</h3>
+        <p data-i18n="steps.s3d">Клиент сканирует QR в приложении своего банка. Деньги — на вашем счету в день оплаты.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="types" id="types">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" data-i18n="types.eyebrow">кому подходит</div>
+      <h2 data-i18n="types.h2">От одной точки до сети — решение масштабируется вместе с бизнесом</h2>
+      <p data-i18n="types.p">Работаем с юридическими лицами, предпринимателями и самозанятыми в Грузии и по всему миру — в любой сфере, где есть оплата от клиента.</p>
+    </div>
+    <div class="card-grid">
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l1-5h16l1 5M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9M9 20v-6h6v6"/></svg>
+        <h3 data-i18n="types.t1">Розница и сети</h3>
+        <p data-i18n="types.d1">Супермаркеты, магазины у дома, сетевой ритейл — от одной точки до десятков касс</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11h18M6 11V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4M6 21V11M18 21V11M4 21h16"/></svg>
+        <h3 data-i18n="types.t2">HoReCa</h3>
+        <p data-i18n="types.d2">Кафе, рестораны, бары — оплата прямо у столика или на кассе</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 2 8l10 6 10-6-10-6zM2 16l10 6 10-6M2 12l10 6 10-6"/></svg>
+        <h3 data-i18n="types.t3">Туризм и услуги</h3>
+        <p data-i18n="types.d3">Отели, экскурсии, прокат — приём оплат там, где турист принимает решение</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21V9l8-6 8 6v12M9 21v-6h6v6"/></svg>
+        <h3 data-i18n="types.t4">Недвижимость</h3>
+        <p data-i18n="types.d4">Аренда и продажа — крупные чеки, где даже небольшой процент кэшбека ощутим</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M2 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 2-1.6L21 7H5.2"/></svg>
+        <h3 data-i18n="types.t5">Интернет-магазины</h3>
+        <p data-i18n="types.d5">Оплата на сайте или в мессенджере — платёжная ссылка без кассы</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg>
+        <h3 data-i18n="types.t6">Онлайн-сервисы</h3>
+        <p data-i18n="types.d6">Подписки, курсы, цифровые услуги — оплата в один клик</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="benefits" id="benefits">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" data-i18n="benefits.eyebrow">преимущества</div>
+      <h2 data-i18n="benefits.h2">Всё, что нужно, чтобы не терять оплаты от клиентов из России</h2>
+    </div>
+    <div class="card-grid">
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h18M3 12l5-5M3 12l5 5M21 12l-5-5M21 12l-5 5"/></svg>
+        <h3 data-i18n="benefits.t1">Мультивалютные выплаты</h3>
+        <p data-i18n="benefits.d1">Получайте на счёт в лари, долларах, евро или USDT — выбираете сами.</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <h3 data-i18n="benefits.t2">Выплата день в день</h3>
+        <p data-i18n="benefits.d2">Взаиморасчёты без задержек — деньги приходят в день оплаты клиентом.</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        <h3 data-i18n="benefits.t3">Подключение без техники</h3>
+        <p data-i18n="benefits.d3">QR вместо нового терминала. Заявка — короткий опросник, ничего лишнего.</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 16.5 6.5 19.5l1-6.3L3 8.9 9 8z"/></svg>
+        <h3 data-i18n="benefits.t4">Кэшбек с оборота</h3>
+        <p data-i18n="benefits.d4">Единственное предложение на рынке, где вы зарабатываете на приёме оплат сверх выручки.</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6z"/></svg>
+        <h3 data-i18n="benefits.t5">Сертифицированная защита</h3>
+        <p data-i18n="benefits.d5">Инфраструктура приёма платежей сертифицирована по стандарту PCI DSS Level 1.</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <h3 data-i18n="benefits.t6">Поддержка на связи</h3>
+        <p data-i18n="benefits.d6">Отвечаем на вопросы по подключению и текущим операциям без долгих очередей.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tech" id="tech">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" data-i18n="tech.eyebrow">технические возможности</div>
+      <h2 data-i18n="tech.h2">Гибкая интеграция под формат вашего бизнеса</h2>
+      <p data-i18n="tech.p">От простого QR на кассе до полной интеграции в ваш сайт или приложение.</p>
+    </div>
+    <div class="card-grid">
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+        <h3 data-i18n="tech.t1">SDK и API</h3>
+        <p data-i18n="tech.d1">Быстрая интеграция приёма платежей в любые цифровые решения.</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <h3 data-i18n="tech.t2">Telegram-бот</h3>
+        <p data-i18n="tech.d2">Формируйте QR для оплаты прямо из мессенджера, без личного кабинета.</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg>
+        <h3 data-i18n="tech.t3">Платёжные ссылки</h3>
+        <p data-i18n="tech.d3">Отправьте ссылку клиенту — оплата без кассы и терминала.</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>
+        <h3 data-i18n="tech.t4">AFT-транзакции</h3>
+        <p data-i18n="tech.d4">Гибкая настройка выплат на банковские реквизиты.</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 3 14h8l-1 8 10-12h-8z"/></svg>
+        <h3 data-i18n="tech.t5">Smart-каскадирование</h3>
+        <p data-i18n="tech.d5">Автоматический выбор доступного банка — оплата проходит с первого раза.</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg>
+        <h3 data-i18n="tech.t6">Готовое ПО «под ключ»</h3>
+        <p data-i18n="tech.d6">Решение под задачи вашего бизнеса, без разработки с нуля.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cashback" id="cashback">
+  <div class="ambient-glow"></div>
+  <div class="wrap">
+    <div class="cashback-top">
+      <div>
+        <div class="eyebrow" data-i18n="cashback.eyebrow">то, чего нет у других</div>
+        <h2 data-i18n="cashback.h2">Небольшим точкам — повышенный кэшбек, крупным сетям — низкая комиссия</h2>
+        <p data-i18n="cashback.p">Комиссию за оплату платит клиент — вы ничего не теряете с выручки. Небольшие точки получают более высокий процент кэшбека, чтобы бонус был ощутим даже на скромном обороте. У крупного бизнеса и сетей оборот сам по себе большой, поэтому комиссия ниже, а кэшбек в процентах скромнее — но в абсолютной сумме остаётся весомым.</p>
+      </div>
+      <div class="cashback-figure">
+        <div class="big gradient-text" data-i18n="cashback.figBig">до 0.5%</div>
+        <div class="cap" data-i18n="cashback.figCap">кэшбек для небольших точек и локального бизнеса</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th data-i18n="cashback.th1">Оборот в месяц</th><th data-i18n="cashback.th2">Комиссия сервиса</th><th data-i18n="cashback.th3">Ваш кэшбек</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>до 50 000 GEL</td><td>3.5%</td><td class="num">0.5%</td></tr>
+          <tr><td>50 000 – 150 000 GEL</td><td>2.8%</td><td class="num">0.3%</td></tr>
+          <tr><td>150 000 – 500 000 GEL</td><td>2.2%</td><td class="num">0.2%</td></tr>
+          <tr><td>от 500 000 GEL</td><td>2.0%</td><td class="num">0.1%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note" data-i18n="cashback.note">Точный процент фиксируется в договоре и зависит от оборота и среднего чека точки. Кэшбек начисляется на счёт вместе с очередной выплатой.</p>
+  </div>
+</section>
+
+<section class="trust">
+  <div class="wrap">
+    <div class="trust-stats-caption" data-i18n="trust.caption">Цифры платёжной инфраструктуры, на которой мы работаем</div>
+    <div class="trust-stats-row">
+      <div class="trust-stat"><div class="num"><span class="count-num" data-count-to="17">0</span><span data-i18n="trust.stat1suffix"> млн+</span></div><div class="lbl" data-i18n="trust.stat1">транзакций</div></div>
+      <div class="trust-stat"><div class="num"><span class="count-num" data-count-to="99">0</span>%</div><div class="lbl" data-i18n="trust.stat2">успешных платежей</div></div>
+      <div class="trust-stat"><div class="num"><span class="count-num" data-count-to="500">0</span>+</div><div class="lbl" data-i18n="trust.stat3">партнёров в 5 странах</div></div>
+      <div class="trust-stat"><div class="num" data-i18n="trust.stat4num">99,98%</div><div class="lbl" data-i18n="trust.stat4">SLA-надёжность</div></div>
+    </div>
+    <div class="trust-divider"></div>
+    <div class="trust-row">
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6z"/></svg><span>PCI DSS Level 1</span></div>
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="trust.item2">Выплата день в день</span></div>
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span data-i18n="trust.item3">Поддержка 24/7</span></div>
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg><span data-i18n="trust.item4">Встроенная CRM и аналитика</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="apply" id="apply">
+  <div class="wrap apply-grid">
+    <div>
+      <div class="eyebrow" data-i18n="apply.eyebrow">начать</div>
+      <h2 data-i18n="apply.h2">Подключите QR-приём и получайте кэшбек</h2>
+      <p data-i18n="apply.p">Заполните форму — свяжемся в течение 15 минут и посчитаем условия под ваш оборот. Или напишите напрямую.</p>
+      <div class="direct-contacts">
+        <a href="https://t.me/most_ge" class="btn btn-ghost" data-i18n="apply.tg">Написать в Telegram</a>
+        <a href="tel:+995555180449" class="btn btn-ghost" data-i18n="apply.call">Позвонить: +995 555 180 449</a>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <form id="leadForm">
+        <div class="field">
+          <label for="name" data-i18n="apply.name">Имя</label>
+          <input id="name" type="text" required data-i18n-placeholder="apply.namePh" placeholder="Как к вам обращаться">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="contact" data-i18n="apply.contact">Телефон / Telegram</label>
+            <input id="contact" type="text" required data-i18n-placeholder="apply.contactPh" placeholder="+995 5xx xx xx xx или @username">
+          </div>
+          <div class="field">
+            <label for="city" data-i18n="apply.city">Город</label>
+            <input id="city" type="text" required data-i18n-placeholder="apply.cityPh" placeholder="Батуми, Тбилиси…">
+          </div>
+        </div>
+        <div class="field">
+          <label for="business" data-i18n="apply.business">Название бизнеса</label>
+          <input id="business" type="text" required data-i18n-placeholder="apply.businessPh" placeholder="Как называется точка">
+        </div>
+        <div class="field">
+          <label for="type" data-i18n="apply.type">Тип бизнеса</label>
+          <select id="type" required>
+            <option value="" disabled selected data-i18n="apply.typeOpt0">Выберите вариант</option>
+            <option data-i18n="apply.typeOpt1">Супермаркет / сеть магазинов</option>
+            <option data-i18n="apply.typeOpt2">Кафе, ресторан, бар</option>
+            <option data-i18n="apply.typeOpt3">Розничный магазин</option>
+            <option data-i18n="apply.typeOpt4">Услуги (салон, спа, прокат)</option>
+            <option data-i18n="apply.typeOpt5">Другое</option>
+          </select>
+        </div>
+        <p class="consent" data-i18n="apply.consent">Отправляя заявку, вы соглашаетесь на обработку персональных данных.</p>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="apply.submit">Отправить заявку</button>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <h3 data-i18n="apply.successH">Заявка отправлена</h3>
+        <p data-i18n="apply.successP">Свяжемся с вами в ближайшее время, чтобы обсудить условия подключения.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 30 30" fill="none">
+        <path d="M2 22C2 22 8 12 15 12C22 12 28 22 28 22" stroke="url(#logoGrad)" stroke-width="2.4" stroke-linecap="round"/>
+        <line x1="2" y1="22" x2="28" y2="22" stroke="#93A9BB" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="gradient-text">MOST</span>
+    </div>
+    <p class="footer-note" data-i18n="footer.note">MOST — партнёр по подключению приёма QR-платежей для бизнеса в Грузии и по всему миру. Приём и обработка платежей осуществляются на базе сертифицированной международной платёжной инфраструктуры.</p>
+    <div class="footer-links">
+      <a href="#how" data-i18n="footer.link1">Как работает</a>
+      <a href="#apply" data-i18n="footer.link2">Заявка</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ---------- Bridge illustration ---------- */
+  (function(){
+    const svgNS = "http://www.w3.org/2000/svg";
+    const path = document.getElementById("archPath");
+    const struts = document.getElementById("struts");
+    const dots = document.getElementById("dots");
+    const len = path.getTotalLength();
+
+    const strutCount = 14;
+    for(let i=1; i<strutCount; i++){
+      const pt = path.getPointAtLength((len/strutCount)*i);
+      const line = document.createElementNS(svgNS, "line");
+      line.setAttribute("x1", pt.x); line.setAttribute("y1", pt.y);
+      line.setAttribute("x2", pt.x); line.setAttribute("y2", 290);
+      line.setAttribute("stroke", "#93A9BB");
+      line.setAttribute("stroke-opacity", "0.28");
+      line.setAttribute("stroke-width", "1");
+      struts.appendChild(line);
+    }
+
+    // Flying currency symbols: each particle starts as a ruble (client side,
+    // gold) and cross-fades into a destination currency (GEL/dollar/euro/USDT,
+    // teal) around the midpoint of the bridge — visualising the conversion,
+    // not just a generic moving dot. Rubles never reach the right/account side.
+    // GEL is written as text (not the ₾ glyph) — that symbol proved unreliable
+    // across real devices even with a font fallback in place, so plain text
+    // is the dependable choice here.
+    const destinations = ["GEL", "$", "€", "USDT"];
+    const flightCount = 8;
+    for(let i=0; i<flightCount; i++){
+      const dur = 6.4;
+      const begin = i * (dur / flightCount);
+      const destination = destinations[i % destinations.length];
+
+      const g = document.createElementNS(svgNS, "g");
+      g.setAttribute("opacity", "0"); // hidden until its own begin time, see visAnim below
+      const motion = document.createElementNS(svgNS, "animateMotion");
+      motion.setAttribute("dur", dur + "s");
+      motion.setAttribute("repeatCount", "indefinite");
+      motion.setAttribute("begin", begin + "s");
+      motion.setAttribute("rotate", "0");
+      motion.setAttribute("calcMode", "spline");
+      motion.setAttribute("keyPoints", "0;1");
+      motion.setAttribute("keyTimes", "0;1");
+      motion.setAttribute("keySplines", "0.42 0 0.58 1");
+      motion.setAttribute("path", path.getAttribute("d"));
+      g.appendChild(motion);
+
+      const visAnim = document.createElementNS(svgNS, "animate");
+      visAnim.setAttribute("attributeName", "opacity");
+      visAnim.setAttribute("from", "0");
+      visAnim.setAttribute("to", "1");
+      visAnim.setAttribute("dur", "0.01s");
+      visAnim.setAttribute("begin", begin + "s");
+      visAnim.setAttribute("fill", "freeze");
+      g.appendChild(visAnim);
+
+      function makeSymbol(char, color, values, fontSize){
+        const t = document.createElementNS(svgNS, "text");
+        t.setAttribute("text-anchor", "middle");
+        t.setAttribute("dominant-baseline", "central");
+        t.setAttribute("font-family", char.length > 1 ? "'Golos Text', sans-serif" : "'PT Serif', 'Noto Sans', serif");
+        t.setAttribute("font-size", String(fontSize));
+        t.setAttribute("font-weight", "700");
+        t.setAttribute("fill", color);
+        t.textContent = char;
+        const op = document.createElementNS(svgNS, "animate");
+        op.setAttribute("attributeName", "opacity");
+        op.setAttribute("values", values);
+        op.setAttribute("keyTimes", "0;0.42;0.58;1");
+        op.setAttribute("dur", dur + "s");
+        op.setAttribute("repeatCount", "indefinite");
+        op.setAttribute("begin", begin + "s");
+        t.appendChild(op);
+        return t;
+      }
+
+      g.appendChild(makeSymbol("₽", "#E4C077", "1;1;0;0", 20));
+      g.appendChild(makeSymbol(destination, "#6ECFC0", "0;0;1;1", destination.length > 1 ? 14 : 20));
+      dots.appendChild(g);
+    }
+  })();
+
+  /* ---------- Scroll reveal for sections below the fold ---------- */
+  // Classes are added entirely via JS (never hardcoded in HTML/CSS defaults),
+  // so if JS fails to run for any reason, content simply stays visible as normal.
+  (function(){
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(reduceMotion) return;
+    const targets = document.querySelectorAll("section:not(.hero)");
+    targets.forEach(el => el.classList.add("reveal"));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add("revealed");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: "0px 0px -60px 0px" });
+    targets.forEach(el => io.observe(el));
+  })();
+
+  /* ---------- Trust stats: count up every time they scroll into view ---------- */
+  (function(){
+    const nums = document.querySelectorAll(".count-num");
+    if(!nums.length) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function animateCount(el){
+      const target = parseInt(el.dataset.countTo, 10) || 0;
+      const card = el.closest(".trust-stat");
+      if(reduceMotion){ el.textContent = target; return; }
+      // token guards against two overlapping runs if the element re-enters
+      // view again before a previous animation finished
+      const runToken = (el.dataset.countRun = String(Number(el.dataset.countRun || 0) + 1));
+      el.textContent = "0";
+      if(card) card.classList.remove("count-done");
+      const duration = 1200;
+      const start = performance.now();
+      function tick(now){
+        if(el.dataset.countRun !== runToken) return; // a newer run took over
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+        el.textContent = Math.round(target * eased);
+        if(progress < 1){
+          requestAnimationFrame(tick);
+        } else if(card){
+          // retrigger the CSS animation even if it was already played once
+          card.classList.remove("count-done");
+          void card.offsetWidth; // force reflow so the animation restarts
+          card.classList.add("count-done");
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          animateCount(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    nums.forEach(el => observer.observe(el));
+  })();
+
+  /* ---------- Showcase illustration: crop to the phone on narrow screens ---------- */
+  // On a phone, the illustration's container is narrower than the counter+phone
+  // scene needs to stay readable, so below 600px we swap to a tighter viewBox that
+  // frames just the phone/QR/checkmark — same markup, just a different visible crop.
+  (function(){
+    const svg = document.getElementById("showcaseSvg");
+    const fullView = "0 0 560 320";
+    const phoneView = "328 8 228 308";
+    function updateShowcaseCrop(){
+      svg.setAttribute("viewBox", window.innerWidth < 600 ? phoneView : fullView);
+    }
+    updateShowcaseCrop();
+    window.addEventListener("resize", updateShowcaseCrop);
+  })();
+
+  /* ---------- Checkout illustration: realistic QR code + flow dots ---------- */
+  (function(){
+    const svgNS = "http://www.w3.org/2000/svg";
+    const qr = document.getElementById("qrPattern");
+    const card = document.getElementById("qrCard");
+    const cardX = parseFloat(card.getAttribute("x"));
+    const cardY = parseFloat(card.getAttribute("y"));
+    const cardSize = parseFloat(card.getAttribute("width"));
+    const pad = 9;
+    const grid = 17;
+    const cell = (cardSize - pad*2) / grid;
+    const originX = cardX + pad;
+    const originY = cardY + pad;
+    const dark = "#0E2233";
+
+    function drawCell(row, col){
+      const r = document.createElementNS(svgNS, "rect");
+      r.setAttribute("x", originX + col*cell);
+      r.setAttribute("y", originY + row*cell);
+      r.setAttribute("width", cell);
+      r.setAttribute("height", cell);
+      r.setAttribute("fill", dark);
+      qr.appendChild(r);
+    }
+
+    function drawFinder(fr, fc){
+      // classic QR finder pattern: 7x7 dark border, 5x5 light ring, 3x3 dark core
+      for(let r=0;r<7;r++){
+        for(let c=0;c<7;c++){
+          const onBorder = r===0||r===6||c===0||c===6;
+          const onCore = r>=2 && r<=4 && c>=2 && c<=4;
+          if(onBorder || onCore) drawCell(fr+r, fc+c);
+        }
+      }
+    }
+
+    // deterministic hash so the "data" area looks irregular but never changes between loads
+    function hash(r,c){
+      let h = (r*374761393 + c*668265263) | 0;
+      h = (h ^ (h >>> 13)) * 1274126177;
+      h = (h ^ (h >>> 16)) >>> 0;
+      return h;
+    }
+
+    function inFinderZone(r,c){
+      const zones = [[0,0],[grid-7,0],[0,grid-7]];
+      return zones.some(([fr,fc]) => r>=fr && r<fr+7 && c>=fc && c<fc+7);
+    }
+
+    // finder patterns (top-left, top-right, bottom-left — same layout real QR codes use)
+    drawFinder(0,0);
+    drawFinder(0, grid-7);
+    drawFinder(grid-7, 0);
+
+    // timing pattern — the alternating dashed line between finder patterns
+    for(let i=7; i<grid-7; i++){
+      if(i % 2 === 0){
+        drawCell(6, i);
+        drawCell(i, 6);
+      }
+    }
+
+    // data modules
+    for(let r=0; r<grid; r++){
+      for(let c=0; c<grid; c++){
+        if(inFinderZone(r,c)) continue;
+        if(r===6 || c===6) continue;
+        if(hash(r,c) % 5 < 2) drawCell(r,c);
+      }
+    }
+
+    const path = document.getElementById("showcasePath");
+    const dots = document.getElementById("showcaseDots");
+    const dotCount = 3;
+    for(let i=0; i<dotCount; i++){
+      const circle = document.createElementNS(svgNS, "circle");
+      circle.setAttribute("r", "3.6");
+      circle.setAttribute("fill", "#E4C077");
+      const anim = document.createElementNS(svgNS, "animateMotion");
+      anim.setAttribute("dur", "3.4s");
+      anim.setAttribute("repeatCount", "indefinite");
+      anim.setAttribute("begin", (i * 1.13) + "s");
+      anim.setAttribute("keyPoints", "0;1");
+      anim.setAttribute("keyTimes", "0;1");
+      anim.setAttribute("calcMode", "spline");
+      anim.setAttribute("keySplines", "0.4 0 0.2 1");
+      anim.setAttribute("path", path.getAttribute("d"));
+      circle.appendChild(anim);
+      dots.appendChild(circle);
+    }
+  })();
+
+  /* ---------- Lead form ---------- */
+  // ВАЖНО: /api/lead появится только после того, как вы развернёте сайт вместе
+  // с api-lead.js на Vercel (или аналогичной платформе) и настроите переменные
+  // окружения TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID / SHEETS_WEBHOOK_URL.
+  // До этого форма будет показывать ошибку — это ожидаемо, эндпоинта ещё нет.
+  const LEAD_ENDPOINT = "/api/lead";
+
+  document.getElementById("leadForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+    const form = this;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+
+    const payload = {
+      name: document.getElementById("name").value,
+      contact: document.getElementById("contact").value,
+      city: document.getElementById("city").value,
+      business: document.getElementById("business").value,
+      type: document.getElementById("type").value
+    };
+
+    try{
+      const res = await fetch(LEAD_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if(!res.ok) throw new Error("Request failed");
+      form.style.display = "none";
+      document.getElementById("formSuccess").style.display = "block";
+    } catch(err){
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+      alert(t(currentLang, "apply.error") || "Не удалось отправить заявку. Попробуйте написать в Telegram напрямую.");
+    }
+  });
+
+  /* ---------- i18n ---------- */
+  const translations = {
+    en: {
+      nav:{how:"How it works",types:"Who it's for",benefits:"Benefits",cashback:"Cashback",apply:"Apply",cta:"Connect your business"},
+      hero:{eyebrow:"payment acceptance for business — Georgia and worldwide",h1:"Build a <em>bridge</em> between ruble payments and your revenue",p:"Your customer scans a QR code and pays in rubles with any Russian bank card. Money lands in your account the next day — in GEL, USD, EUR, or USDT. Plus cashback on every payment you accept.",cta1:"Submit application",cta2:"How it works"},
+      bridge:{left:"customer",right:"your account"},
+      showcase:{eyebrow:"what it looks like",h2:"Payment in two taps — from the customer's side",p:"No new terminal at the till. The customer just takes out their phone.",f1:"The cashier shows a QR code on screen or on the receipt",f2:"The customer scans it with the camera in their banking app — it's a standard SBP QR code",f3:"Payment confirmed — the money is already on its way to your account",counterLabel:"till",amount:"1,038 ₽",amountLabel:"amount due",sbpBadge:"SBP",sbpNote:"The QR follows the <b>SBP</b> (Faster Payments System) standard — recognized by any Russian banking app",clientPays:"customer pays",youReceive:"you receive"},
+      problem:{eyebrow:"why this matters",h2:"Your customers are already here. Their money isn't.",li1:"Mir cards don't work outside Russia — the customer simply can't pay at the till",li2:"They go looking for a currency exchange or withdraw cash at a poor rate — some just walk away without buying",li3:"Every failed payment is revenue that never reached your register",li4:"QR acceptance solves this in two taps, with no new hardware and no change to your process"},
+      steps:{eyebrow:"how to connect",h2:"Three steps to accepting payments",p:"From application to first transaction — no complex integration, no new hardware at the till. The whole process happens remotely, from anywhere in the world.",s1t:"Submit your application",s1d:"A short form or a message on Telegram — 2 minutes, minimal fields.",s2t:"We set up acceptance",s2d:"You'll need incorporation documents, director ID and your business address — we'll put the package together with you. Setup happens remotely; for businesses in Georgia, an in-person meeting at our office is also available — if that's more convenient, or for a special case worth discussing face to face.",s3t:"Start accepting payments",s3d:"The customer scans the QR in their banking app. Money lands in your account the same day."},
+      types:{eyebrow:"who it's for",h2:"From a single till to a whole chain — the solution scales with your business",p:"We work with companies, entrepreneurs and sole proprietors in Georgia and worldwide — in any field that takes payment from customers.",t1:"Retail & chains",d1:"Supermarkets, corner shops, retail chains — from one till to dozens",t2:"HoReCa",d2:"Cafés, restaurants, bars — payment right at the table or the counter",t3:"Tourism & services",d3:"Hotels, tours, rentals — accept payment where the tourist decides",t4:"Real estate",d4:"Rental and sales — large tickets where even a small cashback percentage adds up",t5:"Online stores",d5:"Payment on your website or in messenger — a payment link, no till needed",t6:"Online services",d6:"Subscriptions, courses, digital services — one-click payment"},
+      benefits:{eyebrow:"benefits",h2:"Everything you need to stop losing payments from customers in Russia",t1:"Multi-currency payouts",d1:"Get paid in GEL, USD, EUR, or USDT — your choice.",t2:"Same-day payout",d2:"No delays in settlement — funds land the same day the customer pays.",t3:"No new hardware",d3:"QR instead of a new terminal. The application is a short questionnaire, nothing more.",t4:"Cashback on turnover",d4:"The only offer on the market where you earn on accepting payments, on top of revenue.",t5:"Certified security",d5:"Payment infrastructure is certified to PCI DSS Level 1.",t6:"Support that responds",d6:"We answer questions on setup and day-to-day operations without long queues."},
+      tech:{eyebrow:"technical capabilities",h2:"Flexible integration for any business format",p:"From a simple QR at the till to full integration into your website or app.",t1:"SDK & API",d1:"Fast integration of payment acceptance into any digital product.",t2:"Telegram bot",d2:"Generate a payment QR straight from the messenger — no dashboard needed.",t3:"Payment links",d3:"Send a link to the customer — payment without a till or terminal.",t4:"AFT transactions",d4:"Flexible payout configuration to bank details.",t5:"Smart cascading",d5:"Automatic routing to an available bank — the payment goes through the first time.",t6:"Turnkey software",d6:"A ready solution built for your business, no development from scratch."},
+      cashback:{eyebrow:"something others don't offer",h2:"Higher cashback for small businesses, lower fees for large chains",p:"The customer pays the fee — you don't lose anything from your revenue. Smaller businesses get a higher cashback percentage so the bonus is meaningful even on modest turnover. Large businesses and chains already have volume on their side, so the fee is lower and the cashback percentage is more modest — but it still adds up to a solid amount.",figBig:"up to 0.5%",figCap:"cashback for small and local businesses",th1:"Monthly turnover",th2:"Service fee",th3:"Your cashback",note:"The exact percentage is fixed in the contract and depends on turnover and average ticket size. Cashback is credited together with your regular payout."},
+      trust:{caption:"Numbers from the payment infrastructure we run on",stat1:"transactions",stat1suffix:"M+",stat2:"successful payments",stat3:"partners in 5 countries",stat4:"SLA reliability",stat4num:"99.98%",item2:"Same-day payout",item3:"24/7 support",item4:"Built-in CRM & analytics"},
+      apply:{eyebrow:"get started",h2:"Connect QR payments and start earning cashback",p:"Fill in the form — we'll get in touch within 15 minutes and work out terms for your turnover. Or reach out directly.",tg:"Message us on Telegram",call:"Call: +995 555 180 449",name:"Name",namePh:"How should we address you",contact:"Phone / Telegram",contactPh:"+995 5xx xx xx xx or @username",city:"City",cityPh:"Batumi, Tbilisi…",business:"Business name",businessPh:"What's your business called",type:"Business type",typeOpt0:"Select an option",typeOpt1:"Supermarket / retail chain",typeOpt2:"Café, restaurant, bar",typeOpt3:"Retail store",typeOpt4:"Services (salon, spa, rental)",typeOpt5:"Other",consent:"By submitting this form you agree to the processing of your personal data.",submit:"Submit application",successH:"Application sent",successP:"We'll be in touch shortly to discuss your connection terms.",error:"Couldn't send the application. Try messaging us on Telegram directly."},
+      footer:{note:"MOST is a connection partner for QR payment acceptance for businesses in Georgia and worldwide. Payments are processed on certified international payment infrastructure.",link1:"How it works",link2:"Apply"}
+    },
+    ka: {
+      nav:{how:"როგორ მუშაობს",types:"ვისთვისაა",benefits:"უპირატესობები",cashback:"ქეშბექი",apply:"განაცხადი",cta:"დაუკავშირეთ ბიზნესი"},
+      hero:{eyebrow:"გადახდების მიღება ბიზნესისთვის — საქართველო და მთელი მსოფლიო",h1:"ააშენეთ <em>ხიდი</em> რუბლში გადახდასა და თქვენს შემოსავალს შორის",p:"თქვენი მომხმარებელი სკანირებს QR კოდს და იხდის რუბლში ნებისმიერი რუსული ბანკის ბარათით. თანხა თქვენს ანგარიშზე ირიცხება მეორე დღესვე — ლარში, დოლარში, ევროში ან USDT-ში. დამატებით იღებთ ქეშბექს ყოველ გადახდაზე.",cta1:"განაცხადის გაგზავნა",cta2:"როგორ მუშაობს"},
+      bridge:{left:"მომხმარებელი",right:"თქვენი ანგარიში"},
+      showcase:{eyebrow:"როგორ გამოიყურება",h2:"გადახდა ორ შეხებაში — მომხმარებლის თვალით",p:"ახალი ტერმინალის გარეშე სალაროზე. მომხმარებელი უბრალოდ იღებს ტელეფონს.",f1:"მოლარე აჩვენებს QR კოდს ეკრანზე ან ჩეკზე",f2:"მომხმარებელი სკანირებს მას საბანკო აპლიკაციის კამერით — ეს არის სტანდარტული SBP QR კოდი",f3:"გადახდა დადასტურებულია — თანხა უკვე თქვენი ანგარიშისკენ მიემართება",counterLabel:"სალარო",amount:"1 038 ₽",amountLabel:"გადასახდელი",sbpBadge:"SBP",sbpNote:"QR აგებულია <b>SBP</b> (სწრაფი გადახდების სისტემის) სტანდარტით — მას აღიარებს ნებისმიერი რუსული საბანკო აპლიკაცია",clientPays:"მომხმარებელი იხდის",youReceive:"თქვენ იღებთ"},
+      problem:{eyebrow:"რატომაა ეს მნიშვნელოვანი",h2:"თქვენი მომხმარებლები უკვე აქ არიან. ფული — არა.",li1:"ბარათი «მირ» რუსეთის ფარგლებს გარეთ არ მუშაობს — მომხმარებელს ფიზიკურად არ შეუძლია გადაიხადოს სალაროსთან",li2:"ის ეძებს გადამცვლელ პუნქტს ან იღებს ნაღდ ფულს არახელსაყრელი კურსით — ნაწილი უბრალოდ ტოვებს მაღაზიას შესყიდვის გარეშე",li3:"ყოველი ვერშედგარი გადახდა — თქვენს სალაროზე ვერმისული შემოსავალია",li4:"QR-გადახდა ამას წყვეტს ორ შეხებაში, ახალი აპარატურის ან პროცესის შეცვლის გარეშე"},
+      steps:{eyebrow:"როგორ დავუკავშირდეთ",h2:"სამი ნაბიჯი — და თქვენ იღებთ გადახდას",p:"განაცხადიდან პირველ ტრანზაქციამდე — რთული ინტეგრაციისა და ახალი აპარატურის გარეშე. მთელი პროცესი ხდება დისტანციურად, მსოფლიოს ნებისმიერი წერტილიდან.",s1t:"განაცხადის გაგზავნა",s1d:"მოკლე ფორმა ან შეტყობინება Telegram-ში — 2 წუთი, მინიმალური ველები.",s2t:"ვაწყობთ მიღებას",s2d:"დაგჭირდებათ სადამფუძნებლო დოკუმენტები, დირექტორის პირადობა და ბიზნესის მისამართი — პაკეტს ერთად შევკრებთ. დაკავშირება ხდება დისტანციურად; საქართველოში მოქმედი ბიზნესისთვის შესაძლებელია პირადი შეხვედრაც ჩვენს ოფისში — თუ ეს უფრო მოსახერხებელია, ან საქმე განსაკუთრებულია და მისი პირისპირ განხილვა გჭირდებათ.",s3t:"იღებთ გადახდას",s3d:"მომხმარებელი სკანირებს QR-ს საბანკო აპლიკაციაში. თანხა თქვენს ანგარიშზეა გადახდის დღესვე."},
+      types:{eyebrow:"ვისთვისაა",h2:"ერთი სალაროდან ქსელამდე — გადაწყვეტილება იზრდება ბიზნესთან ერთად",p:"ვმუშაობთ იურიდიულ პირებთან, მეწარმეებთან და თვითდასაქმებულებთან საქართველოსა და მთელს მსოფლიოში — ნებისმიერ სფეროში, სადაც არის მომხმარებლისგან გადახდა.",t1:"საცალო ვაჭრობა და ქსელები",d1:"სუპერმარკეტები, სამეზობლო მაღაზიები, საცალო ქსელები — ერთი სალაროდან ათობით სალაროსკენ",t2:"HoReCa",d2:"კაფეები, რესტორნები, ბარები — გადახდა პირდაპირ მაგიდასთან ან სალაროსთან",t3:"ტურიზმი და მომსახურება",d3:"სასტუმროები, ექსკურსიები, გაქირავება — გადახდის მიღება იქ, სადაც ტურისტი წყვეტს გადაწყვეტილებას",t4:"უძრავი ქონება",d4:"გაქირავება და გაყიდვა — დიდი თანხები, სადაც მცირე ქეშბექიც კი შესამჩნევია",t5:"ინტერნეტ მაღაზიები",d5:"გადახდა საიტზე ან მესენჯერში — გადახდის ბმული სალაროს გარეშე",t6:"ონლაინ სერვისები",d6:"გამოწერები, კურსები, ციფრული სერვისები — გადახდა ერთი დაწკაპუნებით"},
+      benefits:{eyebrow:"უპირატესობები",h2:"ყველაფერი, რომ აღარ დაკარგოთ გადახდა რუსეთის მომხმარებლებისგან",t1:"მრავალვალუტიანი გადახდები",d1:"მიიღეთ თანხა ლარში, დოლარში, ევროში ან USDT-ში — თქვენი არჩევანით.",t2:"გადახდა იმავე დღეს",d2:"ანგარიშსწორება დაგვიანების გარეშე — თანხა ირიცხება იმავე დღეს, როცა მომხმარებელი იხდის.",t3:"აპარატურის გარეშე",d3:"QR ახალი ტერმინალის ნაცვლად. განაცხადი — მოკლე კითხვარია, არაფერი ზედმეტი.",t4:"ქეშბექი ბრუნვიდან",d4:"ერთადერთი შეთავაზება ბაზარზე, სადაც თქვენ შემოსავალს იღებთ გადახდების მიღებაზეც.",t5:"სერტიფიცირებული დაცვა",d5:"გადახდების ინფრასტრუქტურა სერტიფიცირებულია PCI DSS Level 1 სტანდარტით.",t6:"მხარდაჭერა კავშირზეა",d6:"ვპასუხობთ კითხვებს დაკავშირებისა და მიმდინარე ოპერაციების შესახებ გრძელი რიგების გარეშე."},
+      tech:{eyebrow:"ტექნიკური შესაძლებლობები",h2:"მოქნილი ინტეგრაცია თქვენი ბიზნესის ფორმატისთვის",p:"მარტივი QR-დან სალაროზე სრულ ინტეგრაციამდე თქვენს საიტში ან აპლიკაციაში.",t1:"SDK და API",d1:"გადახდების მიღების სწრაფი ინტეგრაცია ნებისმიერ ციფრულ პროდუქტში.",t2:"Telegram ბოტი",d2:"შექმენით გადახდის QR პირდაპირ მესენჯერიდან, პირადი კაბინეტის გარეშე.",t3:"გადახდის ბმულები",d3:"გაუგზავნეთ ბმული მომხმარებელს — გადახდა სალაროსა და ტერმინალის გარეშე.",t4:"AFT ტრანზაქციები",d4:"მოქნილი პარამეტრები გადახდისთვის საბანკო რეკვიზიტებზე.",t5:"Smart-კასკადირება",d5:"ხელმისაწვდომი ბანკის ავტომატური არჩევა — გადახდა პირველივე ცდაზე გადის.",t6:"მზა «გასაღები» პროგრამა",d6:"მზა გადაწყვეტილება თქვენი ბიზნესის ამოცანებისთვის, ნულიდან განვითარების გარეშე."},
+      cashback:{eyebrow:"რაც სხვას არ აქვს",h2:"მცირე ბიზნესს — მაღალი ქეშბექი, დიდ ქსელებს — დაბალი საკომისიო",p:"საკომისიოს იხდის მომხმარებელი — თქვენ ვერაფერს კარგავთ თქვენი შემოსავლიდან. მცირე ბიზნესები იღებენ უფრო მაღალ ქეშბექის პროცენტს, რომ ბონუსი შესამჩნევი იყოს მცირე ბრუნვაზეც. დიდ ბიზნესსა და ქსელებს უკვე დიდი ბრუნვა აქვთ, ამიტომ საკომისიო დაბალია, ხოლო ქეშბექის პროცენტი უფრო მოკრძალებული — თუმცა საერთო ჯამში მაინც საგრძნობი რჩება.",figBig:"0.5%-მდე",figCap:"ქეშბექი მცირე და ლოკალური ბიზნესისთვის",th1:"თვიური ბრუნვა",th2:"სერვისის საკომისიო",th3:"თქვენი ქეშბექი",note:"ზუსტი პროცენტი განისაზღვრება ხელშეკრულებაში და დამოკიდებულია ბრუნვასა და საშუალო ჩეკზე. ქეშბექი ირიცხება რიგით გადახდასთან ერთად."},
+      trust:{caption:"იმ გადახდის ინფრასტრუქტურის მაჩვენებლები, რომელზეც ვმუშაობთ",stat1:"ტრანზაქცია",stat1suffix:" მლნ+",stat2:"წარმატებული გადახდა",stat3:"პარტნიორი 5 ქვეყანაში",stat4:"SLA საიმედოობა",stat4num:"99.98%",item2:"გადახდა იმავე დღეს",item3:"მხარდაჭერა 24/7",item4:"ჩაშენებული CRM და ანალიტიკა"},
+      apply:{eyebrow:"დაწყება",h2:"დააკავშირეთ QR-გადახდები და მიიღეთ ქეშბექი",p:"შეავსეთ ფორმა — დაგიკავშირდებით 15 წუთში და გამოვთვლით პირობებს თქვენი ბრუნვისთვის. ან მოგვწერეთ პირდაპირ.",tg:"მოგვწერეთ Telegram-ში",call:"დარეკვა: +995 555 180 449",name:"სახელი",namePh:"როგორ მოგმართოთ",contact:"ტელეფონი / Telegram",contactPh:"+995 5xx xx xx xx ან @username",city:"ქალაქი",cityPh:"ბათუმი, თბილისი…",business:"ბიზნესის სახელი",businessPh:"როგორ ჰქვია თქვენს ობიექტს",type:"ბიზნესის ტიპი",typeOpt0:"აირჩიეთ ვარიანტი",typeOpt1:"სუპერმარკეტი / მაღაზიების ქსელი",typeOpt2:"კაფე, რესტორანი, ბარი",typeOpt3:"საცალო მაღაზია",typeOpt4:"მომსახურება (სალონი, სპა, გაქირავება)",typeOpt5:"სხვა",consent:"ფორმის გაგზავნით თქვენ eთანხმებით პერსონალურ მონაცემთა დამუშავებას.",submit:"განაცხადის გაგზავნა",successH:"განაცხადი გაგზავნილია",successP:"მალე დაგიკავშირდებით დაკავშირების პირობების განსახილველად.",error:"განაცხადის გაგზავნა ვერ მოხერხდა. სცადეთ პირდაპირ მოწერა Telegram-ში."},
+      footer:{note:"MOST არის QR-გადახდების მიღების დაკავშირების პარტნიორი ბიზნესისთვის საქართველოსა და მთელს მსოფლიოში. გადახდები მუშავდება სერტიფიცირებულ საერთაშორისო გადახდის ინფრასტრუქტურაზე.",link1:"როგორ მუშაობს",link2:"განაცხადი"}
+    }
+  };
+
+  let currentLang = 'ru';
+
+  function setPath(obj, path, value){
+    const parts = path.split('.');
+    let cur = obj;
+    for(let i=0;i<parts.length-1;i++){
+      cur[parts[i]] = cur[parts[i]] || {};
+      cur = cur[parts[i]];
+    }
+    cur[parts[parts.length-1]] = value;
+  }
+
+  // Capture the original Russian copy straight from the DOM, so switching
+  // back to RU never needs a reload and always matches the live markup.
+  function buildRuFromDOM(){
+    const ru = {};
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      setPath(ru, el.dataset.i18n, el.textContent.trim());
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el=>{
+      setPath(ru, el.dataset.i18nHtml, el.innerHTML.trim());
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+      setPath(ru, el.dataset.i18nPlaceholder, el.getAttribute('placeholder'));
+    });
+    translations.ru = ru;
+  }
+
+  function t(lang, key){
+    return key.split('.').reduce((o,k)=> (o && o[k] !== undefined) ? o[k] : undefined, translations[lang]);
+  }
+
+  function applyLang(lang){
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const val = t(lang, el.dataset.i18n);
+      if(val !== undefined) el.textContent = val;
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el=>{
+      const val = t(lang, el.dataset.i18nHtml);
+      if(val !== undefined) el.innerHTML = val;
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+      const val = t(lang, el.dataset.i18nPlaceholder);
+      if(val !== undefined) el.setAttribute('placeholder', val);
+    });
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b=> b.classList.toggle('active', b.dataset.lang===lang));
+    currentLang = lang;
+  }
+
+  buildRuFromDOM();
+  document.querySelector('.lang-btn[data-lang="ru"]').classList.add('active');
+</script>
+
+</body>
+</html>
