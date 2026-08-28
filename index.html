@@ -24,6 +24,7 @@
 
   *{ box-sizing: border-box; margin:0; padding:0; }
   html{ scroll-behavior: smooth; }
+  section{ scroll-margin-top: var(--sticky-h, 170px); }
   body{
     background: var(--bg);
     color: var(--text);
@@ -53,6 +54,7 @@
     border: 1.5px solid transparent; cursor:pointer;
     transition: transform .18s ease, opacity .15s ease, background .35s ease, box-shadow .35s ease, border-color .3s ease, color .3s ease;
     font-family:'Golos Text', sans-serif;
+    appearance:none; -webkit-appearance:none; outline:none;
   }
   .btn:hover{ transform: translateY(-2px); }
   .btn-primary{
@@ -97,14 +99,16 @@
   .logo{ display:flex; align-items:center; gap:10px; font-family:'PT Serif', serif; font-size:22px; font-weight:700; letter-spacing: 0.02em; }
   .logo-mark{ width:30px; height:30px; flex-shrink:0; }
   .nav-links{ display:flex; gap:22px; font-size:13px; color: var(--text-dim); }
-  .nav-links a{ position:relative; padding-bottom:3px; }
-  .nav-links a::after{
+  .nav-links button{ position:relative; padding-bottom:3px; background:none; border:none; cursor:pointer; font-family:'Golos Text',sans-serif; font-size:13px; color:inherit; appearance:none; -webkit-appearance:none; }
+  .nav-links button::after{
     content:""; position:absolute; left:0; bottom:0; width:100%; height:2px;
     background: linear-gradient(90deg, var(--gold-bright), var(--teal-bright));
     transform: scaleX(0); transform-origin:left; transition: transform .25s ease;
   }
-  .nav-links a:hover{ color: var(--text); }
-  .nav-links a:hover::after{ transform: scaleX(1); }
+  .nav-links button:hover{ color: var(--text); }
+  .nav-links button:hover::after{ transform: scaleX(1); }
+  .nav-links button.active{ color: var(--gold-bright); }
+  .nav-links button.active::after{ transform: scaleX(1); }
   .nav-right{ display:flex; align-items:center; gap:14px; }
   @media (max-width: 860px){ .nav-links{ display:none; } }
   @media (max-width: 480px){
@@ -121,6 +125,35 @@
   .lang-btn.active{ background: linear-gradient(135deg, var(--gold-bright), var(--teal-bright)); color:#1A1206; }
   .lang-btn:not(.active):hover{ color: var(--text); }
 
+  /* SECTION TABS — switches which panel of content is visible, keeps the
+     page from being one long scroll. Always visible on every screen size;
+     horizontally scrollable so it never needs a separate mobile version. */
+  .section-tabs-wrap{
+    position: sticky; top: var(--nav-h, 72px); z-index: 45;
+    background: rgba(14,34,51,0.94); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .section-tabs{
+    display:flex; gap:10px; padding: 16px 0;
+    overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
+  }
+  .section-tabs::-webkit-scrollbar{ display:none; }
+  .tab-btn{
+    flex-shrink:0; padding:12px 26px; border-radius:999px;
+    border:1.5px solid var(--line); background:transparent; color:var(--text-dim);
+    font-family:'Golos Text',sans-serif; font-weight:600; font-size:14px;
+    cursor:pointer; white-space:nowrap; appearance:none; -webkit-appearance:none;
+    transition: background .25s ease, border-color .25s ease, color .25s ease;
+  }
+  .tab-btn:hover{ border-color: rgba(228,192,119,0.5); color: var(--text); }
+  .tab-btn.active{
+    background: linear-gradient(135deg, var(--gold-bright), var(--teal-bright));
+    color:#1A1206; border-color:transparent;
+  }
+  .tab-panel{ display:none; }
+  .tab-panel.active{ display:block; }
+  @media (max-width: 480px){ .tab-btn{ padding:10px 20px; font-size:13px; } }
+
   /* HERO */
   .hero{ padding: 72px 0 40px; overflow:hidden; }
   .hero-grid{ display:grid; grid-template-columns: 1.05fr 0.95fr; gap:56px; align-items:center; }
@@ -136,6 +169,14 @@
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .hero p{ color: var(--text-dim); font-size:18px; max-width: 520px; margin-bottom: 32px; }
+  .exchange-inline-link{
+    cursor:pointer; font-weight:700; white-space:nowrap;
+    background: linear-gradient(90deg, var(--gold-bright), var(--teal-bright));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    text-decoration: underline; text-decoration-color: rgba(228,192,119,0.4); text-underline-offset: 3px;
+    transition: text-decoration-color .25s ease;
+  }
+  .exchange-inline-link:hover{ text-decoration-color: rgba(110,207,192,0.9); }
   .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; }
 
   .bridge-box{ position:relative; }
@@ -301,6 +342,7 @@
 
   /* FORM */
   .apply{ padding: 84px 0; }
+
   .apply-grid{ display:grid; grid-template-columns: 0.9fr 1.1fr; gap:52px; }
   @media (max-width:900px){ .apply-grid{ grid-template-columns:1fr; } }
   .apply h2{ font-size: clamp(28px,3.6vw,38px); margin-bottom:16px; }
@@ -336,7 +378,8 @@
   .footer-row .logo{ font-size:18px; }
   .footer-note{ color: var(--text-dim); font-size:13px; max-width:560px; }
   .footer-links{ display:flex; gap:20px; font-size:13.5px; color: var(--text-dim); }
-  .footer-links a:hover{ color: var(--text); }
+  .footer-links button{ background:none; border:none; cursor:pointer; font-family:'Golos Text',sans-serif; font-size:13.5px; color:inherit; appearance:none; -webkit-appearance:none; }
+  .footer-links button:hover, .footer-links a:hover{ color: var(--text); }
 
   ::selection{ background: var(--gold); color:#1A1206; }
 
@@ -368,6 +411,17 @@
   .cashback{ overflow:hidden; }
   .cashback .ambient-glow{ width:460px; height:460px; bottom:-200px; left:-140px; background: var(--teal); opacity:0.22; }
   .hero > .wrap, .cashback > .wrap{ position:relative; z-index:1; }
+
+  .exchange{ padding: 20px 0 84px; }
+  .exchange-box{
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 48px 52px; background: rgba(243,239,228,0.02);
+    text-align: center; max-width: 720px; margin: 0 auto;
+    scroll-margin-top: var(--sticky-h, 170px);
+  }
+  .exchange-box .eyebrow{ justify-content:center; }
+  .exchange-box h2{ font-size: clamp(24px,3vw,32px); margin-bottom: 14px; }
+  .exchange-box p{ color: var(--text-dim); font-size: 16px; line-height:1.5; margin-bottom: 26px; }
 </style>
 </head>
 <body>
@@ -397,11 +451,11 @@
       <span class="gradient-text">MOST</span>
     </div>
     <div class="nav-links">
-      <a href="#how" data-i18n="nav.how">Как работает</a>
-      <a href="#types" data-i18n="nav.types">Кому подходит</a>
-      <a href="#benefits" data-i18n="nav.benefits">Преимущества</a>
-      <a href="#cashback" data-i18n="nav.cashback">Кэшбек</a>
-      <a href="#apply" data-i18n="nav.apply">Заявка</a>
+      <button class="nav-tab-btn" data-tab="how" data-i18n="nav.how">Как работает</button>
+      <button class="nav-tab-btn" data-tab="benefits" data-i18n="nav.benefits">Преимущества</button>
+      <button class="nav-tab-btn" data-tab="cashback" data-i18n="nav.cashback">Кэшбек</button>
+      <button class="nav-tab-btn" data-tab="apply" data-i18n="nav.apply">Заявка</button>
+      <button class="nav-tab-btn" data-tab="exchange" data-i18n="nav.exchange">Обмен</button>
     </div>
     <div class="nav-right">
       <div class="lang-switch">
@@ -409,7 +463,7 @@
         <button class="lang-btn" data-lang="en" onclick="applyLang('en')">EN</button>
         <button class="lang-btn" data-lang="ka" onclick="applyLang('ka')">GE</button>
       </div>
-      <a href="#apply" class="btn btn-primary" data-i18n="nav.cta">Подключить бизнес</a>
+      <button class="btn btn-primary nav-tab-btn" data-tab="apply" data-i18n="nav.cta">Подключить бизнес</button>
     </div>
   </div>
 </nav>
@@ -420,10 +474,10 @@
     <div>
       <div class="eyebrow" data-i18n="hero.eyebrow">приём оплат для бизнеса: Грузия и весь мир</div>
       <h1 data-i18n-html="hero.h1">Постройте <em>моsт</em> между рублём и вашей выручкой</h1>
-      <p data-i18n="hero.p">Клиент сканирует QR и платит рублём с любой карты РФ. Деньги приходят вам на следующий день — в лари, долларах, евро или USDT. А сверху — кэшбек с каждой оплаты, которую вы принимаете.</p>
+      <p data-i18n-html="hero.p">Клиент сканирует QR и платит рублём с любой карты РФ. Деньги приходят вам на следующий день — в лари, долларах, евро или USDT. А сверху — кэшбек с каждой оплаты, которую вы принимаете. Также предоставляем <span class="exchange-inline-link" data-tab="exchange">обмен рублей на USDT</span>.</p>
       <div class="hero-ctas">
-        <a href="#apply" class="btn btn-primary" data-i18n="hero.cta1">Оставить заявку</a>
-        <a href="#how" class="btn btn-ghost" data-i18n="hero.cta2">Как это работает</a>
+        <button class="btn btn-primary tab-jump" data-tab="apply" data-i18n="hero.cta1">Оставить заявку</button>
+        <button class="btn btn-ghost tab-jump" data-tab="how" data-i18n="hero.cta2">Как это работает</button>
       </div>
     </div>
     <div class="bridge-box">
@@ -463,6 +517,19 @@
   </div>
 </section>
 
+<div class="section-tabs-wrap">
+  <div class="wrap">
+    <div class="section-tabs">
+      <button class="tab-btn" data-tab="how" data-i18n="nav.how">Как работает</button>
+      <button class="tab-btn" data-tab="benefits" data-i18n="nav.benefits">Преимущества</button>
+      <button class="tab-btn" data-tab="cashback" data-i18n="nav.cashback">Кэшбек</button>
+      <button class="tab-btn" data-tab="apply" data-i18n="nav.apply">Заявка</button>
+      <button class="tab-btn tab-btn--jump" data-tab="exchange" data-i18n="nav.exchange">Обмен</button>
+    </div>
+  </div>
+</div>
+
+<div class="tab-panel" data-tab-panel="how">
 <section class="showcase">
   <div class="wrap showcase-grid">
     <div>
@@ -589,7 +656,9 @@
     </div>
   </div>
 </section>
+</div>
 
+<div class="tab-panel" data-tab-panel="benefits">
 <section class="types" id="types">
   <div class="wrap">
     <div class="section-head">
@@ -714,7 +783,9 @@
     </div>
   </div>
 </section>
+</div>
 
+<div class="tab-panel" data-tab-panel="cashback">
 <section class="cashback" id="cashback">
   <div class="ambient-glow"></div>
   <div class="wrap">
@@ -765,7 +836,9 @@
     </div>
   </div>
 </section>
+</div>
 
+<div class="tab-panel" data-tab-panel="apply">
 <section class="apply" id="apply">
   <div class="wrap apply-grid">
     <div>
@@ -819,6 +892,18 @@
     </div>
   </div>
 </section>
+</div>
+
+<section class="exchange">
+  <div class="wrap">
+    <div class="exchange-box">
+      <div class="eyebrow" data-i18n="exchange.eyebrow">лицензированный обмен валюты</div>
+      <h2 data-i18n="exchange.h2">Обмен рублей на USDT</h2>
+      <p data-i18n="exchange.p">Принимаем оплату в рублях по QR — выдаём USDT. Работаем как лицензированный обменный пункт — лицензия Национального банка Грузии. Каждый обмен проходит с верификацией личности клиента.</p>
+      <a href="https://t.me/most_ge" class="btn btn-ghost" data-i18n="exchange.cta">Написать в Telegram</a>
+    </div>
+  </div>
+</section>
 
 <footer>
   <div class="wrap footer-row">
@@ -831,13 +916,57 @@
     </div>
     <p class="footer-note" data-i18n="footer.note">MOST — партнёр по подключению приёма QR-платежей для бизнеса в Грузии и по всему миру. Приём и обработка платежей осуществляются на базе сертифицированной международной платёжной инфраструктуры.</p>
     <div class="footer-links">
-      <a href="#how" data-i18n="footer.link1">Как работает</a>
-      <a href="#apply" data-i18n="footer.link2">Заявка</a>
+      <button class="tab-jump" data-tab="how" data-i18n="footer.link1">Как работает</button>
+      <button class="tab-jump" data-tab="apply" data-i18n="footer.link2">Заявка</button>
     </div>
   </div>
 </footer>
 
 <script>
+  /* ---------- Section tabs: switches visible content, keeps nav height in sync ---------- */
+  (function(){
+    const tabBtns = document.querySelectorAll('.tab-btn, .nav-tab-btn, .tab-jump, .exchange-inline-link');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    function activateTab(tabName){
+      tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === tabName));
+      panels.forEach(p => p.classList.toggle('active', p.dataset.tabPanel === tabName));
+    }
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabName = btn.dataset.tab;
+        if(tabName === 'exchange'){
+          // "Обмен" isn't a real show/hide panel — it stays permanently
+          // visible at the bottom of the page regardless of which of the
+          // 4 real tabs is active, so this button just scrolls to it.
+          const exchangeSection = document.querySelector('.exchange');
+          if(exchangeSection) exchangeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return;
+        }
+        activateTab(tabName);
+        const tabsWrap = document.querySelector('.section-tabs-wrap');
+        if(tabsWrap) tabsWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    activateTab('how'); // default tab shown on page load
+
+    // Keep the sticky tab bar positioned right below the nav, whatever its
+    // actual height is at any screen size or language (nav can wrap to two
+    // lines on narrow screens with long translated button text). Also track
+    // the combined nav+tabs height so scrolled-to sections never end up
+    // with their heading hidden underneath the two sticky bars.
+    function updateNavHeight(){
+      const nav = document.querySelector('nav');
+      const tabsWrap = document.querySelector('.section-tabs-wrap');
+      if(nav) document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
+      if(nav && tabsWrap) document.documentElement.style.setProperty('--sticky-h', (nav.offsetHeight + tabsWrap.offsetHeight) + 'px');
+    }
+    updateNavHeight();
+    window.addEventListener('resize', updateNavHeight);
+  })();
+
   /* ---------- Bridge illustration ---------- */
   (function(){
     const svgNS = "http://www.w3.org/2000/svg";
@@ -1133,8 +1262,8 @@
   /* ---------- i18n ---------- */
   const translations = {
     en: {
-      nav:{how:"How it works",types:"Who it's for",benefits:"Benefits",cashback:"Cashback",apply:"Apply",cta:"Connect your business"},
-      hero:{eyebrow:"payment acceptance for business — Georgia and worldwide",h1:"Build a <em>bridge</em> between ruble payments and your revenue",p:"Your customer scans a QR code and pays in rubles with any Russian bank card. Money lands in your account the next day — in GEL, USD, EUR, or USDT. Plus cashback on every payment you accept.",cta1:"Submit application",cta2:"How it works"},
+      nav:{how:"How it works",types:"Who it's for",benefits:"Benefits",cashback:"Cashback",apply:"Apply",cta:"Connect your business",exchange:"Exchange"},
+      hero:{eyebrow:"payment acceptance for business — Georgia and worldwide",h1:"Build a <em>bridge</em> between ruble payments and your revenue",p:"Your customer scans a QR code and pays in rubles with any Russian bank card. Money lands in your account the next day — in GEL, USD, EUR, or USDT. Plus cashback on every payment you accept. We also offer <span class=\"exchange-inline-link\" data-tab=\"exchange\">RUB to USDT exchange</span>.",cta1:"Submit application",cta2:"How it works"},
       bridge:{left:"customer",right:"your account"},
       showcase:{eyebrow:"what it looks like",h2:"Payment in two taps — from the customer's side",p:"No new terminal at the till. The customer just takes out their phone.",f1:"The cashier shows a QR code on screen or on the receipt",f2:"The customer scans it with the camera in their banking app — it's a standard SBP QR code",f3:"Payment confirmed — the money is already on its way to your account",counterLabel:"till",amount:"1,038 ₽",amountLabel:"amount due",sbpBadge:"SBP",sbpNote:"The QR follows the <b>SBP</b> (Faster Payments System) standard — recognized by any Russian banking app",clientPays:"customer pays",youReceive:"you receive"},
       problem:{eyebrow:"why this matters",h2:"Your customers are already here. Their money isn't.",li1:"Mir cards don't work outside Russia — the customer simply can't pay at the till",li2:"They go looking for a currency exchange or withdraw cash at a poor rate — some just walk away without buying",li3:"Every failed payment is revenue that never reached your register",li4:"QR acceptance solves this in two taps, with no new hardware and no change to your process"},
@@ -1145,11 +1274,12 @@
       cashback:{eyebrow:"something others don't offer",h2:"Higher cashback for small businesses, lower fees for large chains",p:"The customer pays the fee — you don't lose anything from your revenue. Smaller businesses get a higher cashback percentage so the bonus is meaningful even on modest turnover. Large businesses and chains already have volume on their side, so the fee is lower and the cashback percentage is more modest — but it still adds up to a solid amount.",figBig:"up to 0.5%",figCap:"cashback for small and local businesses",th1:"Monthly turnover",th2:"Service fee",th3:"Your cashback",note:"The exact percentage is fixed in the contract and depends on turnover and average ticket size. Cashback is credited together with your regular payout."},
       trust:{caption:"Numbers from the payment infrastructure we run on",stat1:"transactions",stat1suffix:"M+",stat2:"successful payments",stat3:"partners in 5 countries",stat4:"SLA reliability",stat4num:"99.98%",item2:"Same-day payout",item3:"24/7 support",item4:"Built-in CRM & analytics"},
       apply:{eyebrow:"get started",h2:"Connect QR payments and start earning cashback",p:"Fill in the form — we'll get in touch within 15 minutes and work out terms for your turnover. Or reach out directly.",tg:"Message us on Telegram",call:"Call: +995 555 180 449",name:"Name",namePh:"How should we address you",contact:"Phone / Telegram",contactPh:"+995 5xx xx xx xx or @username",city:"City",cityPh:"Batumi, Tbilisi…",business:"Business name",businessPh:"What's your business called",type:"Business type",typeOpt0:"Select an option",typeOpt1:"Supermarket / retail chain",typeOpt2:"Café, restaurant, bar",typeOpt3:"Retail store",typeOpt4:"Services (salon, spa, rental)",typeOpt5:"Other",consent:"By submitting this form you agree to the processing of your personal data.",submit:"Submit application",successH:"Application sent",successP:"We'll be in touch shortly to discuss your connection terms.",error:"Couldn't send the application. Try messaging us on Telegram directly."},
+      exchange:{eyebrow:"licensed currency exchange",h2:"RUB to USDT exchange",p:"We accept payment in rubles by QR — and pay out USDT. We operate as a licensed currency exchange point, licensed by the National Bank of Georgia. Every exchange is carried out with client identity verification.",cta:"Message us on Telegram"},
       footer:{note:"MOST is a connection partner for QR payment acceptance for businesses in Georgia and worldwide. Payments are processed on certified international payment infrastructure.",link1:"How it works",link2:"Apply"}
     },
     ka: {
-      nav:{how:"როგორ მუშაობს",types:"ვისთვისაა",benefits:"უპირატესობები",cashback:"ქეშბექი",apply:"განაცხადი",cta:"დაუკავშირეთ ბიზნესი"},
-      hero:{eyebrow:"გადახდების მიღება ბიზნესისთვის — საქართველო და მთელი მსოფლიო",h1:"ააშენეთ <em>ხიდი</em> რუბლში გადახდასა და თქვენს შემოსავალს შორის",p:"თქვენი მომხმარებელი სკანირებს QR კოდს და იხდის რუბლში ნებისმიერი რუსული ბანკის ბარათით. თანხა თქვენს ანგარიშზე ირიცხება მეორე დღესვე — ლარში, დოლარში, ევროში ან USDT-ში. დამატებით იღებთ ქეშბექს ყოველ გადახდაზე.",cta1:"განაცხადის გაგზავნა",cta2:"როგორ მუშაობს"},
+      nav:{how:"როგორ მუშაობს",types:"ვისთვისაა",benefits:"უპირატესობები",cashback:"ქეშბექი",apply:"განაცხადი",cta:"დაუკავშირეთ ბიზნესი",exchange:"გაცვლა"},
+      hero:{eyebrow:"გადახდების მიღება ბიზნესისთვის — საქართველო და მთელი მსოფლიო",h1:"ააშენეთ <em>ხიდი</em> რუბლში გადახდასა და თქვენს შემოსავალს შორის",p:"თქვენი მომხმარებელი სკანირებს QR კოდს და იხდის რუბლში ნებისმიერი რუსული ბანკის ბარათით. თანხა თქვენს ანგარიშზე ირიცხება მეორე დღესვე — ლარში, დოლარში, ევროში ან USDT-ში. დამატებით იღებთ ქეშბექს ყოველ გადახდაზე. ასევე გთავაზობთ <span class=\"exchange-inline-link\" data-tab=\"exchange\">რუბლის გაცვლას USDT-ზე</span>.",cta1:"განაცხადის გაგზავნა",cta2:"როგორ მუშაობს"},
       bridge:{left:"მომხმარებელი",right:"თქვენი ანგარიში"},
       showcase:{eyebrow:"როგორ გამოიყურება",h2:"გადახდა ორ შეხებაში — მომხმარებლის თვალით",p:"ახალი ტერმინალის გარეშე სალაროზე. მომხმარებელი უბრალოდ იღებს ტელეფონს.",f1:"მოლარე აჩვენებს QR კოდს ეკრანზე ან ჩეკზე",f2:"მომხმარებელი სკანირებს მას საბანკო აპლიკაციის კამერით — ეს არის სტანდარტული SBP QR კოდი",f3:"გადახდა დადასტურებულია — თანხა უკვე თქვენი ანგარიშისკენ მიემართება",counterLabel:"სალარო",amount:"1 038 ₽",amountLabel:"გადასახდელი",sbpBadge:"SBP",sbpNote:"QR აგებულია <b>SBP</b> (სწრაფი გადახდების სისტემის) სტანდარტით — მას აღიარებს ნებისმიერი რუსული საბანკო აპლიკაცია",clientPays:"მომხმარებელი იხდის",youReceive:"თქვენ იღებთ"},
       problem:{eyebrow:"რატომაა ეს მნიშვნელოვანი",h2:"თქვენი მომხმარებლები უკვე აქ არიან. ფული — არა.",li1:"ბარათი «მირ» რუსეთის ფარგლებს გარეთ არ მუშაობს — მომხმარებელს ფიზიკურად არ შეუძლია გადაიხადოს სალაროსთან",li2:"ის ეძებს გადამცვლელ პუნქტს ან იღებს ნაღდ ფულს არახელსაყრელი კურსით — ნაწილი უბრალოდ ტოვებს მაღაზიას შესყიდვის გარეშე",li3:"ყოველი ვერშედგარი გადახდა — თქვენს სალაროზე ვერმისული შემოსავალია",li4:"QR-გადახდა ამას წყვეტს ორ შეხებაში, ახალი აპარატურის ან პროცესის შეცვლის გარეშე"},
@@ -1160,6 +1290,7 @@
       cashback:{eyebrow:"რაც სხვას არ აქვს",h2:"მცირე ბიზნესს — მაღალი ქეშბექი, დიდ ქსელებს — დაბალი საკომისიო",p:"საკომისიოს იხდის მომხმარებელი — თქვენ ვერაფერს კარგავთ თქვენი შემოსავლიდან. მცირე ბიზნესები იღებენ უფრო მაღალ ქეშბექის პროცენტს, რომ ბონუსი შესამჩნევი იყოს მცირე ბრუნვაზეც. დიდ ბიზნესსა და ქსელებს უკვე დიდი ბრუნვა აქვთ, ამიტომ საკომისიო დაბალია, ხოლო ქეშბექის პროცენტი უფრო მოკრძალებული — თუმცა საერთო ჯამში მაინც საგრძნობი რჩება.",figBig:"0.5%-მდე",figCap:"ქეშბექი მცირე და ლოკალური ბიზნესისთვის",th1:"თვიური ბრუნვა",th2:"სერვისის საკომისიო",th3:"თქვენი ქეშბექი",note:"ზუსტი პროცენტი განისაზღვრება ხელშეკრულებაში და დამოკიდებულია ბრუნვასა და საშუალო ჩეკზე. ქეშბექი ირიცხება რიგით გადახდასთან ერთად."},
       trust:{caption:"იმ გადახდის ინფრასტრუქტურის მაჩვენებლები, რომელზეც ვმუშაობთ",stat1:"ტრანზაქცია",stat1suffix:" მლნ+",stat2:"წარმატებული გადახდა",stat3:"პარტნიორი 5 ქვეყანაში",stat4:"SLA საიმედოობა",stat4num:"99.98%",item2:"გადახდა იმავე დღეს",item3:"მხარდაჭერა 24/7",item4:"ჩაშენებული CRM და ანალიტიკა"},
       apply:{eyebrow:"დაწყება",h2:"დააკავშირეთ QR-გადახდები და მიიღეთ ქეშბექი",p:"შეავსეთ ფორმა — დაგიკავშირდებით 15 წუთში და გამოვთვლით პირობებს თქვენი ბრუნვისთვის. ან მოგვწერეთ პირდაპირ.",tg:"მოგვწერეთ Telegram-ში",call:"დარეკვა: +995 555 180 449",name:"სახელი",namePh:"როგორ მოგმართოთ",contact:"ტელეფონი / Telegram",contactPh:"+995 5xx xx xx xx ან @username",city:"ქალაქი",cityPh:"ბათუმი, თბილისი…",business:"ბიზნესის სახელი",businessPh:"როგორ ჰქვია თქვენს ობიექტს",type:"ბიზნესის ტიპი",typeOpt0:"აირჩიეთ ვარიანტი",typeOpt1:"სუპერმარკეტი / მაღაზიების ქსელი",typeOpt2:"კაფე, რესტორანი, ბარი",typeOpt3:"საცალო მაღაზია",typeOpt4:"მომსახურება (სალონი, სპა, გაქირავება)",typeOpt5:"სხვა",consent:"ფორმის გაგზავნით თქვენ eთანხმებით პერსონალურ მონაცემთა დამუშავებას.",submit:"განაცხადის გაგზავნა",successH:"განაცხადი გაგზავნილია",successP:"მალე დაგიკავშირდებით დაკავშირების პირობების განსახილველად.",error:"განაცხადის გაგზავნა ვერ მოხერხდა. სცადეთ პირდაპირ მოწერა Telegram-ში."},
+      exchange:{eyebrow:"ლიცენზირებული სავალუტო გაცვლა",h2:"რუბლის გაცვლა USDT-ზე",p:"ვიღებთ გადახდას რუბლში QR-ით — და გავცემთ USDT-ს. ვმუშაობთ როგორც ლიცენზირებული სავალუტო გადაცვლის პუნქტი, საქართველოს ეროვნული ბანკის ლიცენზიით. ყოველი გაცვლა ხორციელდება კლიენტის ვინაობის დადასტურებით.",cta:"მოგვწერეთ Telegram-ში"},
       footer:{note:"MOST არის QR-გადახდების მიღების დაკავშირების პარტნიორი ბიზნესისთვის საქართველოსა და მთელს მსოფლიოში. გადახდები მუშავდება სერტიფიცირებულ საერთაშორისო გადახდის ინფრასტრუქტურაზე.",link1:"როგორ მუშაობს",link2:"განაცხადი"}
     }
   };
