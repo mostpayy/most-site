@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MOST — приём оплат рублём для бизнеса: Грузия и весь мир</title>
+<meta name="description" content="Приём QR-платежей рублём для бизнеса в Грузии и по всему миру: выплаты в лари, долларах, евро или USDT, кэшбек с оборота. Также лицензированный обмен рублей на USDT.">
+<meta name="theme-color" content="#0E2233">
+
+<!-- Open Graph: controls how the link looks when shared in Telegram / messengers -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="MOST">
+<meta property="og:title" content="MOST — приём оплат рублём для бизнеса">
+<meta property="og:description" content="QR-приём рублём: выплаты в лари, долларах, евро или USDT, кэшбек с оборота. Также лицензированный обмен рублей на USDT.">
+<meta name="twitter:card" content="summary">
+
+<!-- Inline SVG favicon: the MOST bridge mark, no extra file needed -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='30' height='30' fill='%230E2233'/%3E%3Cpath d='M4 22C4 22 9 13 15 13C21 13 26 22 26 22' stroke='%23E4C077' stroke-width='2.6' fill='none' stroke-linecap='round'/%3E%3Cline x1='4' y1='22' x2='26' y2='22' stroke='%2393A9BB' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
+
 <style>
   @import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=Golos+Text:wght@400;500;600;700;900&family=Noto+Sans:wght@700&display=swap');
 
@@ -24,7 +37,7 @@
 
   *{ box-sizing: border-box; margin:0; padding:0; }
   html{ scroll-behavior: smooth; }
-  section{ scroll-margin-top: var(--sticky-h, 170px); }
+  section, .tab-panel{ scroll-margin-top: var(--sticky-h, 170px); }
   body{
     background: var(--bg);
     color: var(--text);
@@ -302,6 +315,22 @@
   .cashback-figure .big{ font-family:'PT Serif', serif; font-weight:700; font-size: 52px; font-variant-numeric: tabular-nums; }
   .cashback-figure .cap{ color: var(--text-dim); font-size:14px; margin-top:6px; }
 
+  /* REFERRAL */
+  .referral{ padding: 84px 0; border-top:1px solid var(--line); }
+  .referral-grid{ display:grid; grid-template-columns: 1.1fr 0.9fr; gap:48px; align-items:center; }
+  @media (max-width: 900px){ .referral-grid{ grid-template-columns:1fr; } }
+  .referral h2{ font-size: clamp(26px,3.4vw,36px); margin-bottom:16px; }
+  .referral p{ color: var(--text-dim); font-size:16px; margin-bottom:26px; max-width:520px; }
+  .referral-figure{
+    background:
+      linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+      linear-gradient(135deg, var(--gold-bright), var(--teal-bright)) border-box;
+    border: 1.5px solid transparent;
+    border-radius: var(--radius); padding:32px; text-align:center;
+  }
+  .referral-figure .big{ font-family:'PT Serif', serif; font-weight:700; font-size:52px; font-variant-numeric: tabular-nums; }
+  .referral-figure .cap{ color: var(--text-dim); font-size:14px; margin-top:8px; }
+
   .table-wrap{ border:1px solid var(--line); border-radius: var(--radius); overflow:hidden; overflow-x:auto; }
   table{ width:100%; border-collapse: collapse; font-size:15px; min-width:480px; }
   @media (max-width: 520px){
@@ -420,8 +449,15 @@
     scroll-margin-top: var(--sticky-h, 170px);
   }
   .exchange-box .eyebrow{ justify-content:center; }
+  .exchange-icon{ width:52px; height:52px; margin:0 auto 18px; }
   .exchange-box h2{ font-size: clamp(24px,3vw,32px); margin-bottom: 14px; }
-  .exchange-box p{ color: var(--text-dim); font-size: 16px; line-height:1.5; margin-bottom: 26px; }
+  .exchange-box p{ color: var(--text-dim); font-size: 16px; line-height:1.5; margin-bottom: 20px; }
+  .exchange-license{
+    display:inline-flex; align-items:center; gap:10px; margin-bottom:26px;
+    padding:10px 20px; border-radius:999px; border:1px solid rgba(228,192,119,0.35);
+    background: rgba(228,192,119,0.07); color: var(--gold-bright); font-size:14px; font-weight:600;
+  }
+  .exchange-license svg{ width:18px; height:18px; flex-shrink:0; }
 </style>
 </head>
 <body>
@@ -452,10 +488,10 @@
     </div>
     <div class="nav-links">
       <button class="nav-tab-btn" data-tab="how" data-i18n="nav.how">Как работает</button>
+      <button class="nav-tab-btn" data-tab="exchange" data-i18n="nav.exchange">Обмен</button>
       <button class="nav-tab-btn" data-tab="benefits" data-i18n="nav.benefits">Преимущества</button>
       <button class="nav-tab-btn" data-tab="cashback" data-i18n="nav.cashback">Кэшбек</button>
       <button class="nav-tab-btn" data-tab="apply" data-i18n="nav.apply">Заявка</button>
-      <button class="nav-tab-btn" data-tab="exchange" data-i18n="nav.exchange">Обмен</button>
     </div>
     <div class="nav-right">
       <div class="lang-switch">
@@ -521,10 +557,10 @@
   <div class="wrap">
     <div class="section-tabs">
       <button class="tab-btn" data-tab="how" data-i18n="nav.how">Как работает</button>
+      <button class="tab-btn tab-btn--jump" data-tab="exchange" data-i18n="nav.exchange">Обмен</button>
       <button class="tab-btn" data-tab="benefits" data-i18n="nav.benefits">Преимущества</button>
       <button class="tab-btn" data-tab="cashback" data-i18n="nav.cashback">Кэшбек</button>
       <button class="tab-btn" data-tab="apply" data-i18n="nav.apply">Заявка</button>
-      <button class="tab-btn tab-btn--jump" data-tab="exchange" data-i18n="nav.exchange">Обмен</button>
     </div>
   </div>
 </div>
@@ -792,8 +828,8 @@
     <div class="cashback-top">
       <div>
         <div class="eyebrow" data-i18n="cashback.eyebrow">то, чего нет у других</div>
-        <h2 data-i18n="cashback.h2">Небольшим точкам — повышенный кэшбек, крупным сетям — низкая комиссия</h2>
-        <p data-i18n="cashback.p">Комиссию за оплату платит клиент — вы ничего не теряете с выручки. Небольшие точки получают более высокий процент кэшбека, чтобы бонус был ощутим даже на скромном обороте. У крупного бизнеса и сетей оборот сам по себе большой, поэтому комиссия ниже, а кэшбек в процентах скромнее — но в абсолютной сумме остаётся весомым.</p>
+        <h2 data-i18n="cashback.h2">Небольшим точкам — повышенный кэшбек</h2>
+        <p data-i18n="cashback.p">Комиссию за оплату платит клиент — вы ничего не теряете с выручки. Небольшие точки получают более высокий процент кэшбека, чтобы бонус был ощутим даже на скромном обороте. У крупного бизнеса и сетей процент скромнее, но за счёт объёма в абсолютной сумме он остаётся весомым.</p>
       </div>
       <div class="cashback-figure">
         <div class="big gradient-text" data-i18n="cashback.figBig">до 0.5%</div>
@@ -804,13 +840,13 @@
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th data-i18n="cashback.th1">Оборот в месяц</th><th data-i18n="cashback.th2">Комиссия сервиса</th><th data-i18n="cashback.th3">Ваш кэшбек</th></tr>
+          <tr><th data-i18n="cashback.th1">Оборот в месяц</th><th data-i18n="cashback.th3">Ваш кэшбек</th></tr>
         </thead>
         <tbody>
-          <tr><td>до 50 000 GEL</td><td>3.5%</td><td class="num">0.5%</td></tr>
-          <tr><td>50 000 – 150 000 GEL</td><td>2.8%</td><td class="num">0.3%</td></tr>
-          <tr><td>150 000 – 500 000 GEL</td><td>2.2%</td><td class="num">0.2%</td></tr>
-          <tr><td>от 500 000 GEL</td><td>2.0%</td><td class="num">0.1%</td></tr>
+          <tr><td>до 50 000 GEL</td><td class="num">0.5%</td></tr>
+          <tr><td>50 000 – 150 000 GEL</td><td class="num">0.3%</td></tr>
+          <tr><td>150 000 – 500 000 GEL</td><td class="num">0.2%</td></tr>
+          <tr><td>от 500 000 GEL</td><td class="num">0.1%</td></tr>
         </tbody>
       </table>
     </div>
@@ -836,6 +872,23 @@
     </div>
   </div>
 </section>
+
+<section class="referral">
+  <div class="wrap">
+    <div class="referral-grid">
+      <div>
+        <div class="eyebrow" data-i18n="referral.eyebrow">партнёрская программа</div>
+        <h2 data-i18n="referral.h2">Приводите бизнес — получайте вознаграждение</h2>
+        <p data-i18n="referral.p">Порекомендуйте нас бизнесу, который подключится к приёму QR-платежей — и получайте процент с его оборота, пока он работает с нами. Никаких ограничений по числу приведённых точек.</p>
+        <a href="https://t.me/most_payy" class="btn btn-ghost" data-i18n="referral.cta">Написать в Telegram</a>
+      </div>
+      <div class="referral-figure">
+        <div class="big gradient-text">0.1%</div>
+        <div class="cap" data-i18n="referral.figCap">с оборота приведённого бизнеса, ежемесячно</div>
+      </div>
+    </div>
+  </div>
+</section>
 </div>
 
 <div class="tab-panel" data-tab-panel="apply">
@@ -847,7 +900,6 @@
       <p data-i18n="apply.p">Заполните форму — свяжемся в течение 15 минут и посчитаем условия под ваш оборот. Или напишите напрямую.</p>
       <div class="direct-contacts">
         <a href="https://t.me/most_payy" class="btn btn-ghost" data-i18n="apply.tg">Написать в Telegram</a>
-        <a href="tel:+995555180449" class="btn btn-ghost" data-i18n="apply.call">Позвонить: +995 555 180 449</a>
       </div>
     </div>
 
@@ -897,9 +949,19 @@
 <section class="exchange">
   <div class="wrap">
     <div class="exchange-box">
+      <svg class="exchange-icon" viewBox="0 0 24 24" fill="none" stroke="url(#logoGrad)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7 3L3 7l4 4"/>
+        <path d="M3 7h13a4 4 0 0 1 4 4v1"/>
+        <path d="M17 21l4-4-4-4"/>
+        <path d="M21 17H8a4 4 0 0 1-4-4v-1"/>
+      </svg>
       <div class="eyebrow" data-i18n="exchange.eyebrow">лицензированный обмен валюты</div>
       <h2 data-i18n="exchange.h2">Обмен рублей на USDT</h2>
-      <p data-i18n="exchange.p">Принимаем оплату в рублях по QR — выдаём USDT. Работаем как лицензированный обменный пункт — лицензия Национального банка Грузии. Каждый обмен проходит с верификацией личности клиента.</p>
+      <p data-i18n="exchange.p">Принимаем оплату в рублях по QR — выдаём USDT. Каждый обмен проходит с верификацией личности клиента в соответствии с требованиями Национального банка Грузии.</p>
+      <div class="exchange-license">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6z"/></svg>
+        <span data-i18n="exchange.license">Лицензия Национального банка Грузии</span>
+      </div>
       <a href="https://t.me/most_exxchange_bot" class="btn btn-ghost" data-i18n="exchange.cta">Написать в бота</a>
     </div>
   </div>
@@ -940,13 +1002,16 @@
           // "Обмен" isn't a real show/hide panel — it stays permanently
           // visible at the bottom of the page regardless of which of the
           // 4 real tabs is active, so this button just scrolls to it.
+          // It still gets the same active-highlight feedback as any other
+          // tab button, for consistent visual behaviour.
+          tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === 'exchange'));
           const exchangeSection = document.querySelector('.exchange');
           if(exchangeSection) exchangeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
           return;
         }
         activateTab(tabName);
-        const tabsWrap = document.querySelector('.section-tabs-wrap');
-        if(tabsWrap) tabsWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const activePanel = document.querySelector(`.tab-panel[data-tab-panel="${tabName}"]`);
+        if(activePanel) activePanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
 
@@ -1262,7 +1327,7 @@
   /* ---------- i18n ---------- */
   const translations = {
     en: {
-      nav:{how:"How it works",types:"Who it's for",benefits:"Benefits",cashback:"Cashback",apply:"Apply",cta:"Connect your business",exchange:"Exchange"},
+      nav:{how:"How it works",benefits:"Benefits",cashback:"Cashback",apply:"Apply",cta:"Connect your business",exchange:"Exchange"},
       hero:{eyebrow:"payment acceptance for business — Georgia and worldwide",h1:"Build a <em>bridge</em> between ruble payments and your revenue",p:"Your customer scans a QR code and pays in rubles with any Russian bank card. Money lands in your account the next day — in GEL, USD, EUR, or USDT. Plus cashback on every payment you accept. We also offer <span class=\"exchange-inline-link\" data-tab=\"exchange\">RUB to USDT exchange</span>.",cta1:"Submit application",cta2:"How it works"},
       bridge:{left:"customer",right:"your account"},
       showcase:{eyebrow:"what it looks like",h2:"Payment in two taps — from the customer's side",p:"No new terminal at the till. The customer just takes out their phone.",f1:"The cashier shows a QR code on screen or on the receipt",f2:"The customer scans it with the camera in their banking app — it's a standard SBP QR code",f3:"Payment confirmed — the money is already on its way to your account",counterLabel:"till",amount:"1,038 ₽",amountLabel:"amount due",sbpBadge:"SBP",sbpNote:"The QR follows the <b>SBP</b> (Faster Payments System) standard — recognized by any Russian banking app",clientPays:"customer pays",youReceive:"you receive"},
@@ -1271,14 +1336,15 @@
       types:{eyebrow:"who it's for",h2:"From a single till to a whole chain — the solution scales with your business",p:"We work with companies, entrepreneurs and sole proprietors in Georgia and worldwide — in any field that takes payment from customers.",t1:"Retail & chains",d1:"Supermarkets, corner shops, retail chains — from one till to dozens",t2:"HoReCa",d2:"Cafés, restaurants, bars — payment right at the table or the counter",t3:"Tourism & services",d3:"Hotels, tours, rentals — accept payment where the tourist decides",t4:"Real estate",d4:"Rental and sales — large tickets where even a small cashback percentage adds up",t5:"Online stores",d5:"Payment on your website or in messenger — a payment link, no till needed",t6:"Online services",d6:"Subscriptions, courses, digital services — one-click payment"},
       benefits:{eyebrow:"benefits",h2:"Everything you need to stop losing payments from customers in Russia",t1:"Multi-currency payouts",d1:"Get paid in GEL, USD, EUR, or USDT — your choice.",t2:"Same-day payout",d2:"No delays in settlement — funds land the same day the customer pays.",t3:"No new hardware",d3:"QR instead of a new terminal. The application is a short questionnaire, nothing more.",t4:"Cashback on turnover",d4:"The only offer on the market where you earn on accepting payments, on top of revenue.",t5:"Certified security",d5:"Payment infrastructure is certified to PCI DSS Level 1.",t6:"Support that responds",d6:"We answer questions on setup and day-to-day operations without long queues."},
       tech:{eyebrow:"technical capabilities",h2:"Flexible integration for any business format",p:"From a simple QR at the till to full integration into your website or app.",t1:"SDK & API",d1:"Fast integration of payment acceptance into any digital product.",t2:"Telegram bot",d2:"Generate a payment QR straight from the messenger — no dashboard needed.",t3:"Payment links",d3:"Send a link to the customer — payment without a till or terminal.",t4:"AFT transactions",d4:"Flexible payout configuration to bank details.",t5:"Smart cascading",d5:"Automatic routing to an available bank — the payment goes through the first time.",t6:"Turnkey software",d6:"A ready solution built for your business, no development from scratch."},
-      cashback:{eyebrow:"something others don't offer",h2:"Higher cashback for small businesses, lower fees for large chains",p:"The customer pays the fee — you don't lose anything from your revenue. Smaller businesses get a higher cashback percentage so the bonus is meaningful even on modest turnover. Large businesses and chains already have volume on their side, so the fee is lower and the cashback percentage is more modest — but it still adds up to a solid amount.",figBig:"up to 0.5%",figCap:"cashback for small and local businesses",th1:"Monthly turnover",th2:"Service fee",th3:"Your cashback",note:"The exact percentage is fixed in the contract and depends on turnover and average ticket size. Cashback is credited together with your regular payout."},
+      cashback:{eyebrow:"something others don't offer",h2:"Higher cashback for smaller businesses",p:"The customer pays the fee — you don't lose anything from your revenue. Smaller businesses get a higher cashback percentage so the bonus is meaningful even on modest turnover. For larger businesses and chains the percentage is more modest, but volume keeps the amount substantial.",figBig:"up to 0.5%",figCap:"cashback for small and local businesses",th1:"Monthly turnover",th3:"Your cashback",note:"The exact percentage is fixed in the contract and depends on turnover and average ticket size. Cashback is credited together with your regular payout."},
       trust:{caption:"Numbers from the payment infrastructure we run on",stat1:"transactions",stat1suffix:"M+",stat2:"successful payments",stat3:"partners in 5 countries",stat4:"SLA reliability",stat4num:"99.98%",item2:"Same-day payout",item3:"24/7 support",item4:"Built-in CRM & analytics"},
-      apply:{eyebrow:"get started",h2:"Connect QR payments and start earning cashback",p:"Fill in the form — we'll get in touch within 15 minutes and work out terms for your turnover. Or reach out directly.",tg:"Message us on Telegram",call:"Call: +995 555 180 449",name:"Name",namePh:"How should we address you",contact:"Phone / Telegram",contactPh:"+995 5xx xx xx xx or @username",city:"City",cityPh:"Batumi, Tbilisi…",business:"Business name",businessPh:"What's your business called",type:"Business type",typeOpt0:"Select an option",typeOpt1:"Supermarket / retail chain",typeOpt2:"Café, restaurant, bar",typeOpt3:"Retail store",typeOpt4:"Services (salon, spa, rental)",typeOpt5:"Other",consent:"By submitting this form you agree to the processing of your personal data.",submit:"Submit application",successH:"Application sent",successP:"We'll be in touch shortly to discuss your connection terms.",error:"Couldn't send the application. Try messaging us on Telegram directly."},
-      exchange:{eyebrow:"licensed currency exchange",h2:"RUB to USDT exchange",p:"We accept payment in rubles by QR — and pay out USDT. We operate as a licensed currency exchange point, licensed by the National Bank of Georgia. Every exchange is carried out with client identity verification.",cta:"Message the bot"},
+      apply:{eyebrow:"get started",h2:"Connect QR payments and start earning cashback",p:"Fill in the form — we'll get in touch within 15 minutes and work out terms for your turnover. Or reach out directly.",tg:"Message us on Telegram",name:"Name",namePh:"How should we address you",contact:"Phone / Telegram",contactPh:"+995 5xx xx xx xx or @username",city:"City",cityPh:"Batumi, Tbilisi…",business:"Business name",businessPh:"What's your business called",type:"Business type",typeOpt0:"Select an option",typeOpt1:"Supermarket / retail chain",typeOpt2:"Café, restaurant, bar",typeOpt3:"Retail store",typeOpt4:"Services (salon, spa, rental)",typeOpt5:"Other",consent:"By submitting this form you agree to the processing of your personal data.",submit:"Submit application",successH:"Application sent",successP:"We'll be in touch shortly to discuss your connection terms.",error:"Couldn't send the application. Try messaging us on Telegram directly."},
+      exchange:{eyebrow:"licensed currency exchange",h2:"RUB to USDT exchange",p:"We accept payment in rubles by QR — and pay out USDT. Every exchange is carried out with client identity verification, in line with National Bank of Georgia requirements.",license:"Licensed by the National Bank of Georgia",cta:"Message the bot"},
+      referral:{eyebrow:"partner program",h2:"Refer a business — earn a reward",p:"Recommend us to a business that signs up for QR payment acceptance — and earn a percentage of its turnover for as long as it stays with us. No limit on how many businesses you refer.",cta:"Message us on Telegram",figCap:"of the referred business's turnover, every month"},
       footer:{note:"MOST is a connection partner for QR payment acceptance for businesses in Georgia and worldwide. Payments are processed on certified international payment infrastructure.",link1:"How it works",link2:"Apply"}
     },
     ka: {
-      nav:{how:"როგორ მუშაობს",types:"ვისთვისაა",benefits:"უპირატესობები",cashback:"ქეშბექი",apply:"განაცხადი",cta:"დაუკავშირეთ ბიზნესი",exchange:"გაცვლა"},
+      nav:{how:"როგორ მუშაობს",benefits:"უპირატესობები",cashback:"ქეშბექი",apply:"განაცხადი",cta:"დაუკავშირეთ ბიზნესი",exchange:"გაცვლა"},
       hero:{eyebrow:"გადახდების მიღება ბიზნესისთვის — საქართველო და მთელი მსოფლიო",h1:"ააშენეთ <em>ხიდი</em> რუბლში გადახდასა და თქვენს შემოსავალს შორის",p:"თქვენი მომხმარებელი სკანირებს QR კოდს და იხდის რუბლში ნებისმიერი რუსული ბანკის ბარათით. თანხა თქვენს ანგარიშზე ირიცხება მეორე დღესვე — ლარში, დოლარში, ევროში ან USDT-ში. დამატებით იღებთ ქეშბექს ყოველ გადახდაზე. ასევე გთავაზობთ <span class=\"exchange-inline-link\" data-tab=\"exchange\">რუბლის გაცვლას USDT-ზე</span>.",cta1:"განაცხადის გაგზავნა",cta2:"როგორ მუშაობს"},
       bridge:{left:"მომხმარებელი",right:"თქვენი ანგარიში"},
       showcase:{eyebrow:"როგორ გამოიყურება",h2:"გადახდა ორ შეხებაში — მომხმარებლის თვალით",p:"ახალი ტერმინალის გარეშე სალაროზე. მომხმარებელი უბრალოდ იღებს ტელეფონს.",f1:"მოლარე აჩვენებს QR კოდს ეკრანზე ან ჩეკზე",f2:"მომხმარებელი სკანირებს მას საბანკო აპლიკაციის კამერით — ეს არის სტანდარტული SBP QR კოდი",f3:"გადახდა დადასტურებულია — თანხა უკვე თქვენი ანგარიშისკენ მიემართება",counterLabel:"სალარო",amount:"1 038 ₽",amountLabel:"გადასახდელი",sbpBadge:"SBP",sbpNote:"QR აგებულია <b>SBP</b> (სწრაფი გადახდების სისტემის) სტანდარტით — მას აღიარებს ნებისმიერი რუსული საბანკო აპლიკაცია",clientPays:"მომხმარებელი იხდის",youReceive:"თქვენ იღებთ"},
@@ -1287,10 +1353,11 @@
       types:{eyebrow:"ვისთვისაა",h2:"ერთი სალაროდან ქსელამდე — გადაწყვეტილება იზრდება ბიზნესთან ერთად",p:"ვმუშაობთ იურიდიულ პირებთან, მეწარმეებთან და თვითდასაქმებულებთან საქართველოსა და მთელს მსოფლიოში — ნებისმიერ სფეროში, სადაც არის მომხმარებლისგან გადახდა.",t1:"საცალო ვაჭრობა და ქსელები",d1:"სუპერმარკეტები, სამეზობლო მაღაზიები, საცალო ქსელები — ერთი სალაროდან ათობით სალაროსკენ",t2:"HoReCa",d2:"კაფეები, რესტორნები, ბარები — გადახდა პირდაპირ მაგიდასთან ან სალაროსთან",t3:"ტურიზმი და მომსახურება",d3:"სასტუმროები, ექსკურსიები, გაქირავება — გადახდის მიღება იქ, სადაც ტურისტი წყვეტს გადაწყვეტილებას",t4:"უძრავი ქონება",d4:"გაქირავება და გაყიდვა — დიდი თანხები, სადაც მცირე ქეშბექიც კი შესამჩნევია",t5:"ინტერნეტ მაღაზიები",d5:"გადახდა საიტზე ან მესენჯერში — გადახდის ბმული სალაროს გარეშე",t6:"ონლაინ სერვისები",d6:"გამოწერები, კურსები, ციფრული სერვისები — გადახდა ერთი დაწკაპუნებით"},
       benefits:{eyebrow:"უპირატესობები",h2:"ყველაფერი, რომ აღარ დაკარგოთ გადახდა რუსეთის მომხმარებლებისგან",t1:"მრავალვალუტიანი გადახდები",d1:"მიიღეთ თანხა ლარში, დოლარში, ევროში ან USDT-ში — თქვენი არჩევანით.",t2:"გადახდა იმავე დღეს",d2:"ანგარიშსწორება დაგვიანების გარეშე — თანხა ირიცხება იმავე დღეს, როცა მომხმარებელი იხდის.",t3:"აპარატურის გარეშე",d3:"QR ახალი ტერმინალის ნაცვლად. განაცხადი — მოკლე კითხვარია, არაფერი ზედმეტი.",t4:"ქეშბექი ბრუნვიდან",d4:"ერთადერთი შეთავაზება ბაზარზე, სადაც თქვენ შემოსავალს იღებთ გადახდების მიღებაზეც.",t5:"სერტიფიცირებული დაცვა",d5:"გადახდების ინფრასტრუქტურა სერტიფიცირებულია PCI DSS Level 1 სტანდარტით.",t6:"მხარდაჭერა კავშირზეა",d6:"ვპასუხობთ კითხვებს დაკავშირებისა და მიმდინარე ოპერაციების შესახებ გრძელი რიგების გარეშე."},
       tech:{eyebrow:"ტექნიკური შესაძლებლობები",h2:"მოქნილი ინტეგრაცია თქვენი ბიზნესის ფორმატისთვის",p:"მარტივი QR-დან სალაროზე სრულ ინტეგრაციამდე თქვენს საიტში ან აპლიკაციაში.",t1:"SDK და API",d1:"გადახდების მიღების სწრაფი ინტეგრაცია ნებისმიერ ციფრულ პროდუქტში.",t2:"Telegram ბოტი",d2:"შექმენით გადახდის QR პირდაპირ მესენჯერიდან, პირადი კაბინეტის გარეშე.",t3:"გადახდის ბმულები",d3:"გაუგზავნეთ ბმული მომხმარებელს — გადახდა სალაროსა და ტერმინალის გარეშე.",t4:"AFT ტრანზაქციები",d4:"მოქნილი პარამეტრები გადახდისთვის საბანკო რეკვიზიტებზე.",t5:"Smart-კასკადირება",d5:"ხელმისაწვდომი ბანკის ავტომატური არჩევა — გადახდა პირველივე ცდაზე გადის.",t6:"მზა «გასაღები» პროგრამა",d6:"მზა გადაწყვეტილება თქვენი ბიზნესის ამოცანებისთვის, ნულიდან განვითარების გარეშე."},
-      cashback:{eyebrow:"რაც სხვას არ აქვს",h2:"მცირე ბიზნესს — მაღალი ქეშბექი, დიდ ქსელებს — დაბალი საკომისიო",p:"საკომისიოს იხდის მომხმარებელი — თქვენ ვერაფერს კარგავთ თქვენი შემოსავლიდან. მცირე ბიზნესები იღებენ უფრო მაღალ ქეშბექის პროცენტს, რომ ბონუსი შესამჩნევი იყოს მცირე ბრუნვაზეც. დიდ ბიზნესსა და ქსელებს უკვე დიდი ბრუნვა აქვთ, ამიტომ საკომისიო დაბალია, ხოლო ქეშბექის პროცენტი უფრო მოკრძალებული — თუმცა საერთო ჯამში მაინც საგრძნობი რჩება.",figBig:"0.5%-მდე",figCap:"ქეშბექი მცირე და ლოკალური ბიზნესისთვის",th1:"თვიური ბრუნვა",th2:"სერვისის საკომისიო",th3:"თქვენი ქეშბექი",note:"ზუსტი პროცენტი განისაზღვრება ხელშეკრულებაში და დამოკიდებულია ბრუნვასა და საშუალო ჩეკზე. ქეშბექი ირიცხება რიგით გადახდასთან ერთად."},
+      cashback:{eyebrow:"რაც სხვას არ აქვს",h2:"მცირე ბიზნესს — მაღალი ქეშბექი",p:"საკომისიოს იხდის მომხმარებელი — თქვენ ვერაფერს კარგავთ თქვენი შემოსავლიდან. მცირე ბიზნესები იღებენ უფრო მაღალ ქეშბექის პროცენტს, რომ ბონუსი შესამჩნევი იყოს მცირე ბრუნვაზეც. დიდი ბიზნესისა და ქსელებისთვის პროცენტი უფრო მოკრძალებულია, თუმცა მოცულობის ხარჯზე თანხა მაინც საგრძნობი რჩება.",figBig:"0.5%-მდე",figCap:"ქეშბექი მცირე და ლოკალური ბიზნესისთვის",th1:"თვიური ბრუნვა",th3:"თქვენი ქეშბექი",note:"ზუსტი პროცენტი განისაზღვრება ხელშეკრულებაში და დამოკიდებულია ბრუნვასა და საშუალო ჩეკზე. ქეშბექი ირიცხება რიგით გადახდასთან ერთად."},
       trust:{caption:"იმ გადახდის ინფრასტრუქტურის მაჩვენებლები, რომელზეც ვმუშაობთ",stat1:"ტრანზაქცია",stat1suffix:" მლნ+",stat2:"წარმატებული გადახდა",stat3:"პარტნიორი 5 ქვეყანაში",stat4:"SLA საიმედოობა",stat4num:"99.98%",item2:"გადახდა იმავე დღეს",item3:"მხარდაჭერა 24/7",item4:"ჩაშენებული CRM და ანალიტიკა"},
-      apply:{eyebrow:"დაწყება",h2:"დააკავშირეთ QR-გადახდები და მიიღეთ ქეშბექი",p:"შეავსეთ ფორმა — დაგიკავშირდებით 15 წუთში და გამოვთვლით პირობებს თქვენი ბრუნვისთვის. ან მოგვწერეთ პირდაპირ.",tg:"მოგვწერეთ Telegram-ში",call:"დარეკვა: +995 555 180 449",name:"სახელი",namePh:"როგორ მოგმართოთ",contact:"ტელეფონი / Telegram",contactPh:"+995 5xx xx xx xx ან @username",city:"ქალაქი",cityPh:"ბათუმი, თბილისი…",business:"ბიზნესის სახელი",businessPh:"როგორ ჰქვია თქვენს ობიექტს",type:"ბიზნესის ტიპი",typeOpt0:"აირჩიეთ ვარიანტი",typeOpt1:"სუპერმარკეტი / მაღაზიების ქსელი",typeOpt2:"კაფე, რესტორანი, ბარი",typeOpt3:"საცალო მაღაზია",typeOpt4:"მომსახურება (სალონი, სპა, გაქირავება)",typeOpt5:"სხვა",consent:"ფორმის გაგზავნით თქვენ eთანხმებით პერსონალურ მონაცემთა დამუშავებას.",submit:"განაცხადის გაგზავნა",successH:"განაცხადი გაგზავნილია",successP:"მალე დაგიკავშირდებით დაკავშირების პირობების განსახილველად.",error:"განაცხადის გაგზავნა ვერ მოხერხდა. სცადეთ პირდაპირ მოწერა Telegram-ში."},
-      exchange:{eyebrow:"ლიცენზირებული სავალუტო გაცვლა",h2:"რუბლის გაცვლა USDT-ზე",p:"ვიღებთ გადახდას რუბლში QR-ით — და გავცემთ USDT-ს. ვმუშაობთ როგორც ლიცენზირებული სავალუტო გადაცვლის პუნქტი, საქართველოს ეროვნული ბანკის ლიცენზიით. ყოველი გაცვლა ხორციელდება კლიენტის ვინაობის დადასტურებით.",cta:"მოწერეთ ბოტს"},
+      apply:{eyebrow:"დაწყება",h2:"დააკავშირეთ QR-გადახდები და მიიღეთ ქეშბექი",p:"შეავსეთ ფორმა — დაგიკავშირდებით 15 წუთში და გამოვთვლით პირობებს თქვენი ბრუნვისთვის. ან მოგვწერეთ პირდაპირ.",tg:"მოგვწერეთ Telegram-ში",name:"სახელი",namePh:"როგორ მოგმართოთ",contact:"ტელეფონი / Telegram",contactPh:"+995 5xx xx xx xx ან @username",city:"ქალაქი",cityPh:"ბათუმი, თბილისი…",business:"ბიზნესის სახელი",businessPh:"როგორ ჰქვია თქვენს ობიექტს",type:"ბიზნესის ტიპი",typeOpt0:"აირჩიეთ ვარიანტი",typeOpt1:"სუპერმარკეტი / მაღაზიების ქსელი",typeOpt2:"კაფე, რესტორანი, ბარი",typeOpt3:"საცალო მაღაზია",typeOpt4:"მომსახურება (სალონი, სპა, გაქირავება)",typeOpt5:"სხვა",consent:"ფორმის გაგზავნით თქვენ eთანხმებით პერსონალურ მონაცემთა დამუშავებას.",submit:"განაცხადის გაგზავნა",successH:"განაცხადი გაგზავნილია",successP:"მალე დაგიკავშირდებით დაკავშირების პირობების განსახილველად.",error:"განაცხადის გაგზავნა ვერ მოხერხდა. სცადეთ პირდაპირ მოწერა Telegram-ში."},
+      exchange:{eyebrow:"ლიცენზირებული სავალუტო გაცვლა",h2:"რუბლის გაცვლა USDT-ზე",p:"ვიღებთ გადახდას რუბლში QR-ით — და გავცემთ USDT-ს. ყოველი გაცვლა ხორციელდება კლიენტის ვინაობის დადასტურებით, საქართველოს ეროვნული ბანკის მოთხოვნების შესაბამისად.",license:"საქართველოს ეროვნული ბანკის ლიცენზია",cta:"მოწერეთ ბოტს"},
+      referral:{eyebrow:"პარტნიორული პროგრამა",h2:"მოიყვანეთ ბიზნესი — მიიღეთ ჯილდო",p:"გვირჩიეთ ბიზნესს, რომელიც დაუკავშირდება QR-გადახდების მიღებას — და მიიღეთ პროცენტი მისი ბრუნვიდან, სანამ ის ჩვენთანაა. შემოტანილი ბიზნესების რაოდენობა შეუზღუდავია.",cta:"მოგვწერეთ Telegram-ში",figCap:"მოყვანილი ბიზნესის ბრუნვიდან, ყოველთვიურად"},
       footer:{note:"MOST არის QR-გადახდების მიღების დაკავშირების პარტნიორი ბიზნესისთვის საქართველოსა და მთელს მსოფლიოში. გადახდები მუშავდება სერტიფიცირებულ საერთაშორისო გადახდის ინფრასტრუქტურაზე.",link1:"როგორ მუშაობს",link2:"განაცხადი"}
     }
   };
