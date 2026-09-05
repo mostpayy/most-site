@@ -184,27 +184,28 @@
      the kind of inconsistency that makes a layout look unfinished. */
   .btn-exchange, .nav-right .btn-primary{ white-space: nowrap; }
   @media (max-width: 480px){
-    /* The language switcher is as wide as a CTA but the least critical control
-       here, so it gives way to keep both buttons on a single row. */
-    .nav-right .lang-switch{ display:none; }
+    /* Header wraps to two tidy rows: logo on top, then all controls together
+       on one line. .nav-right itself must not wrap, or the buttons scatter
+       across three ragged rows. */
+    nav .wrap{ flex-wrap: wrap; }
+    nav .logo{ flex: 1 0 100%; }
+    .nav-right{ flex-wrap: nowrap; justify-content: flex-end; width:100%; min-width:0; }
+    .nav-right .btn-primary, .btn-exchange{ min-width:0; }
     .logo{ font-size:17px; gap:6px; }
     .logo-mark{ width:22px; height:22px; }
-    .nav-right .btn-primary{ padding:8px 10px; font-size:11px; }
-    .btn-exchange{ padding:8px 9px; font-size:10.5px; gap:4px; }
-    nav .wrap{ gap:6px; flex-wrap: nowrap; }
-    .nav-right{ gap:6px; flex-wrap: nowrap; }
+    .nav-right .btn-primary{ padding:7px 9px; font-size:10px; }
+    /* second word is dropped so the label never gets visually clipped */
+    .cta-tail{ display:none; }
+    .btn-exchange{ padding:7px 8px; font-size:10px; gap:4px; }
+    .lang-btn{ padding:4px 6px; font-size:9.5px; }
+    nav .wrap{ gap:5px; }
     @media (max-width: 430px){
-      .nav-right .btn-primary{ padding:7px 9px; font-size:10px; }
-      .btn-exchange{ padding:7px 8px; font-size:9.5px; gap:3px; }
+      .nav-right .btn-primary{ padding:6px 8px; font-size:9.5px; }
+      .btn-exchange{ padding:6px 7px; font-size:9px; gap:3px; }
       .logo{ font-size:16px; }
       .logo-mark{ width:20px; height:20px; }
       nav .wrap{ gap:6px; }
       .nav-right{ gap:6px; }
-    }
-    @media (max-width: 380px){
-      /* Only the mark is kept — the wordmark's width is needed by the CTAs so
-         longer translations ("Exchange RUB→USDT") still fit on one row. */
-      nav .logo .gradient-text{ display:none; }
     }
     @media (max-width: 340px){
       .nav-right .btn-primary{ padding:6px 7px; font-size:9px; }
@@ -217,9 +218,16 @@
   }
 
   .lang-switch{ display:flex; gap:2px; border:1px solid var(--line); border-radius:999px; padding:3px; flex-shrink:0; }
+  /* On phones the switcher is compacted so the header stays a single row
+     rather than wrapping the controls onto a second line. */
+  @media (max-width: 560px){
+    .lang-switch{ padding:2px; gap:0; }
+    .lang-btn{ padding:5px 7px; font-size:10.5px; letter-spacing:0; }
+  }
+  @media (max-width: 400px){
+    .lang-btn{ padding:4px 5px; font-size:9.5px; }
+  }
   /* The tab-bar copy only appears where the header one is hidden */
-  .lang-switch--mobile{ display:none; margin-left:auto; }
-  @media (max-width: 480px){ .lang-switch--mobile{ display:flex; } }
   .lang-btn{ border:none; background:transparent; color:var(--text-dim); font-size:12px; font-weight:700; padding:6px 11px; border-radius:999px; cursor:pointer; font-family:'Golos Text',sans-serif; letter-spacing:.03em; }
   .lang-btn.active{ background: linear-gradient(135deg, var(--gold-bright), var(--teal-bright)); color:#1A1206; }
   .lang-btn:not(.active):hover{ color: var(--text); }
@@ -658,7 +666,7 @@
         <button class="lang-btn" data-lang="ka" onclick="applyLang('ka')">GE</button>
       </div>
       <button class="btn btn-exchange nav-tab-btn" data-tab="exchange"><span data-i18n="nav.ctaExchangeA">Обмен RUB</span><span class="arw">→</span><span data-i18n="nav.ctaExchangeB">USDT</span></button>
-      <button class="btn btn-primary nav-tab-btn" data-tab="apply" data-i18n="nav.cta">Подключить бизнес</button>
+      <button class="btn btn-primary nav-tab-btn" data-tab="apply"><span data-i18n="nav.ctaShort">Подключить</span><span class="cta-tail" data-i18n="nav.ctaTail">бизнес</span></button>
     </div>
   </div>
 </nav>
@@ -720,13 +728,6 @@
       <button class="tab-btn" data-tab="benefits" data-i18n="nav.benefits">Преимущества</button>
       <button class="tab-btn" data-tab="cashback" data-i18n="nav.cashback">Кэшбек</button>
       <button class="tab-btn" data-tab="apply" data-i18n="nav.apply">Заявка</button>
-      <!-- Mobile-only: the header switcher is hidden on narrow screens, so the
-           language control lives here instead rather than disappearing. -->
-      <div class="lang-switch lang-switch--mobile">
-        <button class="lang-btn" data-lang="ru" onclick="applyLang('ru')">RU</button>
-        <button class="lang-btn" data-lang="en" onclick="applyLang('en')">EN</button>
-        <button class="lang-btn" data-lang="ka" onclick="applyLang('ka')">GE</button>
-      </div>
     </div>
   </div>
 </div>
@@ -1538,7 +1539,7 @@
   /* ---------- i18n ---------- */
   const translations = {
     en: {
-      nav:{how:"How it works",benefits:"Benefits",cashback:"Cashback",apply:"Apply",cta:"Connect your business",ctaExchangeA:"Exchange RUB",ctaExchangeB:"USDT",exchange:"Exchange"},
+      nav:{how:"How it works",benefits:"Benefits",cashback:"Cashback",apply:"Apply",cta:"Connect your business",ctaShort:"Connect",ctaTail:"business",ctaExchangeA:"Exchange RUB",ctaExchangeB:"USDT",exchange:"Exchange"},
       hero:{eyebrow:"payment acceptance for business — Georgia and worldwide",h1:"Build a <em>bridge</em> between ruble payments and your revenue",p:"Your customer scans a QR code and pays in rubles with any Russian bank card. Money lands in your account the next day — in GEL, USD, EUR, or USDT. Plus cashback on every payment you accept. We also offer <span class=\"exchange-inline-link\" data-tab=\"exchange\">RUB to USDT exchange</span>.",cta1:"Submit application",cta2:"How it works"},
       bridge:{left:"customer",right:"your account"},
       showcase:{eyebrow:"what it looks like",h2:"Payment in two taps — from the customer's side",p:"No new terminal at the till. The customer just takes out their phone.",f1:"The cashier shows a QR code on screen or on the receipt",f2:"The customer scans it with the camera in their banking app — it's a standard SBP QR code",f3:"Payment confirmed — the money is already on its way to your account",counterLabel:"till",amount:"1,038 ₽",amountLabel:"amount due",sbpBadge:"SBP",sbpNote:"The QR follows the <b>SBP</b> (Faster Payments System) standard — recognized by any Russian banking app",clientPays:"customer pays",youReceive:"you receive"},
@@ -1555,7 +1556,7 @@
       footer:{note:"MOST is a connection partner for QR payment acceptance for businesses in Georgia and worldwide. Payments are processed on certified international payment infrastructure.",link1:"How it works",link2:"Apply"}
     },
     ka: {
-      nav:{how:"როგორ მუშაობს",benefits:"უპირატესობები",cashback:"ქეშბექი",apply:"განაცხადი",cta:"დაუკავშირეთ ბიზნესი",ctaExchangeA:"გაცვლა RUB",ctaExchangeB:"USDT",exchange:"გაცვლა"},
+      nav:{how:"როგორ მუშაობს",benefits:"უპირატესობები",cashback:"ქეშბექი",apply:"განაცხადი",cta:"დაუკავშირეთ ბიზნესი",ctaShort:"დაკავშირება",ctaTail:"ბიზნესი",ctaExchangeA:"გაცვლა RUB",ctaExchangeB:"USDT",exchange:"გაცვლა"},
       hero:{eyebrow:"გადახდების მიღება ბიზნესისთვის — საქართველო და მთელი მსოფლიო",h1:"ააშენეთ <em>ხიდი</em> რუბლში გადახდასა და თქვენს შემოსავალს შორის",p:"თქვენი მომხმარებელი სკანირებს QR კოდს და იხდის რუბლში ნებისმიერი რუსული ბანკის ბარათით. თანხა თქვენს ანგარიშზე ირიცხება მეორე დღესვე — ლარში, დოლარში, ევროში ან USDT-ში. დამატებით იღებთ ქეშბექს ყოველ გადახდაზე. ასევე გთავაზობთ <span class=\"exchange-inline-link\" data-tab=\"exchange\">რუბლის გაცვლას USDT-ზე</span>.",cta1:"განაცხადის გაგზავნა",cta2:"როგორ მუშაობს"},
       bridge:{left:"მომხმარებელი",right:"თქვენი ანგარიში"},
       showcase:{eyebrow:"როგორ გამოიყურება",h2:"გადახდა ორ შეხებაში — მომხმარებლის თვალით",p:"ახალი ტერმინალის გარეშე სალაროზე. მომხმარებელი უბრალოდ იღებს ტელეფონს.",f1:"მოლარე აჩვენებს QR კოდს ეკრანზე ან ჩეკზე",f2:"მომხმარებელი სკანირებს მას საბანკო აპლიკაციის კამერით — ეს არის სტანდარტული SBP QR კოდი",f3:"გადახდა დადასტურებულია — თანხა უკვე თქვენი ანგარიშისკენ მიემართება",counterLabel:"სალარო",amount:"1 038 ₽",amountLabel:"გადასახდელი",sbpBadge:"SBP",sbpNote:"QR აგებულია <b>SBP</b> (სწრაფი გადახდების სისტემის) სტანდარტით — მას აღიარებს ნებისმიერი რუსული საბანკო აპლიკაცია",clientPays:"მომხმარებელი იხდის",youReceive:"თქვენ იღებთ"},
