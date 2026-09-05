@@ -103,6 +103,8 @@
   .btn-exchange{
     position: relative;
     overflow: hidden;
+    white-space: nowrap;
+    flex-shrink: 0;
     background:
       linear-gradient(var(--bg), var(--bg)) padding-box,
       linear-gradient(135deg, var(--teal-bright), var(--gold-bright)) border-box;
@@ -177,28 +179,47 @@
   .nav-right{ display:flex; align-items:center; gap:14px; }
   @media (max-width: 860px){ .nav-links{ display:none; } }
   @media (max-width: 900px){ .btn-exchange{ padding:11px 16px; font-size:13px; gap:6px; } }
+  /* Header must stay a single row at every width and in every language:
+     a header that reflows to two lines when the label gets longer is exactly
+     the kind of inconsistency that makes a layout look unfinished. */
+  .btn-exchange, .nav-right .btn-primary{ white-space: nowrap; }
   @media (max-width: 480px){
-    .logo{ font-size:18px; gap:7px; }
-    .logo-mark{ width:24px; height:24px; }
-    .nav-right .btn-primary{ padding:9px 12px; font-size:12px; }
-    .btn-exchange{ padding:9px 11px; font-size:11.5px; gap:5px; }
-    .lang-btn{ padding:5px 7px; font-size:10.5px; }
-    .lang-switch{ padding:2px; }
-    nav .wrap{ gap:8px; }
-    @media (max-width: 380px){
-      .nav-right{ flex-wrap: wrap; justify-content: flex-end; }
-      .nav-right .btn-primary{ padding:8px 10px; font-size:11px; }
-      .btn-exchange{ padding:8px 9px; font-size:10.5px; gap:4px; }
-      .lang-btn{ padding:4px 6px; font-size:10px; }
+    /* The language switcher is as wide as a CTA but the least critical control
+       here, so it gives way to keep both buttons on a single row. */
+    .nav-right .lang-switch{ display:none; }
+    .logo{ font-size:17px; gap:6px; }
+    .logo-mark{ width:22px; height:22px; }
+    .nav-right .btn-primary{ padding:8px 10px; font-size:11px; }
+    .btn-exchange{ padding:8px 9px; font-size:10.5px; gap:4px; }
+    nav .wrap{ gap:6px; flex-wrap: nowrap; }
+    .nav-right{ gap:6px; flex-wrap: nowrap; }
+    @media (max-width: 430px){
+      .nav-right .btn-primary{ padding:7px 9px; font-size:10px; }
+      .btn-exchange{ padding:7px 8px; font-size:9.5px; gap:3px; }
       .logo{ font-size:16px; }
-      .logo-mark{ width:21px; height:21px; }
+      .logo-mark{ width:20px; height:20px; }
       nav .wrap{ gap:6px; }
       .nav-right{ gap:6px; }
     }
-    .nav-right{ gap:8px; }
+    @media (max-width: 380px){
+      /* Only the mark is kept — the wordmark's width is needed by the CTAs so
+         longer translations ("Exchange RUB→USDT") still fit on one row. */
+      nav .logo .gradient-text{ display:none; }
+    }
+    @media (max-width: 340px){
+      .nav-right .btn-primary{ padding:6px 7px; font-size:9px; }
+      .btn-exchange{ padding:6px 7px; font-size:8.5px; gap:3px; }
+      .logo{ font-size:15px; }
+      .logo-mark{ width:18px; height:18px; }
+      nav .wrap{ gap:5px; }
+      .nav-right{ gap:5px; }
+    }
   }
 
   .lang-switch{ display:flex; gap:2px; border:1px solid var(--line); border-radius:999px; padding:3px; flex-shrink:0; }
+  /* The tab-bar copy only appears where the header one is hidden */
+  .lang-switch--mobile{ display:none; margin-left:auto; }
+  @media (max-width: 480px){ .lang-switch--mobile{ display:flex; } }
   .lang-btn{ border:none; background:transparent; color:var(--text-dim); font-size:12px; font-weight:700; padding:6px 11px; border-radius:999px; cursor:pointer; font-family:'Golos Text',sans-serif; letter-spacing:.03em; }
   .lang-btn.active{ background: linear-gradient(135deg, var(--gold-bright), var(--teal-bright)); color:#1A1206; }
   .lang-btn:not(.active):hover{ color: var(--text); }
@@ -476,9 +497,17 @@
   .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
   .footer-row .logo{ font-size:18px; }
   .footer-note{ color: var(--text-dim); font-size:13px; max-width:560px; }
-  .footer-links{ display:flex; gap:20px; font-size:13.5px; color: var(--text-dim); }
-  .footer-links button{ background:none; border:none; cursor:pointer; font-family:'Golos Text',sans-serif; font-size:13.5px; color:inherit; appearance:none; -webkit-appearance:none; }
+  .footer-links{ display:flex; gap:14px; font-size:13.5px; color: var(--text-dim); flex-wrap:wrap; }
+  .footer-links button{ background:none; border:none; cursor:pointer; font-family:'Golos Text',sans-serif; font-size:13.5px; color:inherit; appearance:none; -webkit-appearance:none; padding:10px 6px; }
   .footer-links button:hover, .footer-links a:hover{ color: var(--text); }
+
+  /* Keyboard focus: there was no visible focus state at all, which makes the
+     page unusable without a mouse. Only shows for keyboard navigation. */
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{
+    outline: 2px solid var(--gold-bright);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
 
   ::selection{ background: var(--gold); color:#1A1206; }
 
@@ -493,6 +522,17 @@
 
   /* Micro-interactions */
   tbody tr{ transition: background .25s ease; }
+  tbody tr td:first-child{ position:relative; }
+  tbody tr td:first-child::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background: linear-gradient(180deg, var(--gold-bright), var(--teal-bright));
+    transform: scaleY(0); transform-origin:center; transition: transform .25s ease;
+  }
+  tbody tr:hover td:first-child::before{ transform: scaleY(1); }
+  .cashback-figure, .referral-figure{ transition: transform .3s ease, box-shadow .3s ease; }
+  .cashback-figure:hover, .referral-figure:hover{ transform: translateY(-3px); box-shadow: 0 14px 34px rgba(0,0,0,0.28); }
+  .info-card svg, .step-num, .showcase-flow-num{ transition: transform .3s ease; }
+  .info-card:hover svg{ transform: scale(1.12); }
   .trust-stat{ transition: transform .3s ease, border-color .3s ease; }
   .trust-stat:hover{ transform: translateY(-3px); border-color: rgba(228,192,119,0.3); }
   .problem-list li{ transition: transform .25s ease, border-color .25s ease; }
@@ -547,10 +587,20 @@
   .exchange-box p{ color: var(--text-dim); font-size: 17px; line-height:1.55; margin-bottom: 22px; max-width:600px; margin-left:auto; margin-right:auto; }
   .exchange-license{
     display:inline-flex; align-items:center; gap:10px; margin-bottom:28px;
-    padding:10px 20px; border-radius:999px; border:1px solid rgba(228,192,119,0.35);
-    background: rgba(228,192,119,0.07); color: var(--gold-bright); font-size:14px; font-weight:600;
+    padding:10px 20px; border-radius:999px;
+    background: transparent;
+    border: 1px solid rgba(228,192,119,0.35);
+    color: var(--gold-bright); font-size:14px; font-weight:600;
+    transition: border-color .35s ease, transform .3s ease, box-shadow .35s ease;
+    cursor: default;
   }
-  .exchange-license svg{ width:18px; height:18px; flex-shrink:0; }
+  .exchange-license:hover{
+    border-color: var(--gold-bright);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(228,192,119,0.14);
+  }
+  .exchange-license svg{ width:18px; height:18px; flex-shrink:0; transition: filter .35s ease, transform .3s ease; }
+  .exchange-license:hover svg{ filter: drop-shadow(0 0 6px rgba(228,192,119,0.7)); transform: scale(1.08); }
 </style>
 </head>
 <body>
@@ -577,6 +627,10 @@
     </linearGradient>
     <filter id="softShadow" x="-40%" y="-40%" width="180%" height="180%">
       <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <filter id="dotGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="1.8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
 </svg>
@@ -666,6 +720,13 @@
       <button class="tab-btn" data-tab="benefits" data-i18n="nav.benefits">Преимущества</button>
       <button class="tab-btn" data-tab="cashback" data-i18n="nav.cashback">Кэшбек</button>
       <button class="tab-btn" data-tab="apply" data-i18n="nav.apply">Заявка</button>
+      <!-- Mobile-only: the header switcher is hidden on narrow screens, so the
+           language control lives here instead rather than disappearing. -->
+      <div class="lang-switch lang-switch--mobile">
+        <button class="lang-btn" data-lang="ru" onclick="applyLang('ru')">RU</button>
+        <button class="lang-btn" data-lang="en" onclick="applyLang('en')">EN</button>
+        <button class="lang-btn" data-lang="ka" onclick="applyLang('ka')">GE</button>
+      </div>
     </div>
   </div>
 </div>
@@ -701,10 +762,6 @@
             <stop offset="0" stop-color="#1B3A55"/>
             <stop offset="1" stop-color="#0E2233"/>
           </linearGradient>
-          <filter id="dotGlow" x="-80%" y="-80%" width="260%" height="260%">
-            <feGaussianBlur stdDeviation="1.8" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
         </defs>
 
         <!-- checkout terminal -->
@@ -789,6 +846,8 @@
           <animate attributeName="r" values="23;34" dur="2.2s" repeatCount="indefinite"/>
           <animate attributeName="opacity" values="0.5;0" dur="2.2s" repeatCount="indefinite"/>
         </circle>
+        <path id="showcasePathMobile" d="M368,255 C382,220 396,160 420,128" fill="none" stroke="#93A9BB" stroke-opacity="0.22" stroke-width="1.4" stroke-dasharray="1 7" stroke-linecap="round"/>
+        <g id="showcaseDotsMobile" filter="url(#dotGlow)"></g>
         <g filter="url(#softShadow)">
           <circle cx="503" cy="272" r="23" fill="#16324A" stroke="#6ECFC0" stroke-width="2"/>
         </g>
@@ -1202,11 +1261,14 @@
       const destination = destinations[i % destinations.length];
 
       const g = document.createElementNS(svgNS, "g");
-      g.setAttribute("opacity", "0"); // hidden until its own begin time, see visAnim below
       const motion = document.createElementNS(svgNS, "animateMotion");
       motion.setAttribute("dur", dur + "s");
       motion.setAttribute("repeatCount", "indefinite");
-      motion.setAttribute("begin", begin + "s");
+      // Negative begin starts each particle already part-way along the path,
+      // so they're spread out from the first frame. Previously they were held
+      // invisible until their turn, which left them stuck hidden whenever that
+      // extra animation didn't fire.
+      motion.setAttribute("begin", (-begin) + "s");
       motion.setAttribute("rotate", "0");
       motion.setAttribute("calcMode", "spline");
       motion.setAttribute("keyPoints", "0;1");
@@ -1214,15 +1276,6 @@
       motion.setAttribute("keySplines", "0.42 0 0.58 1");
       motion.setAttribute("path", path.getAttribute("d"));
       g.appendChild(motion);
-
-      const visAnim = document.createElementNS(svgNS, "animate");
-      visAnim.setAttribute("attributeName", "opacity");
-      visAnim.setAttribute("from", "0");
-      visAnim.setAttribute("to", "1");
-      visAnim.setAttribute("dur", "0.01s");
-      visAnim.setAttribute("begin", begin + "s");
-      visAnim.setAttribute("fill", "freeze");
-      g.appendChild(visAnim);
 
       function makeSymbol(char, color, values, fontSize){
         const t = document.createElementNS(svgNS, "text");
@@ -1239,7 +1292,7 @@
         op.setAttribute("keyTimes", "0;0.42;0.58;1");
         op.setAttribute("dur", dur + "s");
         op.setAttribute("repeatCount", "indefinite");
-        op.setAttribute("begin", begin + "s");
+        op.setAttribute("begin", (-begin) + "s");
         t.appendChild(op);
         return t;
       }
@@ -1416,25 +1469,32 @@
     drawQR(document.getElementById("qrPattern"), document.getElementById("qrCard"));
     drawQR(document.getElementById("qrPatternMobile"), document.getElementById("qrCardMobile"));
 
-    const path = document.getElementById("showcasePath");
-    const dots = document.getElementById("showcaseDots");
-    const dotCount = 3;
-    for(let i=0; i<dotCount; i++){
-      const circle = document.createElementNS(svgNS, "circle");
-      circle.setAttribute("r", "3.6");
-      circle.setAttribute("fill", "#E4C077");
-      const anim = document.createElementNS(svgNS, "animateMotion");
-      anim.setAttribute("dur", "3.4s");
-      anim.setAttribute("repeatCount", "indefinite");
-      anim.setAttribute("begin", (i * 1.13) + "s");
-      anim.setAttribute("keyPoints", "0;1");
-      anim.setAttribute("keyTimes", "0;1");
-      anim.setAttribute("calcMode", "spline");
-      anim.setAttribute("keySplines", "0.4 0 0.2 1");
-      anim.setAttribute("path", path.getAttribute("d"));
-      circle.appendChild(anim);
-      dots.appendChild(circle);
+    // Flow dots are built for both the desktop and the mobile showcase — the
+    // mobile SVG is a separate element, so it needs its own dots or it would
+    // sit motionless while the desktop one animates.
+    function buildFlowDots(pathId, groupId, count){
+      const path = document.getElementById(pathId);
+      const dots = document.getElementById(groupId);
+      if(!path || !dots) return;
+      for(let i=0; i<count; i++){
+        const circle = document.createElementNS(svgNS, "circle");
+        circle.setAttribute("r", "3.6");
+        circle.setAttribute("fill", "#E4C077");
+        const anim = document.createElementNS(svgNS, "animateMotion");
+        anim.setAttribute("dur", "3.4s");
+        anim.setAttribute("repeatCount", "indefinite");
+        anim.setAttribute("begin", (i * (3.4 / count)) + "s");
+        anim.setAttribute("keyPoints", "0;1");
+        anim.setAttribute("keyTimes", "0;1");
+        anim.setAttribute("calcMode", "spline");
+        anim.setAttribute("keySplines", "0.4 0 0.2 1");
+        anim.setAttribute("path", path.getAttribute("d"));
+        circle.appendChild(anim);
+        dots.appendChild(circle);
+      }
     }
+    buildFlowDots("showcasePath", "showcaseDots", 3);
+    buildFlowDots("showcasePathMobile", "showcaseDotsMobile", 3);
   })();
 
   /* ---------- Lead form ---------- */
@@ -1564,7 +1624,7 @@
   }
 
   buildRuFromDOM();
-  document.querySelector('.lang-btn[data-lang="ru"]').classList.add('active');
+  document.querySelectorAll('.lang-btn[data-lang="ru"]').forEach(b => b.classList.add('active'));
 </script>
 
 </body>
