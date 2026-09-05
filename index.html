@@ -39,17 +39,27 @@
   html{ scroll-behavior: smooth; }
   section, .tab-panel{ scroll-margin-top: var(--sticky-h, 170px); }
   body{
-    background: var(--bg);
+    background:
+      radial-gradient(ellipse 1400px 900px at 15% -10%, rgba(201,162,75,0.07), transparent 60%),
+      radial-gradient(ellipse 1400px 900px at 85% 110%, rgba(79,184,166,0.07), transparent 60%),
+      radial-gradient(circle, rgba(243,239,228,0.035) 1px, transparent 1.6px) 0 0/26px 26px,
+      var(--bg);
     color: var(--text);
     font-family: 'Golos Text', sans-serif;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
-  h1,h2,h3{ font-family:'PT Serif', serif; font-weight:700; line-height:1.15; letter-spacing: -0.01em; }
+  h1,h2,h3{ font-family:'PT Serif', serif; font-weight:700; line-height:1.12; letter-spacing: -0.022em; }
+  @media (max-width: 900px){
+    .problem, .steps, .types, .benefits, .tech, .cashback, .referral, .trust, .apply{ padding: 76px 0; }
+    .exchange{ padding: 84px 0; }
+  }
   a{ color: inherit; text-decoration:none; }
   img,svg{ display:block; max-width:100%; }
-  .wrap{ max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  .wrap{ max-width: 1600px; margin: 0 auto; padding: 0 48px; }
+  @media (max-width: 900px){ .wrap{ padding: 0 24px; } }
+  @media (max-width: 480px){ .wrap{ padding: 0 18px; } }
   section{ position: relative; }
   .eyebrow{
     display:inline-flex; align-items:center; gap:7px;
@@ -87,6 +97,48 @@
     background-position: 100% 50%;
     box-shadow: 0 10px 26px rgba(78,184,166,0.28);
   }
+  /* Secondary CTA: calm at rest (a soft surface with a faint gradient edge),
+     but it fills with the brand gradient on hover so it reads as clearly
+     interactive without competing with the gold primary beside it. */
+  .btn-exchange{
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(var(--bg), var(--bg)) padding-box,
+      linear-gradient(135deg, var(--teal-bright), var(--gold-bright)) border-box;
+    border: 1.5px solid transparent;
+    color: var(--text);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  /* soft halo that breathes, so the button is noticeable even untouched */
+  .btn-exchange::before{
+    content:""; position:absolute; inset:-2px; border-radius:inherit;
+    box-shadow: 0 0 0 0 rgba(110,207,192,0.35);
+    animation: exchange-halo 3.2s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes exchange-halo{
+    0%,100%{ box-shadow: 0 0 12px 0 rgba(110,207,192,0.12); }
+    50%{ box-shadow: 0 0 20px 2px rgba(110,207,192,0.26); }
+  }
+  /* sheen that sweeps across on hover */
+  .btn-exchange::after{
+    content:""; position:absolute; top:0; left:-60%; width:35%; height:100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+    transform: skewX(-20deg); transition: left .6s ease; pointer-events:none;
+  }
+  .btn-exchange:hover::after{ left:130%; }
+  .btn-exchange .arw{ color: var(--teal-bright); font-weight:700; transition: transform .25s ease, color .25s ease; }
+  .btn-exchange:hover{
+    background: linear-gradient(135deg, var(--teal-bright), var(--gold-bright));
+    border-color: transparent;
+    color: #0A1A28;
+    box-shadow: 0 10px 28px rgba(110,207,192,0.32);
+    transform: translateY(-2px);
+  }
+  .btn-exchange:hover .arw{ transform: translateX(4px); color: #0A1A28; }
+  .btn-exchange:hover::before{ animation: none; box-shadow: none; }
   .btn-ghost{
     background:
       linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
@@ -124,12 +176,25 @@
   .nav-links button.active::after{ transform: scaleX(1); }
   .nav-right{ display:flex; align-items:center; gap:14px; }
   @media (max-width: 860px){ .nav-links{ display:none; } }
+  @media (max-width: 900px){ .btn-exchange{ padding:11px 16px; font-size:13px; gap:6px; } }
   @media (max-width: 480px){
     .logo{ font-size:18px; gap:7px; }
     .logo-mark{ width:24px; height:24px; }
-    .nav-right .btn-primary{ padding:9px 14px; font-size:12.5px; }
-    .lang-btn{ padding:5px 8px; font-size:11px; }
-    nav .wrap{ gap:10px; }
+    .nav-right .btn-primary{ padding:9px 12px; font-size:12px; }
+    .btn-exchange{ padding:9px 11px; font-size:11.5px; gap:5px; }
+    .lang-btn{ padding:5px 7px; font-size:10.5px; }
+    .lang-switch{ padding:2px; }
+    nav .wrap{ gap:8px; }
+    @media (max-width: 380px){
+      .nav-right{ flex-wrap: wrap; justify-content: flex-end; }
+      .nav-right .btn-primary{ padding:8px 10px; font-size:11px; }
+      .btn-exchange{ padding:8px 9px; font-size:10.5px; gap:4px; }
+      .lang-btn{ padding:4px 6px; font-size:10px; }
+      .logo{ font-size:16px; }
+      .logo-mark{ width:21px; height:21px; }
+      nav .wrap{ gap:6px; }
+      .nav-right{ gap:6px; }
+    }
     .nav-right{ gap:8px; }
   }
 
@@ -196,7 +261,7 @@
   .bridge-labels{ display:flex; justify-content:space-between; flex-wrap:nowrap; padding: 0 0 16px; gap:8px; }
 
   /* PROBLEM */
-  .problem{ padding: 64px 0; background: var(--bg-alt); }
+  .problem{ padding: 110px 0; background: var(--bg-alt); }
   .problem-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items:start; }
   @media (max-width: 800px){ .problem-grid{ grid-template-columns:1fr; } }
   .problem h2{ font-size: clamp(26px,3.4vw,36px); }
@@ -246,11 +311,16 @@
   }
   .showcase-art{ background: var(--bg-card); border:1px solid var(--line); border-radius: var(--radius); padding: 32px; }
   @media (max-width: 600px){ .showcase-art{ padding: 16px; } }
+  #showcaseSvgMobile{ display:none; }
+  @media (max-width: 600px){
+    #showcaseSvg{ display:none; }
+    #showcaseSvgMobile{ display:block; }
+  }
   .showcase-note{ margin-top:18px; text-align:center; color: var(--text-dim); font-size:12.5px; }
   .showcase-note b{ color: var(--gold-bright); }
 
   /* STEPS */
-  .steps{ padding: 84px 0; }
+  .steps{ padding: 130px 0; }
   .section-head{ max-width: 640px; margin: 0 auto 48px; text-align:center; }
   .section-head .eyebrow{ justify-content:center; }
   .section-head h2{ font-size: clamp(28px,3.6vw,38px); margin-bottom:14px; }
@@ -290,17 +360,17 @@
   .info-card:hover{ transform: translateY(-4px); box-shadow: 0 14px 30px rgba(0,0,0,0.28); border-color: rgba(110,207,192,0.35); }
   .info-card:hover::before{ transform: scaleX(1); }
   .info-card svg{ width:26px; height:26px; margin-bottom:16px; color: var(--gold-bright); }
-  .info-card:nth-child(even) svg{ color: var(--teal-bright); }
+  .info-card svg{ opacity:0.85; }
   .info-card h3{ font-size:17px; margin-bottom:6px; font-family:'Golos Text',sans-serif; font-weight:700; }
   .info-card p{ color: var(--text-dim); font-size:14.5px; }
 
-  .types{ padding: 84px 0; background: var(--bg-alt); }
-  .benefits{ padding: 84px 0; }
-  .tech{ padding: 84px 0; background: var(--bg-alt); }
+  .types{ padding: 130px 0; background: var(--bg-alt); }
+  .benefits{ padding: 130px 0; }
+  .tech{ padding: 130px 0; background: var(--bg-alt); }
   .tech .info-card{ background: var(--bg-card); border-color: var(--line); }
 
   /* CASHBACK */
-  .cashback{ padding: 84px 0; background: linear-gradient(180deg, var(--bg-alt), var(--bg)); }
+  .cashback{ padding: 130px 0; background: linear-gradient(180deg, var(--bg-alt), var(--bg)); }
   .cashback-top{ display:grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items:center; margin-bottom: 52px; }
   @media (max-width:900px){ .cashback-top{ grid-template-columns:1fr; } }
   .cashback h2{ font-size: clamp(28px,3.6vw,40px); margin-bottom:16px; }
@@ -316,7 +386,7 @@
   .cashback-figure .cap{ color: var(--text-dim); font-size:14px; margin-top:6px; }
 
   /* REFERRAL */
-  .referral{ padding: 84px 0; border-top:1px solid var(--line); }
+  .referral{ padding: 130px 0; border-top:1px solid var(--line); }
   .referral-grid{ display:grid; grid-template-columns: 1.1fr 0.9fr; gap:48px; align-items:center; }
   @media (max-width: 900px){ .referral-grid{ grid-template-columns:1fr; } }
   .referral h2{ font-size: clamp(26px,3.4vw,36px); margin-bottom:16px; }
@@ -345,7 +415,7 @@
   .table-note{ margin-top:14px; color: var(--text-dim); font-size:13.5px; }
 
   /* TRUST */
-  .trust{ padding: 76px 0; }
+  .trust{ padding: 110px 0; }
   .trust-stats-caption{ text-align:center; color: var(--text-dim); font-size:12.5px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:32px; }
   .trust-stats-row{ display:grid; grid-template-columns: repeat(4,1fr); gap:16px; text-align:center; margin-bottom:48px; }
   @media (max-width:700px){ .trust-stats-row{ grid-template-columns: repeat(2,1fr); } }
@@ -367,10 +437,10 @@
   .trust-row{ display:flex; justify-content:space-between; flex-wrap:wrap; gap: 28px; }
   .trust-item{ display:flex; align-items:center; gap:12px; color: var(--text-dim); font-size:14.5px; }
   .trust-item svg{ width:20px; height:20px; color: var(--gold-bright); flex-shrink:0; }
-  .trust-item:nth-child(even) svg{ color: var(--teal-bright); }
+  .trust-item svg{ opacity:0.85; }
 
   /* FORM */
-  .apply{ padding: 84px 0; }
+  .apply{ padding: 130px 0; }
 
   .apply-grid{ display:grid; grid-template-columns: 0.9fr 1.1fr; gap:52px; }
   @media (max-width:900px){ .apply-grid{ grid-template-columns:1fr; } }
@@ -416,6 +486,20 @@
   .reveal{ opacity:0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.revealed{ opacity:1; transform:none; }
 
+  /* Staggered reveal: cards fade in one after another rather than as a block.
+     Classes are added by JS only, so content stays visible if JS never runs. */
+  .stagger-item{ opacity:0; transform: translateY(20px); transition: opacity .55s ease, transform .55s ease; }
+  .stagger-item.shown{ opacity:1; transform:none; }
+
+  /* Micro-interactions */
+  tbody tr{ transition: background .25s ease; }
+  .trust-stat{ transition: transform .3s ease, border-color .3s ease; }
+  .trust-stat:hover{ transform: translateY(-3px); border-color: rgba(228,192,119,0.3); }
+  .problem-list li{ transition: transform .25s ease, border-color .25s ease; }
+  .problem-list li:hover{ transform: translateX(4px); border-left-color: var(--gold-bright); }
+  .showcase-flow-item{ transition: transform .25s ease, border-color .25s ease; }
+  .showcase-flow-item:hover{ transform: translateX(4px); border-color: rgba(228,192,119,0.3); }
+
   /* soft fading section dividers, instead of hard 1px lines */
   .problem, .types, .tech, .trust{ position:relative; }
   .problem::before, .types::before, .tech::before, .trust::before,
@@ -441,19 +525,28 @@
   .cashback .ambient-glow{ width:460px; height:460px; bottom:-200px; left:-140px; background: var(--teal); opacity:0.22; }
   .hero > .wrap, .cashback > .wrap{ position:relative; z-index:1; }
 
-  .exchange{ padding: 20px 0 84px; }
+  .exchange{ overflow:hidden; padding: 140px 0; }
+  .exchange .ambient-glow{ width:480px; height:480px; top:-200px; left:50%; transform:translateX(-50%); background: var(--teal); opacity:0.2; }
+  .exchange > .wrap{ position:relative; z-index:1; }
   .exchange-box{
-    border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 48px 52px; background: rgba(243,239,228,0.02);
-    text-align: center; max-width: 720px; margin: 0 auto;
+    border: 1.5px solid transparent; border-radius: var(--radius);
+    padding: 60px 56px;
+    background:
+      linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+      linear-gradient(135deg, rgba(228,192,119,0.55), rgba(110,207,192,0.55)) border-box;
+    text-align: center; max-width: 780px; margin: 0 auto;
     scroll-margin-top: var(--sticky-h, 170px);
   }
   .exchange-box .eyebrow{ justify-content:center; }
-  .exchange-icon{ width:52px; height:52px; margin:0 auto 18px; }
-  .exchange-box h2{ font-size: clamp(24px,3vw,32px); margin-bottom: 14px; }
-  .exchange-box p{ color: var(--text-dim); font-size: 16px; line-height:1.5; margin-bottom: 20px; }
+  .exchange-icon{ width:60px; height:60px; margin:0 auto 22px; animation: exchange-spin 5s ease-in-out infinite; }
+  @keyframes exchange-spin{
+    0%, 100%{ transform: rotate(0deg); }
+    50%{ transform: rotate(180deg); }
+  }
+  .exchange-box h2{ font-size: clamp(30px,4.2vw,44px); margin-bottom: 18px; }
+  .exchange-box p{ color: var(--text-dim); font-size: 17px; line-height:1.55; margin-bottom: 22px; max-width:600px; margin-left:auto; margin-right:auto; }
   .exchange-license{
-    display:inline-flex; align-items:center; gap:10px; margin-bottom:26px;
+    display:inline-flex; align-items:center; gap:10px; margin-bottom:28px;
     padding:10px 20px; border-radius:999px; border:1px solid rgba(228,192,119,0.35);
     background: rgba(228,192,119,0.07); color: var(--gold-bright); font-size:14px; font-weight:600;
   }
@@ -474,6 +567,17 @@
       <stop offset="0" stop-color="#E4C077"/>
       <stop offset="1" stop-color="#6ECFC0"/>
     </linearGradient>
+    <!-- Shared by both the desktop and mobile showcase SVGs. Must live here in
+         the global defs: when defined inside the desktop SVG, they became
+         unavailable on mobile (where that SVG is display:none), which silently
+         broke the phone body's gradient fill and shadow. -->
+    <linearGradient id="phoneGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#15304A"/>
+      <stop offset="1" stop-color="#0A1A28"/>
+    </linearGradient>
+    <filter id="softShadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
   </defs>
 </svg>
 
@@ -499,6 +603,7 @@
         <button class="lang-btn" data-lang="en" onclick="applyLang('en')">EN</button>
         <button class="lang-btn" data-lang="ka" onclick="applyLang('ka')">GE</button>
       </div>
+      <button class="btn btn-exchange nav-tab-btn" data-tab="exchange"><span data-i18n="nav.ctaExchangeA">Обмен RUB</span><span class="arw">→</span><span data-i18n="nav.ctaExchangeB">USDT</span></button>
       <button class="btn btn-primary nav-tab-btn" data-tab="apply" data-i18n="nav.cta">Подключить бизнес</button>
     </div>
   </div>
@@ -596,13 +701,6 @@
             <stop offset="0" stop-color="#1B3A55"/>
             <stop offset="1" stop-color="#0E2233"/>
           </linearGradient>
-          <linearGradient id="phoneGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#15304A"/>
-            <stop offset="1" stop-color="#0A1A28"/>
-          </linearGradient>
-          <filter id="softShadow" x="-40%" y="-40%" width="180%" height="180%">
-            <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.35"/>
-          </filter>
           <filter id="dotGlow" x="-80%" y="-80%" width="260%" height="260%">
             <feGaussianBlur stdDeviation="1.8" result="blur"/>
             <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
@@ -661,6 +759,42 @@
         </g>
         <path d="M493,272 l6.5,6.5 l13,-15" fill="none" stroke="#6ECFC0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
+
+      <!-- Mobile-only version: phone/QR/badge/checkmark only, no counter — a
+           separate static SVG shown purely via CSS media query, not a
+           JS-driven viewBox crop, so it can never fail to render correctly. -->
+      <svg id="showcaseSvgMobile" viewBox="340 12 210 310" width="100%">
+        <g filter="url(#softShadow)">
+          <rect x="355" y="35" width="155" height="266" rx="27" fill="url(#phoneGrad)" stroke="#E4C077" stroke-width="2"/>
+        </g>
+        <circle cx="432" cy="51" r="2.4" fill="#93A9BB" fill-opacity="0.6"/>
+        <rect x="369" y="64" width="127" height="197" rx="6" fill="#0A1826" stroke="#93A9BB" stroke-opacity="0.22" stroke-width="1"/>
+
+        <rect id="qrCardMobile" x="378" y="78" width="110" height="110" rx="10" fill="#F3EFE4"/>
+        <g id="qrPatternMobile"></g>
+
+        <rect x="396" y="196" width="78" height="20" rx="10" fill="none" stroke="#93A9BB" stroke-opacity="0.35" stroke-width="1.2"/>
+        <circle cx="409" cy="203" r="2.1" fill="#E4C077"/>
+        <circle cx="415" cy="203" r="2.1" fill="#6ECFC0"/>
+        <circle cx="409" cy="209" r="2.1" fill="#8E7CC3"/>
+        <circle cx="415" cy="209" r="2.1" fill="#E2725B"/>
+        <text x="425" y="210" text-anchor="start" fill="#F3EFE4" font-family="Golos Text, sans-serif" font-size="10.5" font-weight="700" letter-spacing="0.06em" data-i18n="showcase.sbpBadge">СБП</text>
+
+        <text x="435" y="238" text-anchor="middle" fill="#F3EFE4" font-family="PT Serif, serif" font-size="15" data-i18n="showcase.amount">1 038 ₽</text>
+        <text x="435" y="253" text-anchor="middle" fill="#93A9BB" font-family="Golos Text, sans-serif" font-size="10.5" data-i18n="showcase.amountLabel">к оплате</text>
+
+        <rect x="415" y="279" width="40" height="4" rx="2" fill="#93A9BB" fill-opacity="0.5"/>
+
+        <circle cx="503" cy="272" r="23" fill="none" stroke="#6ECFC0" stroke-width="2" opacity="0.5">
+          <animate attributeName="r" values="23;34" dur="2.2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.5;0" dur="2.2s" repeatCount="indefinite"/>
+        </circle>
+        <g filter="url(#softShadow)">
+          <circle cx="503" cy="272" r="23" fill="#16324A" stroke="#6ECFC0" stroke-width="2"/>
+        </g>
+        <path d="M493,272 l6.5,6.5 l13,-15" fill="none" stroke="#6ECFC0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+
       <p class="showcase-note" data-i18n-html="showcase.sbpNote">QR построен по стандарту <b>СБП</b> — его понимает банковское приложение любого клиента из России</p>
     </div>
   </div>
@@ -947,6 +1081,7 @@
 </div>
 
 <section class="exchange">
+  <div class="ambient-glow"></div>
   <div class="wrap">
     <div class="exchange-box">
       <svg class="exchange-icon" viewBox="0 0 24 24" fill="none" stroke="url(#logoGrad)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -955,12 +1090,12 @@
         <path d="M17 21l4-4-4-4"/>
         <path d="M21 17H8a4 4 0 0 1-4-4v-1"/>
       </svg>
-      <div class="eyebrow" data-i18n="exchange.eyebrow">лицензированный обмен валюты</div>
+      <div class="eyebrow" data-i18n="exchange.eyebrow">обмен валюты</div>
       <h2 data-i18n="exchange.h2">Обмен рублей на USDT</h2>
-      <p data-i18n="exchange.p">Принимаем оплату в рублях по QR — выдаём USDT. Каждый обмен проходит с верификацией личности клиента в соответствии с требованиями Национального банка Грузии.</p>
+      <p data-i18n="exchange.p">Принимаем оплату в рублях по QR — выдаём USDT. Каждый обмен проходит с верификацией личности по паспорту, в соответствии с требованиями Национального банка Грузии.</p>
       <div class="exchange-license">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6z"/></svg>
-        <span data-i18n="exchange.license">Лицензия Национального банка Грузии</span>
+        <span data-i18n="exchange.license">Соответствуем требованиям Национального банка Грузии</span>
       </div>
       <a href="https://t.me/most_exxchange_bot" class="btn btn-ghost" data-i18n="exchange.cta">Написать в бота</a>
     </div>
@@ -1115,6 +1250,32 @@
     }
   })();
 
+  /* ---------- Staggered card reveal ---------- */
+  // Cards animate in one after another instead of the whole grid appearing at
+  // once. Applied via JS only, so if this never runs the cards remain visible.
+  (function(){
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(reduceMotion) return;
+    const groups = document.querySelectorAll('.card-grid, .steps-row, .problem-list, .trust-stats-row, .showcase-flow');
+    if(!groups.length) return;
+
+    groups.forEach(group => {
+      Array.from(group.children).forEach(child => child.classList.add('stagger-item'));
+    });
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(!entry.isIntersecting) return;
+        Array.from(entry.target.children).forEach((child, i) => {
+          setTimeout(() => child.classList.add('shown'), i * 70);
+        });
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    groups.forEach(g => io.observe(g));
+  })();
+
   /* ---------- Scroll reveal for sections below the fold ---------- */
   // Classes are added entirely via JS (never hardcoded in HTML/CSS defaults),
   // so if JS fails to run for any reason, content simply stays visible as normal.
@@ -1179,91 +1340,81 @@
     nums.forEach(el => observer.observe(el));
   })();
 
-  /* ---------- Showcase illustration: crop to the phone on narrow screens ---------- */
-  // On a phone, the illustration's container is narrower than the counter+phone
-  // scene needs to stay readable, so below 600px we swap to a tighter viewBox that
-  // frames just the phone/QR/checkmark — same markup, just a different visible crop.
-  (function(){
-    const svg = document.getElementById("showcaseSvg");
-    const fullView = "0 0 560 320";
-    const phoneView = "328 8 228 308";
-    function updateShowcaseCrop(){
-      svg.setAttribute("viewBox", window.innerWidth < 600 ? phoneView : fullView);
-    }
-    updateShowcaseCrop();
-    window.addEventListener("resize", updateShowcaseCrop);
-  })();
-
   /* ---------- Checkout illustration: realistic QR code + flow dots ---------- */
   (function(){
     const svgNS = "http://www.w3.org/2000/svg";
-    const qr = document.getElementById("qrPattern");
-    const card = document.getElementById("qrCard");
-    const cardX = parseFloat(card.getAttribute("x"));
-    const cardY = parseFloat(card.getAttribute("y"));
-    const cardSize = parseFloat(card.getAttribute("width"));
-    const pad = 9;
-    const grid = 17;
-    const cell = (cardSize - pad*2) / grid;
-    const originX = cardX + pad;
-    const originY = cardY + pad;
-    const dark = "#0E2233";
+    function drawQR(qr, card){
+      const cardX = parseFloat(card.getAttribute("x"));
+      const cardY = parseFloat(card.getAttribute("y"));
+      const cardSize = parseFloat(card.getAttribute("width"));
+      const pad = 9;
+      const grid = 17;
+      const cell = (cardSize - pad*2) / grid;
+      const originX = cardX + pad;
+      const originY = cardY + pad;
+      const dark = "#0E2233";
 
-    function drawCell(row, col){
-      const r = document.createElementNS(svgNS, "rect");
-      r.setAttribute("x", originX + col*cell);
-      r.setAttribute("y", originY + row*cell);
-      r.setAttribute("width", cell);
-      r.setAttribute("height", cell);
-      r.setAttribute("fill", dark);
-      qr.appendChild(r);
-    }
+      function drawCell(row, col){
+        const r = document.createElementNS(svgNS, "rect");
+        r.setAttribute("x", originX + col*cell);
+        r.setAttribute("y", originY + row*cell);
+        r.setAttribute("width", cell);
+        r.setAttribute("height", cell);
+        r.setAttribute("fill", dark);
+        qr.appendChild(r);
+      }
 
-    function drawFinder(fr, fc){
-      // classic QR finder pattern: 7x7 dark border, 5x5 light ring, 3x3 dark core
-      for(let r=0;r<7;r++){
-        for(let c=0;c<7;c++){
-          const onBorder = r===0||r===6||c===0||c===6;
-          const onCore = r>=2 && r<=4 && c>=2 && c<=4;
-          if(onBorder || onCore) drawCell(fr+r, fc+c);
+      function drawFinder(fr, fc){
+        // classic QR finder pattern: 7x7 dark border, 5x5 light ring, 3x3 dark core
+        for(let r=0;r<7;r++){
+          for(let c=0;c<7;c++){
+            const onBorder = r===0||r===6||c===0||c===6;
+            const onCore = r>=2 && r<=4 && c>=2 && c<=4;
+            if(onBorder || onCore) drawCell(fr+r, fc+c);
+          }
+        }
+      }
+
+      // deterministic hash so the "data" area looks irregular but never changes between loads
+      function hash(r,c){
+        let h = (r*374761393 + c*668265263) | 0;
+        h = (h ^ (h >>> 13)) * 1274126177;
+        h = (h ^ (h >>> 16)) >>> 0;
+        return h;
+      }
+
+      function inFinderZone(r,c){
+        const zones = [[0,0],[grid-7,0],[0,grid-7]];
+        return zones.some(([fr,fc]) => r>=fr && r<fr+7 && c>=fc && c<fc+7);
+      }
+
+      // finder patterns (top-left, top-right, bottom-left — same layout real QR codes use)
+      drawFinder(0,0);
+      drawFinder(0, grid-7);
+      drawFinder(grid-7, 0);
+
+      // timing pattern — the alternating dashed line between finder patterns
+      for(let i=7; i<grid-7; i++){
+        if(i % 2 === 0){
+          drawCell(6, i);
+          drawCell(i, 6);
+        }
+      }
+
+      // data modules
+      for(let r=0; r<grid; r++){
+        for(let c=0; c<grid; c++){
+          if(inFinderZone(r,c)) continue;
+          if(r===6 || c===6) continue;
+          if(hash(r,c) % 5 < 2) drawCell(r,c);
         }
       }
     }
 
-    // deterministic hash so the "data" area looks irregular but never changes between loads
-    function hash(r,c){
-      let h = (r*374761393 + c*668265263) | 0;
-      h = (h ^ (h >>> 13)) * 1274126177;
-      h = (h ^ (h >>> 16)) >>> 0;
-      return h;
-    }
-
-    function inFinderZone(r,c){
-      const zones = [[0,0],[grid-7,0],[0,grid-7]];
-      return zones.some(([fr,fc]) => r>=fr && r<fr+7 && c>=fc && c<fc+7);
-    }
-
-    // finder patterns (top-left, top-right, bottom-left — same layout real QR codes use)
-    drawFinder(0,0);
-    drawFinder(0, grid-7);
-    drawFinder(grid-7, 0);
-
-    // timing pattern — the alternating dashed line between finder patterns
-    for(let i=7; i<grid-7; i++){
-      if(i % 2 === 0){
-        drawCell(6, i);
-        drawCell(i, 6);
-      }
-    }
-
-    // data modules
-    for(let r=0; r<grid; r++){
-      for(let c=0; c<grid; c++){
-        if(inFinderZone(r,c)) continue;
-        if(r===6 || c===6) continue;
-        if(hash(r,c) % 5 < 2) drawCell(r,c);
-      }
-    }
+    // Draw into both the desktop scene and the standalone mobile SVG — same
+    // deterministic pattern, so they always look identical.
+    drawQR(document.getElementById("qrPattern"), document.getElementById("qrCard"));
+    drawQR(document.getElementById("qrPatternMobile"), document.getElementById("qrCardMobile"));
 
     const path = document.getElementById("showcasePath");
     const dots = document.getElementById("showcaseDots");
@@ -1327,7 +1478,7 @@
   /* ---------- i18n ---------- */
   const translations = {
     en: {
-      nav:{how:"How it works",benefits:"Benefits",cashback:"Cashback",apply:"Apply",cta:"Connect your business",exchange:"Exchange"},
+      nav:{how:"How it works",benefits:"Benefits",cashback:"Cashback",apply:"Apply",cta:"Connect your business",ctaExchangeA:"Exchange RUB",ctaExchangeB:"USDT",exchange:"Exchange"},
       hero:{eyebrow:"payment acceptance for business — Georgia and worldwide",h1:"Build a <em>bridge</em> between ruble payments and your revenue",p:"Your customer scans a QR code and pays in rubles with any Russian bank card. Money lands in your account the next day — in GEL, USD, EUR, or USDT. Plus cashback on every payment you accept. We also offer <span class=\"exchange-inline-link\" data-tab=\"exchange\">RUB to USDT exchange</span>.",cta1:"Submit application",cta2:"How it works"},
       bridge:{left:"customer",right:"your account"},
       showcase:{eyebrow:"what it looks like",h2:"Payment in two taps — from the customer's side",p:"No new terminal at the till. The customer just takes out their phone.",f1:"The cashier shows a QR code on screen or on the receipt",f2:"The customer scans it with the camera in their banking app — it's a standard SBP QR code",f3:"Payment confirmed — the money is already on its way to your account",counterLabel:"till",amount:"1,038 ₽",amountLabel:"amount due",sbpBadge:"SBP",sbpNote:"The QR follows the <b>SBP</b> (Faster Payments System) standard — recognized by any Russian banking app",clientPays:"customer pays",youReceive:"you receive"},
@@ -1339,12 +1490,12 @@
       cashback:{eyebrow:"something others don't offer",h2:"Higher cashback for smaller businesses",p:"The customer pays the fee — you don't lose anything from your revenue. Smaller businesses get a higher cashback percentage so the bonus is meaningful even on modest turnover. For larger businesses and chains the percentage is more modest, but volume keeps the amount substantial.",figBig:"up to 0.5%",figCap:"cashback for small and local businesses",th1:"Monthly turnover",th3:"Your cashback",note:"The exact percentage is fixed in the contract and depends on turnover and average ticket size. Cashback is credited together with your regular payout."},
       trust:{caption:"Numbers from the payment infrastructure we run on",stat1:"transactions",stat1suffix:"M+",stat2:"successful payments",stat3:"partners in 5 countries",stat4:"SLA reliability",stat4num:"99.98%",item2:"Same-day payout",item3:"24/7 support",item4:"Built-in CRM & analytics"},
       apply:{eyebrow:"get started",h2:"Connect QR payments and start earning cashback",p:"Fill in the form — we'll get in touch within 15 minutes and work out terms for your turnover. Or reach out directly.",tg:"Message us on Telegram",name:"Name",namePh:"How should we address you",contact:"Phone / Telegram",contactPh:"+995 5xx xx xx xx or @username",city:"City",cityPh:"Batumi, Tbilisi…",business:"Business name",businessPh:"What's your business called",type:"Business type",typeOpt0:"Select an option",typeOpt1:"Supermarket / retail chain",typeOpt2:"Café, restaurant, bar",typeOpt3:"Retail store",typeOpt4:"Services (salon, spa, rental)",typeOpt5:"Other",consent:"By submitting this form you agree to the processing of your personal data.",submit:"Submit application",successH:"Application sent",successP:"We'll be in touch shortly to discuss your connection terms.",error:"Couldn't send the application. Try messaging us on Telegram directly."},
-      exchange:{eyebrow:"licensed currency exchange",h2:"RUB to USDT exchange",p:"We accept payment in rubles by QR — and pay out USDT. Every exchange is carried out with client identity verification, in line with National Bank of Georgia requirements.",license:"Licensed by the National Bank of Georgia",cta:"Message the bot"},
+      exchange:{eyebrow:"currency exchange",h2:"RUB to USDT exchange",p:"We accept payment in rubles by QR — and pay out USDT. Every exchange is carried out with passport identity verification, in line with National Bank of Georgia requirements.",license:"Compliant with National Bank of Georgia requirements",cta:"Message the bot"},
       referral:{eyebrow:"partner program",h2:"Refer a business — earn a reward",p:"Recommend us to a business that signs up for QR payment acceptance — and earn a percentage of its turnover for as long as it stays with us. No limit on how many businesses you refer.",cta:"Message us on Telegram",figCap:"of the referred business's turnover, every month"},
       footer:{note:"MOST is a connection partner for QR payment acceptance for businesses in Georgia and worldwide. Payments are processed on certified international payment infrastructure.",link1:"How it works",link2:"Apply"}
     },
     ka: {
-      nav:{how:"როგორ მუშაობს",benefits:"უპირატესობები",cashback:"ქეშბექი",apply:"განაცხადი",cta:"დაუკავშირეთ ბიზნესი",exchange:"გაცვლა"},
+      nav:{how:"როგორ მუშაობს",benefits:"უპირატესობები",cashback:"ქეშბექი",apply:"განაცხადი",cta:"დაუკავშირეთ ბიზნესი",ctaExchangeA:"გაცვლა RUB",ctaExchangeB:"USDT",exchange:"გაცვლა"},
       hero:{eyebrow:"გადახდების მიღება ბიზნესისთვის — საქართველო და მთელი მსოფლიო",h1:"ააშენეთ <em>ხიდი</em> რუბლში გადახდასა და თქვენს შემოსავალს შორის",p:"თქვენი მომხმარებელი სკანირებს QR კოდს და იხდის რუბლში ნებისმიერი რუსული ბანკის ბარათით. თანხა თქვენს ანგარიშზე ირიცხება მეორე დღესვე — ლარში, დოლარში, ევროში ან USDT-ში. დამატებით იღებთ ქეშბექს ყოველ გადახდაზე. ასევე გთავაზობთ <span class=\"exchange-inline-link\" data-tab=\"exchange\">რუბლის გაცვლას USDT-ზე</span>.",cta1:"განაცხადის გაგზავნა",cta2:"როგორ მუშაობს"},
       bridge:{left:"მომხმარებელი",right:"თქვენი ანგარიში"},
       showcase:{eyebrow:"როგორ გამოიყურება",h2:"გადახდა ორ შეხებაში — მომხმარებლის თვალით",p:"ახალი ტერმინალის გარეშე სალაროზე. მომხმარებელი უბრალოდ იღებს ტელეფონს.",f1:"მოლარე აჩვენებს QR კოდს ეკრანზე ან ჩეკზე",f2:"მომხმარებელი სკანირებს მას საბანკო აპლიკაციის კამერით — ეს არის სტანდარტული SBP QR კოდი",f3:"გადახდა დადასტურებულია — თანხა უკვე თქვენი ანგარიშისკენ მიემართება",counterLabel:"სალარო",amount:"1 038 ₽",amountLabel:"გადასახდელი",sbpBadge:"SBP",sbpNote:"QR აგებულია <b>SBP</b> (სწრაფი გადახდების სისტემის) სტანდარტით — მას აღიარებს ნებისმიერი რუსული საბანკო აპლიკაცია",clientPays:"მომხმარებელი იხდის",youReceive:"თქვენ იღებთ"},
@@ -1356,7 +1507,7 @@
       cashback:{eyebrow:"რაც სხვას არ აქვს",h2:"მცირე ბიზნესს — მაღალი ქეშბექი",p:"საკომისიოს იხდის მომხმარებელი — თქვენ ვერაფერს კარგავთ თქვენი შემოსავლიდან. მცირე ბიზნესები იღებენ უფრო მაღალ ქეშბექის პროცენტს, რომ ბონუსი შესამჩნევი იყოს მცირე ბრუნვაზეც. დიდი ბიზნესისა და ქსელებისთვის პროცენტი უფრო მოკრძალებულია, თუმცა მოცულობის ხარჯზე თანხა მაინც საგრძნობი რჩება.",figBig:"0.5%-მდე",figCap:"ქეშბექი მცირე და ლოკალური ბიზნესისთვის",th1:"თვიური ბრუნვა",th3:"თქვენი ქეშბექი",note:"ზუსტი პროცენტი განისაზღვრება ხელშეკრულებაში და დამოკიდებულია ბრუნვასა და საშუალო ჩეკზე. ქეშბექი ირიცხება რიგით გადახდასთან ერთად."},
       trust:{caption:"იმ გადახდის ინფრასტრუქტურის მაჩვენებლები, რომელზეც ვმუშაობთ",stat1:"ტრანზაქცია",stat1suffix:" მლნ+",stat2:"წარმატებული გადახდა",stat3:"პარტნიორი 5 ქვეყანაში",stat4:"SLA საიმედოობა",stat4num:"99.98%",item2:"გადახდა იმავე დღეს",item3:"მხარდაჭერა 24/7",item4:"ჩაშენებული CRM და ანალიტიკა"},
       apply:{eyebrow:"დაწყება",h2:"დააკავშირეთ QR-გადახდები და მიიღეთ ქეშბექი",p:"შეავსეთ ფორმა — დაგიკავშირდებით 15 წუთში და გამოვთვლით პირობებს თქვენი ბრუნვისთვის. ან მოგვწერეთ პირდაპირ.",tg:"მოგვწერეთ Telegram-ში",name:"სახელი",namePh:"როგორ მოგმართოთ",contact:"ტელეფონი / Telegram",contactPh:"+995 5xx xx xx xx ან @username",city:"ქალაქი",cityPh:"ბათუმი, თბილისი…",business:"ბიზნესის სახელი",businessPh:"როგორ ჰქვია თქვენს ობიექტს",type:"ბიზნესის ტიპი",typeOpt0:"აირჩიეთ ვარიანტი",typeOpt1:"სუპერმარკეტი / მაღაზიების ქსელი",typeOpt2:"კაფე, რესტორანი, ბარი",typeOpt3:"საცალო მაღაზია",typeOpt4:"მომსახურება (სალონი, სპა, გაქირავება)",typeOpt5:"სხვა",consent:"ფორმის გაგზავნით თქვენ eთანხმებით პერსონალურ მონაცემთა დამუშავებას.",submit:"განაცხადის გაგზავნა",successH:"განაცხადი გაგზავნილია",successP:"მალე დაგიკავშირდებით დაკავშირების პირობების განსახილველად.",error:"განაცხადის გაგზავნა ვერ მოხერხდა. სცადეთ პირდაპირ მოწერა Telegram-ში."},
-      exchange:{eyebrow:"ლიცენზირებული სავალუტო გაცვლა",h2:"რუბლის გაცვლა USDT-ზე",p:"ვიღებთ გადახდას რუბლში QR-ით — და გავცემთ USDT-ს. ყოველი გაცვლა ხორციელდება კლიენტის ვინაობის დადასტურებით, საქართველოს ეროვნული ბანკის მოთხოვნების შესაბამისად.",license:"საქართველოს ეროვნული ბანკის ლიცენზია",cta:"მოწერეთ ბოტს"},
+      exchange:{eyebrow:"სავალუტო გაცვლა",h2:"რუბლის გაცვლა USDT-ზე",p:"ვიღებთ გადახდას რუბლში QR-ით — და გავცემთ USDT-ს. ყოველი გაცვლა ხორციელდება პასპორტით ვინაობის დადასტურებით, საქართველოს ეროვნული ბანკის მოთხოვნების შესაბამისად.",license:"შესაბამისობაში ვართ საქართველოს ეროვნული ბანკის მოთხოვნებთან",cta:"მოწერეთ ბოტს"},
       referral:{eyebrow:"პარტნიორული პროგრამა",h2:"მოიყვანეთ ბიზნესი — მიიღეთ ჯილდო",p:"გვირჩიეთ ბიზნესს, რომელიც დაუკავშირდება QR-გადახდების მიღებას — და მიიღეთ პროცენტი მისი ბრუნვიდან, სანამ ის ჩვენთანაა. შემოტანილი ბიზნესების რაოდენობა შეუზღუდავია.",cta:"მოგვწერეთ Telegram-ში",figCap:"მოყვანილი ბიზნესის ბრუნვიდან, ყოველთვიურად"},
       footer:{note:"MOST არის QR-გადახდების მიღების დაკავშირების პარტნიორი ბიზნესისთვის საქართველოსა და მთელს მსოფლიოში. გადახდები მუშავდება სერტიფიცირებულ საერთაშორისო გადახდის ინფრასტრუქტურაზე.",link1:"როგორ მუშაობს",link2:"განაცხადი"}
     }
