@@ -1292,6 +1292,124 @@
   }
   .exchange-license svg{ width:18px; height:18px; flex-shrink:0; transition: filter .35s ease, transform .3s ease; }
   .exchange-license:hover svg{ filter: drop-shadow(0 0 6px rgba(228,192,119,0.7)); transform: scale(1.08); }
+  /* ================= FINAL POLISH: three zones ================= */
+
+  /* ---- 1. Categories: stronger hierarchy, less list-like ---- */
+  .cat-grid{ counter-reset: cat; }
+  .cat-card{
+    display:flex; flex-direction:column; gap:8px;
+    transition: transform .3s ease, border-color .3s ease, background .3s ease, box-shadow .3s ease;
+  }
+  .cat-card:hover{ box-shadow: var(--shadow-md); }
+  /* the lead direction carries visible extra weight */
+  .cat-1{
+    background:
+      radial-gradient(135% 130% at 0% 0%, rgba(228,192,119,0.16), transparent 60%),
+      linear-gradient(160deg, rgba(26,58,87,0.7), rgba(20,48,74,0.35));
+    border-color: rgba(228,192,119,0.28);
+  }
+  .cat-grid .cat-1 svg{ width:30px; height:30px; }
+  .cat-1 h3{ font-size: clamp(20px,1.9vw,26px); }
+  .cat-1 p{ font-size: var(--fs-body); color: var(--text-muted); }
+  /* the closing wide tile gets the teal counterpart so the block is bookended */
+  .cat-6{
+    background:
+      radial-gradient(135% 130% at 100% 100%, rgba(110,207,192,0.13), transparent 60%),
+      linear-gradient(160deg, rgba(26,58,87,0.6), rgba(20,48,74,0.3));
+    border-color: rgba(110,207,192,0.24);
+  }
+  .cat-6 h3{ font-size: clamp(19px,1.7vw,23px); }
+  /* index becomes a real marker rather than faint text */
+  .cat-card::after{
+    content: counter(cat, decimal-leading-zero);
+    position:absolute; top:16px; right:18px;
+    font-family:'PT Serif',serif; font-size:12px; font-weight:700;
+    color: var(--cat-hue); opacity:.45;
+    padding:3px 8px; border-radius:999px; border:1px solid currentColor;
+    transition: opacity .3s ease;
+  }
+  .cat-card:hover::after{ opacity:.85; }
+
+  /* ---- 3. Cashback levels: the table reads as a tier system ---- */
+  .table-wrap{ border:none; border-radius:0; overflow:visible; }
+  table{ width:100%; border-collapse:separate; border-spacing:0 10px; min-width:0; }
+  thead th{
+    background:transparent; border-bottom:none;
+    padding:0 22px 4px; font-size:11px; letter-spacing:.10em;
+  }
+  tbody tr{
+    counter-increment: lvl;
+    background: linear-gradient(160deg, rgba(26,58,87,0.5), rgba(20,48,74,0.3));
+    transition: transform .28s ease, border-color .28s ease, background .28s ease;
+  }
+  tbody tr td{ border:1px solid var(--line); border-left:none; border-right:none; padding:18px 22px; }
+  tbody tr td:first-child{ border-left:1px solid var(--line); border-radius: var(--radius-sm) 0 0 var(--radius-sm); position:relative; padding-left:56px; }
+  tbody tr td:last-child{ border-right:1px solid var(--line); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  /* level index inside the row */
+  tbody tr td:first-child::after{
+    content: counter(lvl, decimal-leading-zero);
+    position:absolute; left:20px; top:50%; transform:translateY(-50%);
+    font-family:'PT Serif',serif; font-size:12px; font-weight:700;
+    color: var(--gold-bright); opacity:.5;
+  }
+  tbody tr:hover{ transform: translateX(4px); }
+  tbody tr:hover td{ border-color: rgba(228,192,119,0.35); }
+  td.num{ font-size:19px; }
+  /* the top tier is the headline rate */
+  tbody tr[data-tier="1"] td{ border-color: rgba(228,192,119,0.32); }
+  tbody tr[data-tier="1"] td.num{ font-size:23px; }
+  table{ counter-reset: lvl; }
+  @media (max-width: 520px){
+    tbody tr td{ padding:14px 14px; }
+    tbody tr td:first-child{ padding-left:46px; }
+    tbody tr td:first-child::after{ left:14px; }
+    td.num{ font-size:17px; }
+    thead th{ padding:0 14px 4px; }
+  }
+  /* ---- 2. Pipeline: a payment visibly travels the path ---- */
+  .pipe::after{
+    content:""; position:absolute; top:10px; left:10%;
+    width:9px; height:9px; margin-top:-4px; margin-left:-4px; border-radius:50%;
+    background: var(--gold-bright);
+    box-shadow: 0 0 10px 2px rgba(228,192,119,0.5);
+    animation: pipe-travel 5.2s cubic-bezier(.5,0,.5,1) infinite;
+  }
+  @keyframes pipe-travel{
+    0%{ left:10%; background: var(--gold-bright); opacity:0; }
+    6%{ opacity:1; }
+    50%{ background: var(--gold-bright); }
+    75%{ background: var(--teal-bright); box-shadow: 0 0 10px 2px rgba(110,207,192,0.5); }
+    94%{ opacity:1; }
+    100%{ left:90%; background: var(--teal-bright); opacity:0; }
+  }
+  /* each node lights briefly as the payment passes it */
+  .pipe-node.is-lit .pipe-dot{ border-color: var(--gold-bright); box-shadow: 0 0 0 6px rgba(228,192,119,0.12); }
+  .pipe-node.is-lit .pipe-ico{ border-color: rgba(228,192,119,0.45); color: var(--gold-bright); transform: translateY(-3px); }
+  .pipe-node.is-lit .pipe-cap{ color: var(--text); }
+  .pipe-node--end.is-lit .pipe-dot{ border-color: var(--teal-bright); box-shadow: 0 0 0 6px rgba(110,207,192,0.14); }
+  .pipe-node--end.is-lit .pipe-ico{ border-color: rgba(110,207,192,0.5); color: var(--teal-bright); }
+  .pipe-cap{ transition: color .3s ease; }
+
+  /* payment status chips under the pipeline */
+  .pay-status{
+    display:flex; justify-content:center; flex-wrap:wrap; gap:10px;
+    margin:-30px 0 52px;
+  }
+  .pay-chip{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:8px 15px; border-radius:999px;
+    border:1px solid var(--line); background: rgba(20,48,74,0.4);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size:11px; letter-spacing:.03em; color: var(--text-dim);
+    transition: border-color .35s ease, color .35s ease, background .35s ease;
+  }
+  .pay-chip i{ width:6px; height:6px; border-radius:50%; background: var(--text-dim); transition: background .35s ease; }
+  .pay-chip.is-on{ color: var(--text-muted); border-color: var(--line-strong); }
+  .pay-chip.is-on i{ background: var(--warning); }
+  .pay-chip.is-done{ color: var(--teal-bright); border-color: rgba(110,207,192,0.35); background: rgba(110,207,192,0.06); }
+  .pay-chip.is-done i{ background: var(--teal-bright); }
+  @media (max-width: 560px){ .pay-status{ margin:-14px 0 40px; } .pay-chip{ font-size:10px; padding:7px 12px; } }
+  @media (prefers-reduced-motion: reduce){ .pipe::after{ animation:none; opacity:0; } }
 </style>
 </head>
 <body>
@@ -1820,6 +1938,14 @@
       </li>
     </ol>
 
+    <!-- Payment statuses: stage names only, no identifiers or amounts -->
+    <div class="pay-status" aria-hidden="true">
+      <span class="pay-chip" data-st="1"><i></i>created</span>
+      <span class="pay-chip" data-st="2"><i></i>processing</span>
+      <span class="pay-chip" data-st="3"><i></i>confirmed</span>
+      <span class="pay-chip" data-st="4"><i></i>settled</span>
+    </div>
+
     <div class="tech-split">
       <!-- Capability list: same six capabilities, presented as dense rows -->
       <ul class="cap-list">
@@ -2086,6 +2212,48 @@
 </footer>
 
 <script>
+  /* ---------- Pipeline: nodes and status chips follow the travelling payment ---------- */
+  (function(){
+    const pipe = document.querySelector('.pipe');
+    const nodes = Array.from(document.querySelectorAll('.pipe-node'));
+    const chips = Array.from(document.querySelectorAll('.pay-chip'));
+    if(!pipe || !nodes.length) return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      chips.forEach(c => c.classList.add('is-done'));
+      return;
+    }
+    const CYCLE = 5200;                 // matches the pipe-travel animation
+    const step  = CYCLE / nodes.length;
+    let timers = [], loop = null, running = false;
+
+    function runCycle(){
+      timers.forEach(clearTimeout); timers = [];
+      nodes.forEach(n => n.classList.remove('is-lit'));
+      chips.forEach(c => c.classList.remove('is-on','is-done'));
+      nodes.forEach((n, i) => {
+        timers.push(setTimeout(() => {
+          nodes.forEach(x => x.classList.remove('is-lit'));
+          n.classList.add('is-lit');
+          // chips trail the node the payment is currently at
+          const c = chips[Math.min(i, chips.length - 1)];
+          if(c){
+            chips.forEach((x, j) => { if(j < i) { x.classList.remove('is-on'); x.classList.add('is-done'); } });
+            c.classList.add('is-on');
+          }
+        }, i * step + 200));
+      });
+      timers.push(setTimeout(() => {
+        chips.forEach(c => { c.classList.remove('is-on'); c.classList.add('is-done'); });
+      }, CYCLE - 500));
+    }
+    function start(){ if(running) return; running = true; runCycle(); loop = setInterval(runCycle, CYCLE); }
+    function stop(){ running = false; clearInterval(loop); timers.forEach(clearTimeout); timers = []; }
+
+    // only animate while the section is on screen
+    new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? start() : stop()), { threshold: 0.15 }).observe(pipe);
+    document.addEventListener('visibilitychange', () => document.hidden ? stop() : null);
+  })();
+
   /* ---------- Cashback: bar and its table row highlight together ---------- */
   (function(){
     const tiers = document.querySelectorAll('.tier[data-tier]');
