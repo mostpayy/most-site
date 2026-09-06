@@ -339,7 +339,45 @@
   .exchange-inline-link:hover{ text-decoration-color: rgba(110,207,192,0.9); }
   .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; }
 
-  .bridge-box{ position:relative; }
+  /* ---- Hero hub: MOST as the node the payment passes through ---- */
+  .hub-label{
+    font-family:'Golos Text', sans-serif; font-size:12px; font-weight:700;
+    letter-spacing:0.18em; fill: var(--text-dim);
+  }
+  .hub-ring{
+    fill:none; stroke: var(--teal-bright); stroke-width:1.2;
+    transform-origin:280px 128px; opacity:0;
+    animation: hub-pulse 3.2s ease-out infinite;
+  }
+  .hub-ring--2{ animation-delay:1.6s; }
+  @keyframes hub-pulse{
+    0%{ transform:scale(1); opacity:.55; }
+    70%{ transform:scale(1.75); opacity:0; }
+    100%{ transform:scale(1.75); opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){ .hub-ring{ animation:none; opacity:0; } }
+
+  /* Endpoint chips read as terminals on the payment rail */
+  .bridge-labels .currency-chip{ position:relative; padding-left:26px; }
+  .bridge-labels .currency-chip::before{
+    content:""; position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    width:6px; height:6px; border-radius:50%; background: var(--gold-bright);
+    box-shadow: 0 0 0 3px rgba(228,192,119,0.14);
+    animation: node-blink 2.6s ease-in-out infinite;
+  }
+  .bridge-labels .currency-chip--to::before{
+    background: var(--teal-bright); box-shadow: 0 0 0 3px rgba(110,207,192,0.14);
+    animation-delay:1.3s;
+  }
+  @keyframes node-blink{ 0%,100%{ opacity:.45; } 50%{ opacity:1; } }
+  @media (prefers-reduced-motion: reduce){ .bridge-labels .currency-chip::before{ animation:none; opacity:1; } }
+
+  /* Rail reading order: the span first, then its two terminals beneath the
+     feet where the payment enters and leaves, then the settlement statuses. */
+  .bridge-box{ position:relative; display:flex; flex-direction:column; }
+  .bridge-box > svg{ order:1; }
+  .bridge-labels{ order:2; padding-top:4px; }
+  .flow-strip{ order:3; }
 
   /* ---- Payment flow strip (hero) ---- */
   .flow-strip{
@@ -389,7 +427,7 @@
     .flow-step .flow-dot::after{ background: var(--teal-bright); }
     .flow-step .flow-label{ color: var(--text-muted); }
   }
-  .bridge-labels{ display:flex; justify-content:space-between; flex-wrap:nowrap; padding: 0 0 16px; gap:8px; }
+  .bridge-labels{ display:flex; justify-content:space-between; flex-wrap:nowrap; padding: 0; gap:8px; }
 
   /* PROBLEM */
   .problem{ padding: var(--section-y) 0; background: var(--bg-alt); }
@@ -500,7 +538,36 @@
   }
 
   /* ---- Categories: compact numbered tiles, a different rhythm to the bento ---- */
-  .cat-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:14px; counter-reset: cat; }
+  /* Asymmetric category layout: an uneven lead row over an even second row,
+     each category carrying its own accent so they don't read as one list. */
+  .cat-grid{ display:grid; grid-template-columns: repeat(12,1fr); gap:16px; counter-reset: cat; }
+  .cat-1{ grid-column: span 7; }
+  .cat-2{ grid-column: span 5; }
+  .cat-3, .cat-4, .cat-5, .cat-6{ grid-column: span 3; }
+  .cat-1, .cat-2{ min-height:160px; }
+  .cat-1 h3, .cat-2 h3{ font-size: clamp(19px,1.7vw,23px); }
+
+  /* Per-category accent: alternating brand hue on the rail, icon and index */
+  .cat-2 .cat-accent, .cat-4 .cat-accent, .cat-6 .cat-accent{ --cat-hue: var(--teal-bright); }
+  .cat-card{ --cat-hue: var(--gold-bright); }
+  .cat-2, .cat-4, .cat-6{ --cat-hue: var(--teal-bright); }
+  .cat-card svg{ color: var(--cat-hue) !important; }
+  .cat-card::before{ background: var(--cat-hue) !important; }
+  .cat-card::after{ color: var(--cat-hue); opacity:.35; font-size:15px; }
+
+  /* Large ghost index in the corner adds depth without extra text */
+  .cat-card{ isolation:isolate; }
+  .cat-1::after, .cat-2::after{ font-size:20px; }
+
+  @media (max-width: 900px){
+    .cat-grid{ grid-template-columns: repeat(2,1fr); }
+    .cat-1, .cat-2, .cat-3, .cat-4, .cat-5, .cat-6{ grid-column: span 1; }
+    .cat-1, .cat-2{ min-height:0; }
+  }
+  @media (max-width: 560px){
+    .cat-grid{ grid-template-columns: 1fr; }
+  }
+
   .cat-card{
     counter-increment: cat; position:relative;
     border:1px solid var(--line); border-radius: var(--radius-sm);
@@ -546,6 +613,45 @@
     color: var(--text-dim); font-size:18px;
   }
   @media (max-width: 560px){ .mech-strip{ gap:8px; } .mech-strip li{ padding:10px 14px; font-size: var(--fs-micro); } }
+
+  /* ---- Cashback tier visual: bars rise with turnover, rate sits above each ---- */
+  .tier-viz{
+    display:grid; grid-template-columns: repeat(4,1fr); gap:16px;
+    align-items:end; height:210px; margin:0 0 34px;
+    padding:0 4px;
+  }
+  .tier{ display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; gap:10px; }
+  .tier-pct{
+    font-family:'PT Serif',serif; font-weight:700; font-size:19px;
+    color: var(--text-muted); transition: color .3s ease;
+  }
+  .tier-pct.is-top{
+    font-size:30px;
+    background: linear-gradient(90deg, var(--gold-bright), var(--teal-bright));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .tier-bar{
+    width:100%; max-width:96px; border-radius:10px 10px 4px 4px;
+    height: var(--h); min-height:24px;
+    background: linear-gradient(180deg, rgba(228,192,119,0.55), rgba(79,184,166,0.18));
+    border:1px solid var(--line-strong); border-bottom:none;
+    transform-origin:bottom; transform: scaleY(0);
+    transition: transform .8s cubic-bezier(.2,.8,.2,1), background .3s ease;
+  }
+  .tier-viz.is-shown .tier-bar{ transform: scaleY(1); }
+  .tier:nth-child(1) .tier-bar{ transition-delay:.05s; background: linear-gradient(180deg, var(--gold-bright), rgba(228,192,119,0.25)); }
+  .tier:nth-child(2) .tier-bar{ transition-delay:.15s; }
+  .tier:nth-child(3) .tier-bar{ transition-delay:.25s; }
+  .tier:nth-child(4) .tier-bar{ transition-delay:.35s; }
+  .tier:hover .tier-pct{ color: var(--gold-bright); }
+  .tier-cap{ font-size: var(--fs-micro); color: var(--text-dim); white-space:nowrap; }
+  @media (prefers-reduced-motion: reduce){ .tier-bar{ transform:scaleY(1); } }
+  @media (max-width: 560px){
+    .tier-viz{ height:160px; gap:10px; }
+    .tier-pct{ font-size:15px; }
+    .tier-pct.is-top{ font-size:22px; }
+    .tier-cap{ font-size:10px; }
+  }
 
   /* ---- Tech split: capability rows + integration panel ---- */
   .tech-split{ display:grid; grid-template-columns: 1.15fr 0.85fr; gap:44px; align-items:start; }
@@ -621,7 +727,33 @@
   }
   .bento-tile:hover{ transform: translateY(-4px); border-color: var(--line-strong); box-shadow: var(--shadow-md); }
   .bento-tile:hover::before{ opacity:1; }
-  .bento-tile--wide{ grid-column: span 2; padding:32px 30px; }
+  .bento-tile--wide{ grid-column: span 2; padding:34px 32px; min-height:230px; justify-content:flex-start; }
+  .bento-tile--wide h3{ font-size: clamp(20px,1.9vw,26px); }
+  .bento-tile--wide p{ font-size: var(--fs-body); }
+
+  /* Same-day settlement rail: pay-in and pay-out sit on one day */
+  .tile-rail{ display:flex; align-items:center; gap:10px; margin-top:auto; padding-top:18px; }
+  .rail-pt{
+    width:14px; height:14px; border-radius:50%; flex-shrink:0;
+    border:1.5px solid var(--gold-bright); display:flex; align-items:center; justify-content:center;
+  }
+  .rail-pt i{ width:5px; height:5px; border-radius:50%; background: var(--gold-bright); }
+  .rail-pt--end{ border-color: var(--teal-bright); }
+  .rail-pt--end i{ background: var(--teal-bright); }
+  .rail-line{
+    flex:1; height:2px; border-radius:2px;
+    background: linear-gradient(90deg, var(--gold-bright), var(--teal-bright));
+    position:relative; overflow:hidden;
+  }
+  .rail-line::after{
+    content:""; position:absolute; top:0; left:-40%; width:40%; height:100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.75), transparent);
+    animation: rail-sweep 2.6s ease-in-out infinite;
+  }
+  @keyframes rail-sweep{ 0%{ left:-40%; } 60%,100%{ left:110%; } }
+  @media (prefers-reduced-motion: reduce){ .rail-line::after{ animation:none; opacity:0; } }
+
+  .tile-figure-sm{ font-family:'PT Serif',serif; font-weight:700; font-size:20px; line-height:1; white-space:nowrap; }
   .bento-tile--accent{
     background:
       radial-gradient(120% 140% at 100% 0%, rgba(228,192,119,0.12), transparent 55%),
@@ -879,6 +1011,26 @@
   /* Swap-widget layout: two stacked cells with a fixed direction indicator
      between them. Direction only — no amounts or rates are shown, since the
      project holds no rate data. */
+  /* Live indicator + requirement row make the panel read as a working surface */
+  .xc-live{ margin-left:auto; display:flex; align-items:center; }
+  .xc-live i{
+    width:7px; height:7px; border-radius:50%; background: var(--success);
+    box-shadow: 0 0 0 3px rgba(79,184,166,0.16);
+    animation: xc-live 2.2s ease-in-out infinite;
+  }
+  @keyframes xc-live{ 0%,100%{ opacity:.4; } 50%{ opacity:1; } }
+  @media (prefers-reduced-motion: reduce){ .xc-live i{ animation:none; opacity:1; } }
+  .xc-req{
+    display:flex; align-items:center; gap:10px;
+    padding:13px 0 0; margin-top:16px; border-top:1px solid var(--line);
+    font-size: var(--fs-micro); color: var(--text-dim);
+  }
+  .xc-req svg{ width:16px; height:16px; flex-shrink:0; color: var(--gold-bright); opacity:.85; }
+  .xc-req-state{
+    margin-left:auto; color: var(--gold-bright); font-weight:700;
+    padding:3px 9px; border-radius:999px; border:1px solid rgba(228,192,119,0.3);
+  }
+
   .xc-stack{ position:relative; padding:26px 0 20px; display:flex; flex-direction:column; gap:10px; }
   .xc-cell{
     display:flex; align-items:center; justify-content:space-between; gap:14px;
@@ -1011,7 +1163,7 @@
     <div>
       <div class="eyebrow" data-i18n="hero.eyebrow">приём оплат для бизнеса: Грузия и весь мир</div>
       <h1 data-i18n-html="hero.h1">Постройте <em>моsт</em> между рублём и вашей выручкой</h1>
-      <p data-i18n-html="hero.p">Клиент сканирует QR и платит рублём с любой карты РФ. Деньги приходят вам на следующий день — в лари, долларах, евро или USDT. А сверху — кэшбек с каждой оплаты, которую вы принимаете. Также предоставляем <span class="exchange-inline-link" data-tab="exchange">обмен рублей на USDT</span>.</p>
+      <p data-i18n-html="hero.p">Клиент сканирует QR и платит рублём с любой карты РФ. Деньги приходят вам в день оплаты — в лари, долларах, евро или USDT. А сверху — кэшбек с каждой оплаты, которую вы принимаете. Также предоставляем <span class="exchange-inline-link" data-tab="exchange">обмен рублей на USDT</span>.</p>
       <div class="hero-ctas">
         <button class="btn btn-primary tab-jump" data-tab="apply" data-i18n="hero.cta1">Оставить заявку</button>
         <button class="btn btn-ghost tab-jump" data-tab="how" data-i18n="hero.cta2">Как это работает</button>
@@ -1028,11 +1180,29 @@
           <span data-i18n="bridge.right">ваш счёт</span>
         </div>
       </div>
-      <svg id="bridgeSvg" viewBox="0 0 560 320" width="100%">
+      <svg id="bridgeSvg" viewBox="0 0 560 340" width="100%">
         <path id="archPath" d="M15,280 C15,75 545,75 545,280" fill="none" stroke="none"/>
-        <line x1="5" y1="290" x2="555" y2="290" stroke="#93A9BB" stroke-opacity="0.35" stroke-width="1.5"/>
+        <line x1="5" y1="290" x2="555" y2="290" stroke="#93A9BB" stroke-opacity="0.28" stroke-width="1.5"/>
+
+        <!-- soft glow beneath the span, then the span itself -->
+        <path d="M15,280 C15,75 545,75 545,280" fill="none" stroke="url(#bridgeArcGrad)"
+              stroke-width="9" stroke-linecap="round" opacity="0.16" filter="url(#dotGlow)"/>
         <path d="M15,280 C15,75 545,75 545,280" fill="none" stroke="url(#bridgeArcGrad)" stroke-width="3" stroke-linecap="round"/>
+
         <g id="struts"></g>
+
+        <!-- MOST as the hub the payment passes through -->
+        <g class="hub">
+          <circle class="hub-ring" cx="280" cy="128" r="30"/>
+          <circle class="hub-ring hub-ring--2" cx="280" cy="128" r="30"/>
+          <circle cx="280" cy="128" r="27" fill="#0B1B29" stroke="url(#bridgeArcGrad)" stroke-width="1.6"/>
+          <g transform="translate(280,124) scale(0.72) translate(-15,-15)">
+            <path d="M2 22C2 22 8 12 15 12C22 12 28 22 28 22" stroke="url(#logoGrad)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            <line x1="2" y1="22" x2="28" y2="22" stroke="#93A9BB" stroke-width="1.7" stroke-linecap="round"/>
+          </g>
+          <text x="280" y="176" text-anchor="middle" class="hub-label">MOST</text>
+        </g>
+
         <g id="dots" filter="url(#dotGlow)"></g>
       </svg>
 
@@ -1115,6 +1285,7 @@
           <path d="M17 21l4-4-4-4"/><path d="M21 17H8a4 4 0 0 1-4-4v-1"/>
         </svg>
         <span class="xc-brand">MOST EXCHANGE</span>
+          <span class="xc-live" aria-hidden="true"><i></i></span>
       </div>
       <div class="xc-stack">
         <div class="xc-cell">
@@ -1130,6 +1301,11 @@
           <span class="xc-role" data-i18n="exchange.get">вы получаете</span>
           <span class="xc-cur">USDT</span>
         </div>
+      </div>
+      <div class="xc-req">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2.2"/><path d="M5.5 17c.8-1.9 2-2.8 3.5-2.8s2.7.9 3.5 2.8M15 9.5h4M15 13h4"/></svg>
+        <span data-i18n="exchange.reqLabel">Верификация по паспорту</span>
+        <span class="xc-req-state" data-i18n="exchange.reqValue">обязательна</span>
       </div>
       <div class="xc-note" data-i18n="exchange.dir">Единственное направление обмена</div>
     </div>
@@ -1313,32 +1489,32 @@
       <p data-i18n="types.p">Работаем с юридическими лицами, предпринимателями и самозанятыми в Грузии и по всему миру — в любой сфере, где есть оплата от клиента.</p>
     </div>
     <div class="cat-grid">
-      <div class="cat-card">
+      <div class="cat-card cat-1">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l1-5h16l1 5M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9M9 20v-6h6v6"/></svg>
         <h3 data-i18n="types.t1">Розница и сети</h3>
         <p data-i18n="types.d1">Супермаркеты, магазины у дома, сетевой ритейл — от одной точки до десятков касс</p>
       </div>
-      <div class="cat-card">
+      <div class="cat-card cat-2">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11h18M6 11V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4M6 21V11M18 21V11M4 21h16"/></svg>
         <h3 data-i18n="types.t2">HoReCa</h3>
         <p data-i18n="types.d2">Кафе, рестораны, бары — оплата прямо у столика или на кассе</p>
       </div>
-      <div class="cat-card">
+      <div class="cat-card cat-3">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 2 8l10 6 10-6-10-6zM2 16l10 6 10-6M2 12l10 6 10-6"/></svg>
         <h3 data-i18n="types.t3">Туризм и услуги</h3>
         <p data-i18n="types.d3">Отели, экскурсии, прокат — приём оплат там, где турист принимает решение</p>
       </div>
-      <div class="cat-card">
+      <div class="cat-card cat-4">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21V9l8-6 8 6v12M9 21v-6h6v6"/></svg>
         <h3 data-i18n="types.t4">Недвижимость</h3>
         <p data-i18n="types.d4">Аренда и продажа — крупные чеки, где даже небольшой процент кэшбека ощутим</p>
       </div>
-      <div class="cat-card">
+      <div class="cat-card cat-5">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M2 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 2-1.6L21 7H5.2"/></svg>
         <h3 data-i18n="types.t5">Интернет-магазины</h3>
         <p data-i18n="types.d5">Оплата на сайте или в мессенджере — платёжная ссылка без кассы</p>
       </div>
-      <div class="cat-card">
+      <div class="cat-card cat-6">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg>
         <h3 data-i18n="types.t6">Онлайн-сервисы</h3>
         <p data-i18n="types.d6">Подписки, курсы, цифровые услуги — оплата в один клик</p>
@@ -1366,20 +1542,27 @@
         </div>
       </article>
 
-      <!-- Lead tile: cashback, reusing the headline figure from the cashback section -->
+      <!-- Lead tile: same-day settlement, shown as a one-day timeline -->
       <article class="bento-tile bento-tile--wide bento-tile--accent">
         <div class="tile-top">
-          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 16.5 6.5 19.5l1-6.3L3 8.9 9 8z"/></svg>
-          <span class="tile-figure gradient-text" data-i18n="cashback.figBig">до 0.5%</span>
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
         </div>
-        <h3 data-i18n="benefits.t4">Кэшбек с оборота</h3>
-        <p data-i18n="benefits.d4">Единственное предложение на рынке, где вы зарабатываете на приёме оплат сверх выручки.</p>
+        <h3 data-i18n="benefits.t2">Выплата день в день</h3>
+        <p data-i18n="benefits.d2">Взаиморасчёты без задержек — деньги приходят в день оплаты клиентом.</p>
+        <div class="tile-rail" aria-hidden="true">
+          <span class="rail-pt"><i></i></span>
+          <span class="rail-line"></span>
+          <span class="rail-pt rail-pt--end"><i></i></span>
+        </div>
       </article>
 
       <article class="bento-tile">
-        <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-        <h3 data-i18n="benefits.t2">Выплата день в день</h3>
-        <p data-i18n="benefits.d2">Взаиморасчёты без задержек — деньги приходят в день оплаты клиентом.</p>
+        <div class="tile-top">
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 16.5 6.5 19.5l1-6.3L3 8.9 9 8z"/></svg>
+          <span class="tile-figure-sm gradient-text" data-i18n="cashback.figBig">до 0.5%</span>
+        </div>
+        <h3 data-i18n="benefits.t4">Кэшбек с оборота</h3>
+        <p data-i18n="benefits.d4">Единственное предложение на рынке, где вы зарабатываете на приёме оплат сверх выручки.</p>
       </article>
 
       <article class="bento-tile">
@@ -1489,6 +1672,31 @@
       <li class="mech-arrow" aria-hidden="true">→</li>
       <li class="mech-end"><span class="mech-i">03</span><span data-i18n="cashback.th3">Ваш кэшбек</span></li>
     </ol>
+
+    <!-- Tier visual built strictly from the table below: bar height reflects the
+         turnover band, the label above is that band's cashback rate. -->
+    <div class="tier-viz" aria-hidden="true">
+      <div class="tier" style="--h:34%">
+        <span class="tier-pct is-top">0.5%</span>
+        <span class="tier-bar"></span>
+        <span class="tier-cap">50 000</span>
+      </div>
+      <div class="tier" style="--h:56%">
+        <span class="tier-pct">0.3%</span>
+        <span class="tier-bar"></span>
+        <span class="tier-cap">150 000</span>
+      </div>
+      <div class="tier" style="--h:78%">
+        <span class="tier-pct">0.2%</span>
+        <span class="tier-bar"></span>
+        <span class="tier-cap">500 000</span>
+      </div>
+      <div class="tier" style="--h:100%">
+        <span class="tier-pct">0.1%</span>
+        <span class="tier-bar"></span>
+        <span class="tier-cap">500 000+</span>
+      </div>
+    </div>
 
     <div class="table-wrap">
       <table>
@@ -1628,6 +1836,24 @@
 </footer>
 
 <script>
+  /* ---------- Cashback tier bars: grow in when the section is reached ---------- */
+  (function(){
+    const viz = document.querySelector('.tier-viz');
+    if(!viz) return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      viz.classList.add('is-shown');
+      return;
+    }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if(!e.isIntersecting) return;
+        viz.classList.add('is-shown');
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.3 });
+    io.observe(viz);
+  })();
+
   /* ---------- Integration panel: stages confirm in sequence on first view ---------- */
   (function(){
     const panel = document.querySelector('.int-panel');
@@ -2062,7 +2288,7 @@
     en: {
       nav:{how:"How it works",benefits:"Benefits",cashback:"Cashback",apply:"Apply",cta:"Connect your business",ctaShort:"Connect",ctaTail:"business",ctaExchangeA:"Exchange RUB",ctaExchangeB:"USDT",exchange:"Exchange"},
       flow:{s1:"Payment received",s2:"Processing",s3:"Payout to business"},
-      hero:{eyebrow:"payment acceptance for business — Georgia and worldwide",h1:"Build a <em>bridge</em> between ruble payments and your revenue",p:"Your customer scans a QR code and pays in rubles with any Russian bank card. Money lands in your account the next day — in GEL, USD, EUR, or USDT. Plus cashback on every payment you accept. We also offer <span class=\"exchange-inline-link\" data-tab=\"exchange\">RUB to USDT exchange</span>.",cta1:"Submit application",cta2:"How it works"},
+      hero:{eyebrow:"payment acceptance for business — Georgia and worldwide",h1:"Build a <em>bridge</em> between ruble payments and your revenue",p:"Your customer scans a QR code and pays in rubles with any Russian bank card. Money lands in your account the same day — in GEL, USD, EUR, or USDT. Plus cashback on every payment you accept. We also offer <span class=\"exchange-inline-link\" data-tab=\"exchange\">RUB to USDT exchange</span>.",cta1:"Submit application",cta2:"How it works"},
       bridge:{left:"customer",right:"your account"},
       showcase:{eyebrow:"what it looks like",h2:"Payment in two taps — from the customer's side",p:"No new terminal at the till. The customer just takes out their phone.",f1:"The cashier shows a QR code on screen or on the receipt",f2:"The customer scans it with the camera in their banking app — it's a standard SBP QR code",f3:"Payment confirmed — the money is already on its way to your account",counterLabel:"till",amount:"1,038 ₽",amountLabel:"amount due",sbpBadge:"SBP",sbpNote:"The QR follows the <b>SBP</b> (Faster Payments System) standard — recognized by any Russian banking app",clientPays:"customer pays",youReceive:"you receive"},
       problem:{eyebrow:"why this matters",h2:"Your customers are already here. Their money isn't.",li1:"Mir cards don't work outside Russia — the customer simply can't pay at the till",li2:"They go looking for a currency exchange or withdraw cash at a poor rate — some just walk away without buying",li3:"Every failed payment is revenue that never reached your register",li4:"QR acceptance solves this in two taps, with no new hardware and no change to your process",chain3:"payment in rubles"},
@@ -2073,14 +2299,14 @@
       cashback:{eyebrow:"something others don't offer",h2:"Higher cashback for smaller businesses",p:"The customer pays the fee — you don't lose anything from your revenue. Smaller businesses get a higher cashback percentage so the bonus is meaningful even on modest turnover. For larger businesses and chains the percentage is more modest, but volume keeps the amount substantial.",figBig:"up to 0.5%",figCap:"cashback for small and local businesses",th1:"Monthly turnover",th3:"Your cashback",note:"The exact percentage is fixed in the contract and depends on turnover and average ticket size. Cashback is credited together with your regular payout."},
       trust:{caption:"Numbers from the payment infrastructure we run on",stat1:"transactions",stat1suffix:"M+",stat2:"successful payments",stat3:"partners in 5 countries",stat4:"SLA reliability",stat4num:"99.98%",item2:"Same-day payout",item3:"24/7 support",item4:"Built-in CRM & analytics"},
       apply:{eyebrow:"get started",h2:"Connect QR payments and start earning cashback",p:"Fill in the form — we'll get in touch within 15 minutes and work out terms for your turnover. Or reach out directly.",tg:"Message us on Telegram",name:"Name",namePh:"How should we address you",contact:"Phone / Telegram",contactPh:"+995 5xx xx xx xx or @username",city:"City",cityPh:"Batumi, Tbilisi…",business:"Business name",businessPh:"What's your business called",type:"Business type",typeOpt0:"Select an option",typeOpt1:"Supermarket / retail chain",typeOpt2:"Café, restaurant, bar",typeOpt3:"Retail store",typeOpt4:"Services (salon, spa, rental)",typeOpt5:"Other",consent:"By submitting this form you agree to the processing of your personal data.",submit:"Submit application",successH:"Application sent",successP:"We'll be in touch shortly to discuss your connection terms.",error:"Couldn't send the application. Try messaging us on Telegram directly."},
-      exchange:{eyebrow:"currency exchange",h2:"RUB to USDT exchange",p:"We accept payment in rubles by QR — and pay out USDT. Every exchange is carried out with passport identity verification, in line with National Bank of Georgia requirements.",license:"Compliant with National Bank of Georgia requirements",cta:"Message the bot",give:"you send",get:"you receive",dir:"The only exchange direction"},
+      exchange:{eyebrow:"currency exchange",h2:"RUB to USDT exchange",p:"We accept payment in rubles by QR — and pay out USDT. Every exchange is carried out with passport identity verification, in line with National Bank of Georgia requirements.",license:"Compliant with National Bank of Georgia requirements",cta:"Message the bot",give:"you send",get:"you receive",reqLabel:"Passport verification",reqValue:"required",dir:"The only exchange direction"},
       referral:{eyebrow:"partner program",h2:"Refer a business — earn a reward",p:"Recommend us to a business that signs up for QR payment acceptance — and earn a percentage of its turnover for as long as it stays with us. No limit on how many businesses you refer.",cta:"Message us on Telegram",figCap:"of the referred business's turnover, every month"},
       footer:{note:"MOST is a connection partner for QR payment acceptance for businesses in Georgia and worldwide. Payments are processed on certified international payment infrastructure.",link1:"How it works",link2:"Apply"}
     },
     ka: {
       nav:{how:"როგორ მუშაობს",benefits:"უპირატესობები",cashback:"ქეშბექი",apply:"განაცხადი",cta:"დაუკავშირეთ ბიზნესი",ctaShort:"დაკავშირება",ctaTail:"ბიზნესი",ctaExchangeA:"გაცვლა RUB",ctaExchangeB:"USDT",exchange:"გაცვლა"},
       flow:{s1:"გადახდა მიღებულია",s2:"დამუშავება",s3:"გადარიცხვა ბიზნესს"},
-      hero:{eyebrow:"გადახდების მიღება ბიზნესისთვის — საქართველო და მთელი მსოფლიო",h1:"ააშენეთ <em>ხიდი</em> რუბლში გადახდასა და თქვენს შემოსავალს შორის",p:"თქვენი მომხმარებელი სკანირებს QR კოდს და იხდის რუბლში ნებისმიერი რუსული ბანკის ბარათით. თანხა თქვენს ანგარიშზე ირიცხება მეორე დღესვე — ლარში, დოლარში, ევროში ან USDT-ში. დამატებით იღებთ ქეშბექს ყოველ გადახდაზე. ასევე გთავაზობთ <span class=\"exchange-inline-link\" data-tab=\"exchange\">რუბლის გაცვლას USDT-ზე</span>.",cta1:"განაცხადის გაგზავნა",cta2:"როგორ მუშაობს"},
+      hero:{eyebrow:"გადახდების მიღება ბიზნესისთვის — საქართველო და მთელი მსოფლიო",h1:"ააშენეთ <em>ხიდი</em> რუბლში გადახდასა და თქვენს შემოსავალს შორის",p:"თქვენი მომხმარებელი სკანირებს QR კოდს და იხდის რუბლში ნებისმიერი რუსული ბანკის ბარათით. თანხა თქვენს ანგარიშზე ირიცხება გადახდის დღესვე — ლარში, დოლარში, ევროში ან USDT-ში. დამატებით იღებთ ქეშბექს ყოველ გადახდაზე. ასევე გთავაზობთ <span class=\"exchange-inline-link\" data-tab=\"exchange\">რუბლის გაცვლას USDT-ზე</span>.",cta1:"განაცხადის გაგზავნა",cta2:"როგორ მუშაობს"},
       bridge:{left:"მომხმარებელი",right:"თქვენი ანგარიში"},
       showcase:{eyebrow:"როგორ გამოიყურება",h2:"გადახდა ორ შეხებაში — მომხმარებლის თვალით",p:"ახალი ტერმინალის გარეშე სალაროზე. მომხმარებელი უბრალოდ იღებს ტელეფონს.",f1:"მოლარე აჩვენებს QR კოდს ეკრანზე ან ჩეკზე",f2:"მომხმარებელი სკანირებს მას საბანკო აპლიკაციის კამერით — ეს არის სტანდარტული SBP QR კოდი",f3:"გადახდა დადასტურებულია — თანხა უკვე თქვენი ანგარიშისკენ მიემართება",counterLabel:"სალარო",amount:"1 038 ₽",amountLabel:"გადასახდელი",sbpBadge:"SBP",sbpNote:"QR აგებულია <b>SBP</b> (სწრაფი გადახდების სისტემის) სტანდარტით — მას აღიარებს ნებისმიერი რუსული საბანკო აპლიკაცია",clientPays:"მომხმარებელი იხდის",youReceive:"თქვენ იღებთ"},
       problem:{eyebrow:"რატომაა ეს მნიშვნელოვანი",h2:"თქვენი მომხმარებლები უკვე აქ არიან. ფული — არა.",li1:"ბარათი «მირ» რუსეთის ფარგლებს გარეთ არ მუშაობს — მომხმარებელს ფიზიკურად არ შეუძლია გადაიხადოს სალაროსთან",li2:"ის ეძებს გადამცვლელ პუნქტს ან იღებს ნაღდ ფულს არახელსაყრელი კურსით — ნაწილი უბრალოდ ტოვებს მაღაზიას შესყიდვის გარეშე",li3:"ყოველი ვერშედგარი გადახდა — თქვენს სალაროზე ვერმისული შემოსავალია",li4:"QR-გადახდა ამას წყვეტს ორ შეხებაში, ახალი აპარატურის ან პროცესის შეცვლის გარეშე",chain3:"გადახდა რუბლში"},
@@ -2091,7 +2317,7 @@
       cashback:{eyebrow:"რაც სხვას არ აქვს",h2:"მცირე ბიზნესს — მაღალი ქეშბექი",p:"საკომისიოს იხდის მომხმარებელი — თქვენ ვერაფერს კარგავთ თქვენი შემოსავლიდან. მცირე ბიზნესები იღებენ უფრო მაღალ ქეშბექის პროცენტს, რომ ბონუსი შესამჩნევი იყოს მცირე ბრუნვაზეც. დიდი ბიზნესისა და ქსელებისთვის პროცენტი უფრო მოკრძალებულია, თუმცა მოცულობის ხარჯზე თანხა მაინც საგრძნობი რჩება.",figBig:"0.5%-მდე",figCap:"ქეშბექი მცირე და ლოკალური ბიზნესისთვის",th1:"თვიური ბრუნვა",th3:"თქვენი ქეშბექი",note:"ზუსტი პროცენტი განისაზღვრება ხელშეკრულებაში და დამოკიდებულია ბრუნვასა და საშუალო ჩეკზე. ქეშბექი ირიცხება რიგით გადახდასთან ერთად."},
       trust:{caption:"იმ გადახდის ინფრასტრუქტურის მაჩვენებლები, რომელზეც ვმუშაობთ",stat1:"ტრანზაქცია",stat1suffix:" მლნ+",stat2:"წარმატებული გადახდა",stat3:"პარტნიორი 5 ქვეყანაში",stat4:"SLA საიმედოობა",stat4num:"99.98%",item2:"გადახდა იმავე დღეს",item3:"მხარდაჭერა 24/7",item4:"ჩაშენებული CRM და ანალიტიკა"},
       apply:{eyebrow:"დაწყება",h2:"დააკავშირეთ QR-გადახდები და მიიღეთ ქეშბექი",p:"შეავსეთ ფორმა — დაგიკავშირდებით 15 წუთში და გამოვთვლით პირობებს თქვენი ბრუნვისთვის. ან მოგვწერეთ პირდაპირ.",tg:"მოგვწერეთ Telegram-ში",name:"სახელი",namePh:"როგორ მოგმართოთ",contact:"ტელეფონი / Telegram",contactPh:"+995 5xx xx xx xx ან @username",city:"ქალაქი",cityPh:"ბათუმი, თბილისი…",business:"ბიზნესის სახელი",businessPh:"როგორ ჰქვია თქვენს ობიექტს",type:"ბიზნესის ტიპი",typeOpt0:"აირჩიეთ ვარიანტი",typeOpt1:"სუპერმარკეტი / მაღაზიების ქსელი",typeOpt2:"კაფე, რესტორანი, ბარი",typeOpt3:"საცალო მაღაზია",typeOpt4:"მომსახურება (სალონი, სპა, გაქირავება)",typeOpt5:"სხვა",consent:"ფორმის გაგზავნით თქვენ eთანხმებით პერსონალურ მონაცემთა დამუშავებას.",submit:"განაცხადის გაგზავნა",successH:"განაცხადი გაგზავნილია",successP:"მალე დაგიკავშირდებით დაკავშირების პირობების განსახილველად.",error:"განაცხადის გაგზავნა ვერ მოხერხდა. სცადეთ პირდაპირ მოწერა Telegram-ში."},
-      exchange:{eyebrow:"სავალუტო გაცვლა",h2:"რუბლის გაცვლა USDT-ზე",p:"ვიღებთ გადახდას რუბლში QR-ით — და გავცემთ USDT-ს. ყოველი გაცვლა ხორციელდება პასპორტით ვინაობის დადასტურებით, საქართველოს ეროვნული ბანკის მოთხოვნების შესაბამისად.",license:"შესაბამისობაში ვართ საქართველოს ეროვნული ბანკის მოთხოვნებთან",cta:"მოწერეთ ბოტს",give:"თქვენ გასცემთ",get:"თქვენ იღებთ",dir:"გაცვლის ერთადერთი მიმართულება"},
+      exchange:{eyebrow:"სავალუტო გაცვლა",h2:"რუბლის გაცვლა USDT-ზე",p:"ვიღებთ გადახდას რუბლში QR-ით — და გავცემთ USDT-ს. ყოველი გაცვლა ხორციელდება პასპორტით ვინაობის დადასტურებით, საქართველოს ეროვნული ბანკის მოთხოვნების შესაბამისად.",license:"შესაბამისობაში ვართ საქართველოს ეროვნული ბანკის მოთხოვნებთან",cta:"მოწერეთ ბოტს",give:"თქვენ გასცემთ",get:"თქვენ იღებთ",reqLabel:"პასპორტით ვერიფიკაცია",reqValue:"სავალდებულოა",dir:"გაცვლის ერთადერთი მიმართულება"},
       referral:{eyebrow:"პარტნიორული პროგრამა",h2:"მოიყვანეთ ბიზნესი — მიიღეთ ჯილდო",p:"გვირჩიეთ ბიზნესს, რომელიც დაუკავშირდება QR-გადახდების მიღებას — და მიიღეთ პროცენტი მისი ბრუნვიდან, სანამ ის ჩვენთანაა. შემოტანილი ბიზნესების რაოდენობა შეუზღუდავია.",cta:"მოგვწერეთ Telegram-ში",figCap:"მოყვანილი ბიზნესის ბრუნვიდან, ყოველთვიურად"},
       footer:{note:"MOST არის QR-გადახდების მიღების დაკავშირების პარტნიორი ბიზნესისთვის საქართველოსა და მთელს მსოფლიოში. გადახდები მუშავდება სერტიფიცირებულ საერთაშორისო გადახდის ინფრასტრუქტურაზე.",link1:"როგორ მუშაობს",link2:"განაცხადი"}
     }
