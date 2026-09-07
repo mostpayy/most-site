@@ -1362,13 +1362,7 @@
     td.num{ font-size:17px; }
     thead th{ padding:0 14px 4px; }
   }
-  /* ---- 2. Pipeline: a payment visibly travels the path ---- */
-  .pipe::after{
-    content:""; position:absolute; top:10px; left:10%;
-    width:9px; height:9px; margin-top:-4px; margin-left:-4px; border-radius:50%;
-    background: var(--gold-bright);
-    box-shadow: 0 0 10px 2px var(--gold-a35);
-  }
+  /* ---- 2. Pipeline ---- */
   /* each node lights briefly as the payment passes it */
   .pipe-node.is-lit .pipe-dot{ border-color: var(--gold-bright); box-shadow: 0 0 0 6px var(--gold-a12); }
   .pipe-node.is-lit .pipe-ico{ border-color: var(--gold-a35); color: var(--gold-bright); transform: translateY(-3px); }
@@ -1396,7 +1390,6 @@
   .pay-chip.is-done{ color: var(--teal-bright); border-color: var(--teal-a35); background: var(--teal-a12); }
   .pay-chip.is-done i{ background: var(--teal-bright); }
   @media (max-width: 560px){ .pay-status{ margin:-14px 0 40px; } .pay-chip{ font-size:10px; padding:7px 12px; } }
-  @media (prefers-reduced-motion: reduce){ .pipe::after{ animation:none; opacity:0; } }
   /* --- Audit fix: comfortable tap targets on touch screens (vertical padding
      only, so the header's horizontal fit is unaffected) --- */
   @media (max-width: 560px){
@@ -1411,7 +1404,6 @@
     color:#F0BDB6; font-size: var(--fs-small); line-height:1.45;
   }
   /* Audit fix: halt the pipeline pulse while the block is off-screen */
-  .pipe.is-paused::after{ animation-play-state: paused; opacity:0; }
   /* ---- Conversion bands: quiet prompts after each value moment ----
      A hairline rule and generous air, not an advertising block. */
   .cta-band{ padding: clamp(40px, 5vw, 64px) 0; }
