@@ -1242,8 +1242,10 @@
   .xc-cur{ font-family:'PT Serif',serif; font-weight:700; font-size:clamp(22px,2.4vw,30px); color: var(--gold-bright); letter-spacing:-0.01em; }
   .xc-cell--to .xc-cur{ color: var(--teal-bright); }
   .xc-swap{
-    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-    width:38px; height:38px; border-radius:50%; z-index:1;
+    /* sits in the flow between the input and the payout options, so it stays
+       put now that there is more than one output cell */
+    align-self:center; margin:-2px 0;
+    width:38px; height:38px; border-radius:50%; z-index:1; flex-shrink:0;
     display:flex; align-items:center; justify-content:center;
     background: var(--surface-2); border:1px solid var(--line-strong);
     color: var(--text-muted); box-shadow: var(--shadow-sm);
@@ -1424,6 +1426,12 @@
     .cta-band-text{ font-size: var(--fs-body); }
     .cta-band .btn{ width:100%; }
   }
+  /* ---- Exchange: two payout options under one input ---- */
+  .xc-outs{ display:flex; flex-direction:column; gap:8px; }
+  .xc-outs-label{ padding-left:20px; margin-bottom:2px; }
+  .xc-outs .xc-cell{ flex-direction:column; align-items:flex-start; gap:4px; padding:15px 20px; }
+  .xc-ways{ font-size: var(--fs-small); color: var(--text-dim); }
+  .xc-outs .xc-cur{ font-size: clamp(20px,2.1vw,26px); }
 </style>
 </head>
 <body>
@@ -1604,8 +1612,8 @@
   <div class="wrap exchange-grid">
     <div class="exchange-copy">
       <div class="eyebrow" data-i18n="exchange.eyebrow">обмен валюты</div>
-      <h2 data-i18n="exchange.h2">Обмен рублей на USDT</h2>
-      <p data-i18n="exchange.p">Принимаем оплату в рублях по QR — выдаём USDT. Каждый обмен проходит с верификацией личности по паспорту, в соответствии с требованиями Национального банка Грузии.</p>
+      <h2 data-i18n="exchange.h2">Обмен рублей на USDT и GEL</h2>
+      <p data-i18n="exchange.p">Принимаем оплату в рублях по QR — выдаём USDT или GEL. GEL можно получить на счёт в банке или наличными через банкомат. Каждый обмен проходит с верификацией личности по паспорту, в соответствии с требованиями Национального банка Грузии.</p>
       <div class="exchange-license">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6z"/></svg>
         <span data-i18n="exchange.license">Соответствуем требованиям Национального банка Грузии</span>
@@ -1632,9 +1640,15 @@
             <path d="M12 4v16M6 14l6 6 6-6"/>
           </svg>
         </div>
-        <div class="xc-cell xc-cell--to">
-          <span class="xc-role" data-i18n="exchange.get">вы получаете</span>
-          <span class="xc-cur">USDT</span>
+        <div class="xc-outs">
+          <span class="xc-role xc-outs-label" data-i18n="exchange.get">вы получаете</span>
+          <div class="xc-cell xc-cell--to">
+            <span class="xc-cur">USDT</span>
+          </div>
+          <div class="xc-cell xc-cell--to">
+            <span class="xc-cur">GEL</span>
+            <span class="xc-ways" data-i18n="exchange.gelWays">на счёт в банке или наличными</span>
+          </div>
         </div>
       </div>
       <div class="xc-req">
@@ -1642,7 +1656,7 @@
         <span data-i18n="exchange.reqLabel">Верификация по паспорту</span>
         <span class="xc-req-state" data-i18n="exchange.reqValue">обязательна</span>
       </div>
-      <div class="xc-note" data-i18n="exchange.dir">Единственное направление обмена</div>
+      <div class="xc-note" data-i18n="exchange.dir">Направления обмена: RUB → USDT и RUB → GEL</div>
     </div>
   </div>
 </section>
@@ -2068,22 +2082,22 @@
       <div class="tier" data-tier="1" style="--h:34%">
         <span class="tier-pct is-top">0.5%</span>
         <span class="tier-bar"></span>
-        <span class="tier-cap">50 000</span>
+        <span class="tier-cap">$20 000</span>
       </div>
       <div class="tier" data-tier="2" style="--h:56%">
         <span class="tier-pct">0.3%</span>
         <span class="tier-bar"></span>
-        <span class="tier-cap">150 000</span>
+        <span class="tier-cap">$60 000</span>
       </div>
       <div class="tier" data-tier="3" style="--h:78%">
         <span class="tier-pct">0.2%</span>
         <span class="tier-bar"></span>
-        <span class="tier-cap">500 000</span>
+        <span class="tier-cap">$200 000</span>
       </div>
       <div class="tier" data-tier="4" style="--h:100%">
         <span class="tier-pct">0.1%</span>
         <span class="tier-bar"></span>
-        <span class="tier-cap">500 000+</span>
+        <span class="tier-cap">$200 000+</span>
       </div>
     </div>
 
@@ -2093,10 +2107,10 @@
           <tr><th data-i18n="cashback.th1">Оборот в месяц</th><th data-i18n="cashback.th3">Ваш кэшбек</th></tr>
         </thead>
         <tbody>
-          <tr data-tier="1"><td>до 50 000 GEL</td><td class="num">0.5%</td></tr>
-          <tr data-tier="2"><td>50 000 – 150 000 GEL</td><td class="num">0.3%</td></tr>
-          <tr data-tier="3"><td>150 000 – 500 000 GEL</td><td class="num">0.2%</td></tr>
-          <tr data-tier="4"><td>от 500 000 GEL</td><td class="num">0.1%</td></tr>
+          <tr data-tier="1"><td data-i18n="cashback.r1">до $20 000</td><td class="num">0.5%</td></tr>
+          <tr data-tier="2"><td data-i18n="cashback.r2">$20 000 – $60 000</td><td class="num">0.3%</td></tr>
+          <tr data-tier="3"><td data-i18n="cashback.r3">$60 000 – $200 000</td><td class="num">0.2%</td></tr>
+          <tr data-tier="4"><td data-i18n="cashback.r4">от $200 000</td><td class="num">0.1%</td></tr>
         </tbody>
       </table>
     </div>
@@ -2788,10 +2802,10 @@
       types:{eyebrow:"who it's for",h2:"From a single till to a whole chain — the solution scales with your business",p:"We work with companies, entrepreneurs and sole proprietors in Georgia and worldwide — in any field that takes payment from customers.",t1:"Retail & chains",d1:"Supermarkets, corner shops, retail chains — from one till to dozens",t2:"HoReCa",d2:"Cafés, restaurants, bars — payment right at the table or the counter",t3:"Tourism & services",d3:"Hotels, tours, rentals — accept payment where the tourist decides",t4:"Real estate",d4:"Rental and sales — large tickets where even a small cashback percentage adds up",t5:"Online stores",d5:"Payment on your website or in messenger — a payment link, no till needed",t6:"Online services",d6:"Subscriptions, courses, digital services — one-click payment"},
       benefits:{eyebrow:"benefits",h2:"Everything you need to stop losing payments from customers in Russia",t1:"Multi-currency payouts",d1:"Get paid in GEL, USD, EUR, or USDT — your choice.",t2:"Same-day payout",d2:"No delays in settlement — funds land the same day the customer pays.",t3:"No new hardware",d3:"QR instead of a new terminal. The application is a short questionnaire, nothing more.",t4:"Cashback on turnover",d4:"The only offer on the market where you earn on accepting payments, on top of revenue.",t5:"Certified security",d5:"Payment infrastructure is certified to PCI DSS Level 1.",t6:"Support that responds",d6:"We answer questions on setup and day-to-day operations without long queues."},
       tech:{pipe4:"Payment confirmed",snipNote:"Schematic illustration — not API documentation",eyebrow:"technical capabilities",h2:"Flexible integration for any business format",p:"From a simple QR at the till to full integration into your website or app.",t1:"SDK & API",d1:"Fast integration of payment acceptance into any digital product.",t2:"Telegram bot",d2:"Generate a payment QR straight from the messenger — no dashboard needed.",t3:"Payment links",d3:"Send a link to the customer — payment without a till or terminal.",t4:"AFT transactions",d4:"Flexible payout configuration to bank details.",t5:"Smart cascading",d5:"Automatic routing to an available bank — the payment goes through the first time.",t6:"Turnkey software",d6:"A ready solution built for your business, no development from scratch."},
-      cashback:{eyebrow:"something others don't offer",h2:"Higher cashback for smaller businesses",p:"The customer pays the fee — you don't lose anything from your revenue. Smaller businesses get a higher cashback percentage so the bonus is meaningful even on modest turnover. For larger businesses and chains the percentage is more modest, but volume keeps the amount substantial.",figBig:"up to 0.5%",figCap:"cashback for small and local businesses",th1:"Monthly turnover",th3:"Your cashback",note:"The exact percentage is fixed in the contract and depends on turnover and average ticket size. Cashback is credited together with your regular payout."},
+      cashback:{eyebrow:"something others don't offer",h2:"Higher cashback for smaller businesses",p:"The customer pays the fee — you don't lose anything from your revenue. Smaller businesses get a higher cashback percentage so the bonus is meaningful even on modest turnover. For larger businesses and chains the percentage is more modest, but volume keeps the amount substantial.",figBig:"up to 0.5%",figCap:"cashback for small and local businesses",r1:"up to $20,000",r2:"$20,000 – $60,000",r3:"$60,000 – $200,000",r4:"$200,000 and above",th1:"Monthly turnover",th3:"Your cashback",note:"The exact percentage is fixed in the contract and depends on turnover and average ticket size. Cashback is credited together with your regular payout."},
       trust:{caption:"Numbers from the payment infrastructure we run on",stat1:"transactions",stat1suffix:"M+",stat2:"successful payments",stat3:"partners in 5 countries",stat4:"SLA reliability",stat4num:"99.98%",item2:"Same-day payout",item3:"24/7 support",item4:"Built-in CRM & analytics"},
       apply:{eyebrow:"get started",h2:"Connect QR payments and start earning cashback",p:"Fill in the form — we'll get in touch within 15 minutes and work out terms for your turnover. Or reach out directly.",tg:"Message us on Telegram",name:"Name",namePh:"How should we address you",contact:"Phone / Telegram",contactPh:"+995 5xx xx xx xx or @username",city:"City",cityPh:"Batumi, Tbilisi…",business:"Business name",businessPh:"What's your business called",type:"Business type",typeOpt0:"Select an option",typeOpt1:"Supermarket / retail chain",typeOpt2:"Café, restaurant, bar",typeOpt3:"Retail store",typeOpt4:"Services (salon, spa, rental)",typeOpt5:"Other",consent:"By submitting this form you agree to the processing of your personal data.",submit:"Submit application",successH:"Application sent",successP:"We'll be in touch shortly to discuss your connection terms.",error:"Couldn't send the application. Try messaging us on Telegram directly."},
-      exchange:{eyebrow:"currency exchange",h2:"RUB to USDT exchange",p:"We accept payment in rubles by QR — and pay out USDT. Every exchange is carried out with passport identity verification, in line with National Bank of Georgia requirements.",license:"Compliant with National Bank of Georgia requirements",cta:"Message the bot",give:"you send",get:"you receive",reqLabel:"Passport verification",reqValue:"required",dir:"The only exchange direction"},
+      exchange:{eyebrow:"currency exchange",h2:"RUB to USDT and GEL exchange",p:"We accept payment in rubles by QR — and pay out USDT or GEL. GEL can be received to a bank account or in cash from an ATM. Every exchange is carried out with passport identity verification, in line with National Bank of Georgia requirements.",license:"Compliant with National Bank of Georgia requirements",cta:"Message the bot",give:"you send",get:"you receive",reqLabel:"Passport verification",reqValue:"required",dir:"Exchange directions: RUB to USDT and RUB to GEL",gelWays:"to a bank account or in cash"},
       referral:{eyebrow:"partner program",h2:"Refer a business — earn a reward",p:"Recommend us to a business that signs up for QR payment acceptance — and earn a percentage of its turnover for as long as it stays with us. No limit on how many businesses you refer.",cta:"Message us on Telegram",figCap:"of the referred business's turnover, every month"},
       footer:{note:"MOST is a connection partner for QR payment acceptance for businesses in Georgia and worldwide. Payments are processed on certified international payment infrastructure.",link1:"How it works",link2:"Apply"}
     },
