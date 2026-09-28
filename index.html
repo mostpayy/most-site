@@ -1518,6 +1518,34 @@
   .xc-src > *, .xc-asset > *, .btn > *, .tab-btn > *, .nav-tab-btn > *{
     pointer-events: none;
   }
+  /* ---- Affordance: only clickable things react ----
+     Non-interactive cards used to lift and glow on hover, which read as
+     "tap me". On touch screens that state also sticks after a tap, so the
+     block looked broken. Hover effects now apply only on pointer devices,
+     and the button-like lift is removed from elements that do nothing. */
+  @media (hover: none), (pointer: coarse){
+    .step-card:hover, .bento-tile:hover, .cat-card:hover, .trust-stat:hover,
+    .cashback-figure:hover, .referral-figure:hover, .tier:hover,
+    .problem-list li:hover, .showcase-flow-item:hover, .cap-row:hover,
+    .pipe-node:hover, .sub-item:hover, .story-node:hover,
+    .exchange-license:hover, .close-chain li:hover, tbody tr:hover{
+      transform: none; box-shadow: none; background: inherit;
+    }
+    .story-node:hover .story-ico,
+    .bento-tile:hover .tile-icon,
+    .cat-card:hover svg,
+    .pipe-node:hover .pipe-ico{ transform: none; }
+  }
+
+  /* No button-like lift on things that aren't buttons, on any device */
+  .step-card:hover, .bento-tile:hover, .trust-stat:hover,
+  .cashback-figure:hover, .referral-figure:hover, .cat-card:hover{
+    transform: none;
+  }
+
+  /* the inline link is genuinely interactive — keep it obvious and focusable */
+  .exchange-inline-link{ cursor: pointer; }
+  .exchange-inline-link:focus-visible{ outline: 2px solid var(--gold-bright); outline-offset: 3px; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -1585,7 +1613,7 @@
     <div>
       <div class="eyebrow" data-i18n="hero.eyebrow">приём оплат для бизнеса: Грузия и весь мир</div>
       <h1 data-i18n-html="hero.h1">Постройте <em>моsт</em> между рублём и вашей выручкой</h1>
-      <p data-i18n-html="hero.p">Клиент сканирует QR и платит рублём с любой карты РФ. Деньги приходят вам в день оплаты — в лари, долларах, евро или USDT. А сверху — кэшбек с каждой оплаты, которую вы принимаете. Также предоставляем <span class="exchange-inline-link" data-tab="exchange">обмен рублей на USDT</span>.</p>
+      <p data-i18n-html="hero.p">Клиент сканирует QR и платит рублём с любой карты РФ. Деньги приходят вам в день оплаты — в лари, долларах, евро или USDT. А сверху — кэшбек с каждой оплаты, которую вы принимаете. Также предоставляем <span class="exchange-inline-link" data-tab="exchange" role="button" tabindex="0">обмен рублей на USDT</span>.</p>
       <div class="hero-ctas">
         <button class="btn btn-primary tab-jump" data-tab="apply" data-i18n="hero.cta1">Оставить заявку</button>
         <button class="btn btn-ghost tab-jump" data-tab="how" data-i18n="hero.cta2">Как это работает</button>
@@ -2616,6 +2644,12 @@
   /* ---------- Section tabs: switches visible content, keeps nav height in sync ---------- */
   (function(){
     const tabBtns = document.querySelectorAll('.tab-btn, .nav-tab-btn, .tab-jump, .exchange-inline-link');
+    // the inline link is a span acting as a button — let the keyboard use it
+    document.querySelectorAll('.exchange-inline-link').forEach(el => {
+      el.addEventListener('keydown', ev => {
+        if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); el.click(); }
+      });
+    });
     const panels = document.querySelectorAll('.tab-panel');
 
     function activateTab(tabName){
