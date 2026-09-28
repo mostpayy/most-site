@@ -1432,6 +1432,77 @@
   .xc-outs .xc-cell{ flex-direction:column; align-items:flex-start; gap:4px; padding:15px 20px; }
   .xc-ways{ font-size: var(--fs-small); color: var(--text-dim); }
   .xc-outs .xc-cur{ font-size: clamp(20px,2.1vw,26px); }
+  /* ---- Direction picker: reads as a small app panel ---- */
+  .xc-field{ display:flex; flex-direction:column; gap:10px; }
+  .xc-role{ font-size: var(--fs-small); color: var(--text-dim); letter-spacing:.02em; }
+
+  /* segmented control, same vocabulary as the language switcher */
+  .xc-seg{
+    display:flex; gap:4px; padding:4px;
+    border:1px solid var(--a-08); border-radius: var(--radius-pill);
+    background: var(--bg);
+  }
+  .xc-src{
+    flex:1; display:flex; align-items:center; justify-content:center; gap:8px;
+    padding:11px 14px; border:none; border-radius: var(--radius-pill);
+    background: transparent; cursor:pointer;
+    font-family:'Golos Text', sans-serif; font-weight:700; font-size:15px;
+    letter-spacing:.03em; color: var(--text-dim);
+    transition: background var(--ease), color var(--ease);
+  }
+  .xc-src .s-tok{
+    font-size:13px; width:22px; height:22px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid currentColor; opacity:.75;
+  }
+  .xc-src:hover{ color: var(--text-muted); }
+  .xc-src.is-active{ background: var(--gold-bright); color:#1A1206; }
+  .xc-src.is-active .s-tok{ opacity:1; border-color: rgba(26,18,6,0.35); }
+
+  /* asset options */
+  .xc-outs{ display:flex; flex-direction:column; gap:8px; }
+  .xc-outs[hidden]{ display:none; }
+  .xc-asset{
+    display:flex; align-items:center; gap:12px; width:100%;
+    padding:13px 14px; cursor:pointer; text-align:left;
+    border:1px solid var(--a-08); border-radius: var(--radius-sm);
+    background: var(--bg);
+    transition: border-color var(--ease), background var(--ease);
+  }
+  .xc-asset:hover{ border-color: var(--a-20); }
+  .a-tok{
+    width:34px; height:34px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'PT Serif', serif; font-size:16px; font-weight:700;
+    color: var(--text-muted); border:1px solid var(--a-12);
+    transition: color var(--ease), border-color var(--ease);
+  }
+  .a-body{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .a-code{ font-family:'PT Serif', serif; font-weight:700; font-size:17px; color: var(--text); letter-spacing:.01em; }
+  .a-cap{ font-size:12px; color: var(--text-dim); line-height:1.35; }
+  .a-check{
+    margin-left:auto; width:20px; height:20px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    border-radius:50%; color:#1A1206; background: transparent;
+    opacity:0; transition: opacity var(--ease), background var(--ease);
+  }
+  .a-check svg{ width:12px; height:12px; }
+  .xc-asset.is-picked{ border-color: var(--gold-a35); background: var(--gold-a12); }
+  .xc-asset.is-picked .a-tok{ color: var(--gold-bright); border-color: var(--gold-a35); }
+  .xc-asset.is-picked .a-check{ opacity:1; background: var(--gold-bright); }
+
+  /* live pair readout */
+  .xc-pairbar{
+    display:flex; align-items:center; justify-content:center; gap:12px;
+    margin-top:4px; padding:12px; border-radius: var(--radius-sm);
+    border:1px dashed var(--a-12); color: var(--text-muted);
+    font-family:'PT Serif', serif; font-weight:700; font-size:17px;
+  }
+  .xc-pairbar .pb-from{ color: var(--gold-bright); }
+  .xc-pairbar .pb-to{ color: var(--teal-bright); }
+  .xc-pairbar .pb-arr{ color: var(--text-dim); font-size:14px; }
+  .xc-req{ transition: opacity var(--ease); }
+  .xc-req.is-dim{ opacity:.45; }
 </style>
 </head>
 <body>
@@ -1612,8 +1683,8 @@
   <div class="wrap exchange-grid">
     <div class="exchange-copy">
       <div class="eyebrow" data-i18n="exchange.eyebrow">обмен валюты</div>
-      <h2 data-i18n="exchange.h2">Обмен рублей на USDT и GEL</h2>
-      <p data-i18n="exchange.p">Принимаем оплату в рублях по QR — выдаём USDT или GEL. GEL можно получить на счёт в банке или наличными через банкомат. Каждый обмен проходит с верификацией личности по паспорту, в соответствии с требованиями Национального банка Грузии.</p>
+      <h2 data-i18n="exchange.h2">Обмен рублей и криптовалют</h2>
+      <p data-i18n="exchange.p">Принимаем оплату в рублях по QR — выдаём USDT или GEL. GEL можно получить на счёт в банке или наличными через банкомат. Операции с рублями проходят с верификацией личности по паспорту, в соответствии с требованиями Национального банка Грузии. В боте также доступен обмен USDT на BTC, ETH, LTC и GEL.</p>
       <div class="exchange-license">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6z"/></svg>
         <span data-i18n="exchange.license">Соответствуем требованиям Национального банка Грузии</span>
@@ -1630,33 +1701,101 @@
         <span class="xc-brand">MOST EXCHANGE</span>
           <span class="xc-live" aria-hidden="true"><i></i></span>
       </div>
+      <!-- Direction picker. Presentational only: it selects which pair is
+           shown — no amounts, rates or transactions here. -->
       <div class="xc-stack">
-        <div class="xc-cell">
+        <div class="xc-field">
           <span class="xc-role" data-i18n="exchange.give">вы отдаёте</span>
-          <span class="xc-cur">RUB</span>
+          <div class="xc-seg" role="tablist">
+            <button class="xc-src is-active" data-src="rub" role="tab" aria-selected="true"><span class="s-tok">₽</span>RUB</button>
+            <button class="xc-src" data-src="usdt" role="tab" aria-selected="false"><span class="s-tok">₮</span>USDT</button>
+          </div>
         </div>
+
         <div class="xc-swap" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 4v16M6 14l6 6 6-6"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M6 13l6 6 6-6"/>
           </svg>
         </div>
-        <div class="xc-outs">
-          <span class="xc-role xc-outs-label" data-i18n="exchange.get">вы получаете</span>
-          <div class="xc-cell xc-cell--to">
-            <span class="xc-cur">USDT</span>
+
+        <div class="xc-field">
+          <span class="xc-role" data-i18n="exchange.get">вы получаете</span>
+
+          <div class="xc-outs" data-for="rub">
+          <button class="xc-asset is-picked" data-asset="USDT">
+            <span class="a-tok">₮</span>
+            <span class="a-body">
+              <span class="a-code">USDT</span>
+            </span>
+            <span class="a-check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+            </span>
+          </button>
+          <button class="xc-asset" data-asset="GEL">
+            <span class="a-tok">₾</span>
+            <span class="a-body">
+              <span class="a-code">GEL</span>
+            <span class="a-cap" data-i18n="exchange.gelWays">на счёт в банке или наличными</span>
+            </span>
+            <span class="a-check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+            </span>
+          </button>
           </div>
-          <div class="xc-cell xc-cell--to">
-            <span class="xc-cur">GEL</span>
-            <span class="xc-ways" data-i18n="exchange.gelWays">на счёт в банке или наличными</span>
+
+          <div class="xc-outs" data-for="usdt" hidden>
+          <button class="xc-asset is-picked" data-asset="BTC">
+            <span class="a-tok">₿</span>
+            <span class="a-body">
+              <span class="a-code">BTC</span>
+            </span>
+            <span class="a-check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+            </span>
+          </button>
+          <button class="xc-asset" data-asset="ETH">
+            <span class="a-tok">Ξ</span>
+            <span class="a-body">
+              <span class="a-code">ETH</span>
+            </span>
+            <span class="a-check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+            </span>
+          </button>
+          <button class="xc-asset" data-asset="LTC">
+            <span class="a-tok">Ł</span>
+            <span class="a-body">
+              <span class="a-code">LTC</span>
+            </span>
+            <span class="a-check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+            </span>
+          </button>
+          <button class="xc-asset" data-asset="GEL">
+            <span class="a-tok">₾</span>
+            <span class="a-body">
+              <span class="a-code">GEL</span>
+            </span>
+            <span class="a-check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+            </span>
+          </button>
           </div>
         </div>
+
+        <div class="xc-pairbar">
+          <span class="pb-from">RUB</span>
+          <span class="pb-arr" aria-hidden="true">→</span>
+          <span class="pb-to">USDT</span>
+        </div>
       </div>
+
       <div class="xc-req">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2.2"/><path d="M5.5 17c.8-1.9 2-2.8 3.5-2.8s2.7.9 3.5 2.8M15 9.5h4M15 13h4"/></svg>
         <span data-i18n="exchange.reqLabel">Верификация по паспорту</span>
-        <span class="xc-req-state" data-i18n="exchange.reqValue">обязательна</span>
+        <span class="xc-req-state" data-i18n="exchange.reqValue">для операций с рублями</span>
       </div>
-      <div class="xc-note" data-i18n="exchange.dir">Направления обмена: RUB → USDT и RUB → GEL</div>
+      <div class="xc-note" data-i18n="exchange.dir">RUB → USDT · GEL · USDT → BTC · ETH · LTC · GEL</div>
     </div>
   </div>
 </section>
@@ -2313,6 +2452,46 @@
     document.addEventListener('visibilitychange', () => document.hidden ? stop() : null);
   })();
 
+  /* ---------- Exchange: pick a direction. Presentational only —
+       no amounts, rates or transactions are involved. ---------- */
+  (function(){
+    const srcs = document.querySelectorAll('.xc-src');
+    const outs = document.querySelectorAll('.xc-outs[data-for]');
+    const req  = document.querySelector('.xc-req');
+    const from = document.querySelector('.pb-from');
+    const to   = document.querySelector('.pb-to');
+    if(!srcs.length) return;
+
+    function pickAsset(group, btn){
+      group.querySelectorAll('.xc-asset').forEach(a => a.classList.toggle('is-picked', a === btn));
+      if(to) to.textContent = btn.dataset.asset;
+    }
+
+    outs.forEach(group => {
+      group.querySelectorAll('.xc-asset').forEach(btn => {
+        btn.addEventListener('click', () => pickAsset(group, btn));
+      });
+    });
+
+    srcs.forEach(btn => btn.addEventListener('click', () => {
+      const pick = btn.dataset.src;
+      srcs.forEach(b => {
+        const on = b === btn;
+        b.classList.toggle('is-active', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      outs.forEach(o => { o.hidden = o.dataset.for !== pick; });
+      if(from) from.textContent = pick.toUpperCase();
+      const shown = [...outs].find(o => !o.hidden);
+      if(shown){
+        const current = shown.querySelector('.xc-asset.is-picked') || shown.querySelector('.xc-asset');
+        pickAsset(shown, current);
+      }
+      // the passport requirement applies to ruble operations only
+      if(req) req.classList.toggle('is-dim', pick !== 'rub');
+    }));
+  })();
+
   /* ---------- Cashback: bar and its table row highlight together ---------- */
   (function(){
     const tiers = document.querySelectorAll('.tier[data-tier]');
@@ -2805,7 +2984,7 @@
       cashback:{eyebrow:"something others don't offer",h2:"Higher cashback for smaller businesses",p:"The customer pays the fee — you don't lose anything from your revenue. Smaller businesses get a higher cashback percentage so the bonus is meaningful even on modest turnover. For larger businesses and chains the percentage is more modest, but volume keeps the amount substantial.",figBig:"up to 0.5%",figCap:"cashback for small and local businesses",r1:"up to $20,000",r2:"$20,000 – $60,000",r3:"$60,000 – $200,000",r4:"$200,000 and above",th1:"Monthly turnover",th3:"Your cashback",note:"The exact percentage is fixed in the contract and depends on turnover and average ticket size. Cashback is credited together with your regular payout."},
       trust:{caption:"Numbers from the payment infrastructure we run on",stat1:"transactions",stat1suffix:"M+",stat2:"successful payments",stat3:"partners in 5 countries",stat4:"SLA reliability",stat4num:"99.98%",item2:"Same-day payout",item3:"24/7 support",item4:"Built-in CRM & analytics"},
       apply:{eyebrow:"get started",h2:"Connect QR payments and start earning cashback",p:"Fill in the form — we'll get in touch within 15 minutes and work out terms for your turnover. Or reach out directly.",tg:"Message us on Telegram",name:"Name",namePh:"How should we address you",contact:"Phone / Telegram",contactPh:"+995 5xx xx xx xx or @username",city:"City",cityPh:"Batumi, Tbilisi…",business:"Business name",businessPh:"What's your business called",type:"Business type",typeOpt0:"Select an option",typeOpt1:"Supermarket / retail chain",typeOpt2:"Café, restaurant, bar",typeOpt3:"Retail store",typeOpt4:"Services (salon, spa, rental)",typeOpt5:"Other",consent:"By submitting this form you agree to the processing of your personal data.",submit:"Submit application",successH:"Application sent",successP:"We'll be in touch shortly to discuss your connection terms.",error:"Couldn't send the application. Try messaging us on Telegram directly."},
-      exchange:{eyebrow:"currency exchange",h2:"RUB to USDT and GEL exchange",p:"We accept payment in rubles by QR — and pay out USDT or GEL. GEL can be received to a bank account or in cash from an ATM. Every exchange is carried out with passport identity verification, in line with National Bank of Georgia requirements.",license:"Compliant with National Bank of Georgia requirements",cta:"Message the bot",give:"you send",get:"you receive",reqLabel:"Passport verification",reqValue:"required",dir:"Exchange directions: RUB to USDT and RUB to GEL",gelWays:"to a bank account or in cash"},
+      exchange:{eyebrow:"currency exchange",h2:"Currency and crypto exchange",p:"We accept payment in rubles by QR — and pay out USDT or GEL. GEL can be received to a bank account or in cash from an ATM. Ruble operations are carried out with passport identity verification, in line with National Bank of Georgia requirements. The bot also supports swapping USDT to BTC, ETH, LTC and GEL.",license:"Compliant with National Bank of Georgia requirements",cta:"Message the bot",give:"you send",get:"you receive",reqLabel:"Passport verification",reqValue:"for ruble operations",dir:"RUB → USDT · GEL · USDT → BTC · ETH · LTC · GEL",cryptoLabel:"crypto swaps",gelWays:"to a bank account or in cash"},
       referral:{eyebrow:"partner program",h2:"Refer a business — earn a reward",p:"Recommend us to a business that signs up for QR payment acceptance — and earn a percentage of its turnover for as long as it stays with us. No limit on how many businesses you refer.",cta:"Message us on Telegram",figCap:"of the referred business's turnover, every month"},
       footer:{note:"MOST is a connection partner for QR payment acceptance for businesses in Georgia and worldwide. Payments are processed on certified international payment infrastructure.",link1:"How it works",link2:"Apply"}
     },
