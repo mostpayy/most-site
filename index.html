@@ -306,7 +306,7 @@
      horizontally scrollable so it never needs a separate mobile version. */
   .section-tabs-wrap{
     position: sticky; top: var(--nav-h, 72px); z-index: 45;
-    background: var(--bg); backdrop-filter: blur(10px);
+    background: var(--bg); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--line);
   }
   .section-tabs{
@@ -1174,8 +1174,8 @@
 
   /* subtle grain texture — adds tactile depth instead of flat digital gradients */
   .grain-overlay{
-    position: fixed; inset:0; pointer-events:none; z-index: 999;
-    opacity: 0.035; mix-blend-mode: overlay;
+    position: fixed; inset:0; pointer-events:none; z-index: 0;
+    opacity: 0.030;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
@@ -1503,6 +1503,21 @@
   .xc-pairbar .pb-arr{ color: var(--text-dim); font-size:14px; }
   .xc-req{ transition: opacity var(--ease); }
   .xc-req.is-dim{ opacity:.45; }
+  /* ---- Safari / iOS tap reliability ---- */
+  button, a, input, select, label,
+  .xc-src, .xc-asset, .tab-btn, .nav-tab-btn, .tab-jump,
+  .lang-btn, .exchange-inline-link{
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(228,192,119,0.15);
+  }
+  button, .xc-src, .xc-asset{
+    -webkit-appearance: none; appearance: none;
+    position: relative; z-index: 1;
+  }
+  /* content inside a button must not swallow the tap */
+  .xc-src > *, .xc-asset > *, .btn > *, .tab-btn > *, .nav-tab-btn > *{
+    pointer-events: none;
+  }
 </style>
 </head>
 <body>
