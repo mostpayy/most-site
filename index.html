@@ -1518,34 +1518,40 @@
   .xc-src > *, .xc-asset > *, .btn > *, .tab-btn > *, .nav-tab-btn > *{
     pointer-events: none;
   }
-  /* ---- Affordance: only clickable things react ----
-     Non-interactive cards used to lift and glow on hover, which read as
-     "tap me". On touch screens that state also sticks after a tap, so the
-     block looked broken. Hover effects now apply only on pointer devices,
-     and the button-like lift is removed from elements that do nothing. */
-  @media (hover: none), (pointer: coarse){
-    .step-card:hover, .bento-tile:hover, .cat-card:hover, .trust-stat:hover,
-    .cashback-figure:hover, .referral-figure:hover, .tier:hover,
-    .problem-list li:hover, .showcase-flow-item:hover, .cap-row:hover,
-    .pipe-node:hover, .sub-item:hover, .story-node:hover,
-    .exchange-license:hover, .close-chain li:hover, tbody tr:hover{
-      transform: none; box-shadow: none; background: inherit;
-    }
-    .story-node:hover .story-ico,
-    .bento-tile:hover .tile-icon,
-    .cat-card:hover svg,
-    .pipe-node:hover .pipe-ico{ transform: none; }
-  }
-
-  /* No button-like lift on things that aren't buttons, on any device */
-  .step-card:hover, .bento-tile:hover, .trust-stat:hover,
-  .cashback-figure:hover, .referral-figure:hover, .cat-card:hover{
-    transform: none;
-  }
-
   /* the inline link is genuinely interactive — keep it obvious and focusable */
   .exchange-inline-link{ cursor: pointer; }
   .exchange-inline-link:focus-visible{ outline: 2px solid var(--gold-bright); outline-offset: 3px; border-radius: 4px; }
+  /* ---- Tap highlight ----
+     iOS Safari does not reliably apply :hover on tap, so the same highlight
+     is driven by a class set on touch. ---- */
+  .is-tapped{
+    border-color: var(--gold-a35) !important;
+    background-color: var(--gold-a12) !important;
+  }
+  .problem-list li.is-tapped{ border-left-color: var(--gold-bright) !important; }
+  tbody tr.is-tapped td{ border-color: var(--gold-a35) !important; }
+  tbody tr.is-tapped td:first-child::before{ transform: scaleY(1) !important; }
+  .story-node.is-tapped .story-ico,
+  .pipe-node.is-tapped .pipe-ico{ border-color: var(--gold-bright) !important; }
+  .bento-tile.is-tapped::before{ opacity:1 !important; }
+
+  /* ---- Verification badge: keep label and value on one baseline ---- */
+  .xc-req{
+    display:flex; align-items:center; gap:10px; flex-wrap:nowrap;
+    padding:14px 0 0; margin-top:16px; border-top:1px solid var(--line);
+    font-size: var(--fs-micro); color: var(--text-dim); line-height:1.3;
+  }
+  .xc-req > span:not(.xc-req-state){ min-width:0; }
+  .xc-req-state{
+    margin-left:auto; flex-shrink:0; white-space:nowrap;
+    color: var(--gold-bright); font-weight:700;
+    padding:5px 11px; border-radius:999px; border:1px solid var(--gold-a35);
+    line-height:1.2;
+  }
+  @media (max-width: 520px){
+    .xc-req{ flex-wrap:wrap; gap:8px; }
+    .xc-req-state{ margin-left:0; width:100%; text-align:center; }
+  }
 </style>
 </head>
 <body>
@@ -2493,6 +2499,26 @@
     // only animate while the section is on screen
     new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? start() : stop()), { threshold: 0.15 }).observe(pipe);
     document.addEventListener('visibilitychange', () => document.hidden ? stop() : null);
+  })();
+
+  /* ---------- Tap highlight: mirrors the hover state on touch screens ---------- */
+  (function(){
+    var SEL = '.problem-list li, .story-node, .bento-tile, .cat-card, .step-card,'
+            + '.trust-stat, .tier, tbody tr[data-tier], .cap-row, .showcase-flow-item,'
+            + '.pipe-node, .sub-item, .close-chain li, .exchange-license,'
+            + '.cashback-figure, .referral-figure';
+    var current = null;
+    function clear(){ if(current){ current.classList.remove('is-tapped'); current = null; } }
+    document.addEventListener('touchstart', function(ev){
+      var el = ev.target.closest ? ev.target.closest(SEL) : null;
+      if(!el) return;
+      clear();
+      el.classList.add('is-tapped');
+      current = el;
+    }, { passive: true });
+    document.addEventListener('touchend', function(){ setTimeout(clear, 550); }, { passive: true });
+    document.addEventListener('touchcancel', clear, { passive: true });
+    window.addEventListener('scroll', clear, { passive: true });
   })();
 
   /* ---------- Exchange: pick a direction. Presentational only —
