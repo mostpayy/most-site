@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MOST — приём оплат рублём для бизнеса: Грузия и весь мир</title>
-<meta name="description" content="Приём QR-платежей рублём для бизнеса в Грузии и по всему миру: выплаты в лари, долларах, евро или USDT, кэшбек с оборота. Также обмен рублей на USDT.">
+<title>MOST — приём оплат рублём для бизнеса по всему миру</title>
+<meta name="description" content="Приём QR-платежей рублём для бизнеса по всему миру: выплаты в лари, долларах, евро или USDT, кэшбек с оборота. Также обмен рублей на USDT.">
 <meta name="theme-color" content="#0E2233">
 
 <!-- Open Graph: controls how the link looks when shared in Telegram / messengers -->
@@ -1224,10 +1224,6 @@
     font-size: var(--fs-micro); color: var(--text-dim);
   }
   .xc-req svg{ width:16px; height:16px; flex-shrink:0; color: var(--gold-bright); opacity:.85; }
-  .xc-req-state{
-    margin-left:auto; color: var(--gold-bright); font-weight:700;
-    padding:3px 9px; border-radius:999px; border:1px solid var(--gold-a35);
-  }
 
   .xc-stack{ position:relative; padding:26px 0 20px; display:flex; flex-direction:column; gap:10px; }
   .xc-cell{
@@ -1535,23 +1531,33 @@
   .pipe-node.is-tapped .pipe-ico{ border-color: var(--gold-bright) !important; }
   .bento-tile.is-tapped::before{ opacity:1 !important; }
 
-  /* ---- Verification badge: keep label and value on one baseline ---- */
+  /* ---- Verification options ---- */
   .xc-req{
-    display:flex; align-items:center; gap:10px; flex-wrap:nowrap;
-    padding:14px 0 0; margin-top:16px; border-top:1px solid var(--line);
-    font-size: var(--fs-micro); color: var(--text-dim); line-height:1.3;
+    display:flex; flex-direction:column; align-items:stretch; gap:8px;
+    width:100%; text-align:left;
+    padding:16px 0 0; margin-top:16px; border-top:1px solid var(--line);
   }
-  .xc-req > span:not(.xc-req-state){ min-width:0; }
-  .xc-req-state{
-    margin-left:auto; flex-shrink:0; white-space:nowrap;
-    color: var(--gold-bright); font-weight:700;
-    padding:5px 11px; border-radius:999px; border:1px solid var(--gold-a35);
-    line-height:1.2;
+  .xc-req-title{ align-self:flex-start; font-size: var(--fs-micro); color: var(--text-dim); letter-spacing:.02em; margin-bottom:2px; }
+  .xv-opt{
+    display:flex; align-items:center; gap:10px; width:100%; box-sizing:border-box;
+    padding:11px 13px; border-radius: var(--radius-sm);
+    border:1px solid var(--a-08); background: var(--bg);
+    font-size: var(--fs-small); color: var(--text-muted); line-height:1.3;
   }
-  @media (max-width: 520px){
-    .xc-req{ flex-wrap:wrap; gap:8px; }
-    .xc-req-state{ margin-left:0; width:100%; text-align:center; }
+  .xv-opt svg{ width:17px; height:17px; flex-shrink:0; color: var(--text-dim); }
+  .xv-name{ flex:1; min-width:0; }
+  .xv-opt--best{ border-color: var(--gold-a35); }
+  .xv-opt--best svg{ color: var(--gold-bright); }
+  .xv-opt--best .xv-name{ color: var(--text); }
+  .xv-tag{
+    flex-shrink:0; white-space:nowrap; font-size:12px; font-weight:700;
+    color: var(--gold-bright); padding:4px 10px; border-radius:999px;
+    border:1px solid var(--gold-a35);
   }
+  /* inline field error */
+  .field-error{ display:block; margin-top:7px; font-size:12.5px; line-height:1.4; color:#F0BDB6; }
+  .field-error[hidden]{ display:none; }
+  .field input[aria-invalid="true"]{ border-color: rgba(196,86,75,0.7); box-shadow: 0 0 0 3px rgba(196,86,75,0.15); }
 </style>
 </head>
 <body>
@@ -1617,7 +1623,7 @@
   <div class="ambient-glow"></div>
   <div class="wrap hero-grid">
     <div>
-      <div class="eyebrow" data-i18n="hero.eyebrow">приём оплат для бизнеса: Грузия и весь мир</div>
+      <div class="eyebrow" data-i18n="hero.eyebrow">приём оплат для бизнеса по всему миру</div>
       <h1 data-i18n-html="hero.h1">Постройте <em>моsт</em> между рублём и вашей выручкой</h1>
       <p data-i18n-html="hero.p">Клиент сканирует QR и платит рублём с любой карты РФ. Деньги приходят вам в день оплаты — в лари, долларах, евро или USDT. А сверху — кэшбек с каждой оплаты, которую вы принимаете. Также предоставляем <span class="exchange-inline-link" data-tab="exchange" role="button" tabindex="0">обмен рублей на USDT</span>.</p>
       <div class="hero-ctas">
@@ -1733,7 +1739,7 @@
     <div class="exchange-copy">
       <div class="eyebrow" data-i18n="exchange.eyebrow">обмен валюты</div>
       <h2 data-i18n="exchange.h2">Обмен рублей и криптовалют</h2>
-      <p data-i18n="exchange.p">Принимаем оплату в рублях по QR — выдаём USDT или GEL. GEL можно получить на счёт в банке или наличными через банкомат. Операции с рублями проходят с верификацией личности по паспорту, в соответствии с требованиями Национального банка Грузии. В боте также доступен обмен USDT на BTC, ETH, LTC и GEL.</p>
+      <p data-i18n="exchange.p">Принимаем оплату в рублях по QR — выдаём USDT или GEL. GEL можно получить на счёт в банке или наличными через банкомат. Для операций с рублями доступны два варианта верификации: по паспорту — по более выгодному курсу, или по номеру телефона. В боте также доступен обмен USDT на BTC, ETH, LTC и GEL.</p>
       <div class="exchange-license">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6z"/></svg>
         <span data-i18n="exchange.license">Соответствуем требованиям Национального банка Грузии</span>
@@ -1840,9 +1846,16 @@
       </div>
 
       <div class="xc-req">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2.2"/><path d="M5.5 17c.8-1.9 2-2.8 3.5-2.8s2.7.9 3.5 2.8M15 9.5h4M15 13h4"/></svg>
-        <span data-i18n="exchange.reqLabel">Верификация по паспорту</span>
-        <span class="xc-req-state" data-i18n="exchange.reqValue">для операций с рублями</span>
+        <span class="xc-req-title" data-i18n="exchange.reqLabel">Верификация для операций с рублями</span>
+        <div class="xv-opt xv-opt--best">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2.2"/><path d="M5.5 17c.8-1.9 2-2.8 3.5-2.8s2.7.9 3.5 2.8M15 9.5h4M15 13h4"/></svg>
+          <span class="xv-name" data-i18n="exchange.vPassport">По паспорту</span>
+          <span class="xv-tag" data-i18n="exchange.vPassportTag">выгоднее курс</span>
+        </div>
+        <div class="xv-opt">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg>
+          <span class="xv-name" data-i18n="exchange.vPhone">По номеру телефона</span>
+        </div>
       </div>
       <div class="xc-note" data-i18n="exchange.dir">RUB → USDT · GEL · USDT → BTC · ETH · LTC · GEL</div>
     </div>
@@ -2005,7 +2018,7 @@
       <div class="step-card">
         <div class="step-num">2</div>
         <h3 data-i18n="steps.s2t">Подключаем приём</h3>
-        <p data-i18n="steps.s2d">Понадобятся учредительные документы, ID директора и адрес точки — мы собираем пакет вместе с вами. Подключение проходит удалённо; для бизнеса в Грузии возможна и личная встреча в офисе — если так удобнее или у вас особый случай, который проще обсудить вживую.</p>
+        <p data-i18n="steps.s2d">Понадобятся учредительные документы, ID директора и адрес точки — мы собираем пакет вместе с вами. Подключение проходит удалённо.</p>
       </div>
       <div class="step-card">
         <div class="step-num">3</div>
@@ -2023,7 +2036,7 @@
     <div class="section-head">
       <div class="eyebrow" data-i18n="types.eyebrow">кому подходит</div>
       <h2 data-i18n="types.h2">От одной точки до сети — решение масштабируется вместе с бизнесом</h2>
-      <p data-i18n="types.p">Работаем с юридическими лицами, предпринимателями и самозанятыми в Грузии и по всему миру — в любой сфере, где есть оплата от клиента.</p>
+      <p data-i18n="types.p">Работаем с юридическими лицами, предпринимателями и самозанятыми по всему миру — в любой сфере, где есть оплата от клиента.</p>
     </div>
     <div class="cat-grid">
       <div class="cat-card cat-1">
@@ -2394,8 +2407,9 @@
         </div>
         <div class="field-row">
           <div class="field">
-            <label for="contact" data-i18n="apply.contact">Телефон / Telegram</label>
-            <input id="contact" type="text" required data-i18n-placeholder="apply.contactPh" placeholder="+995 5xx xx xx xx или @username">
+            <label for="telegram" data-i18n="apply.tg_user">Telegram username</label>
+            <input id="telegram" name="telegram" type="text" required autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="telegramError" data-i18n-placeholder="apply.tgUserPh" placeholder="@username">
+            <span class="field-error" id="telegramError" role="alert" data-i18n="apply.tgUserErr" hidden>Укажите юзернейм Telegram: латиница, цифры и _, от 5 символов — например, @most_payy</span>
           </div>
           <div class="field">
             <label for="city" data-i18n="apply.city">Город</label>
@@ -2439,7 +2453,7 @@
       </svg>
       <span class="gradient-text">MOST</span>
     </div>
-    <p class="footer-note" data-i18n="footer.note">MOST — партнёр по подключению приёма QR-платежей для бизнеса в Грузии и по всему миру. Приём и обработка платежей осуществляются на базе сертифицированной международной платёжной инфраструктуры.</p>
+    <p class="footer-note" data-i18n="footer.note">MOST — партнёр по подключению приёма QR-платежей для бизнеса по всему миру. Приём и обработка платежей осуществляются на базе сертифицированной международной платёжной инфраструктуры.</p>
     <div class="footer-links">
       <button class="tab-jump" data-tab="how" data-i18n="footer.link1">Как работает</button>
       <button class="tab-jump" data-tab="apply" data-i18n="footer.link2">Заявка</button>
@@ -2556,7 +2570,7 @@
         const current = shown.querySelector('.xc-asset.is-picked') || shown.querySelector('.xc-asset');
         pickAsset(shown, current);
       }
-      // the passport requirement applies to ruble operations only
+      // phone verification applies to ruble operations only
       if(req) req.classList.toggle('is-dim', pick !== 'rub');
     }));
   })();
@@ -2998,6 +3012,11 @@
   // До этого форма будет показывать ошибку — это ожидаемо, эндпоинта ещё нет.
   const LEAD_ENDPOINT = "/api/lead";
 
+  document.getElementById("telegram").addEventListener("input", function(){
+    document.getElementById("telegramError").hidden = true;
+    this.removeAttribute("aria-invalid");
+  });
+
   document.getElementById("leadForm").addEventListener("submit", async function(e){
     e.preventDefault();
     const form = this;
@@ -3007,9 +3026,26 @@
     const prevError = document.getElementById("formError");
     if(prevError) prevError.style.display = "none";
 
+    // Telegram username: accept "@name", "name" or a t.me link, store as @name
+    const tgInput = document.getElementById("telegram");
+    const tgErr = document.getElementById("telegramError");
+    const tgRaw = tgInput.value.trim().replace(/^https?:\/\//i, "").replace(/^(t\.me|telegram\.me)\//i, "").replace(/^@/, "");
+    if(!/^[A-Za-z][A-Za-z0-9_]{4,31}$/.test(tgRaw)){
+      tgErr.hidden = false;
+      tgInput.setAttribute("aria-invalid", "true");
+      tgInput.focus();
+      submitBtn.disabled = false;
+      return;
+    }
+    tgErr.hidden = true;
+    tgInput.removeAttribute("aria-invalid");
+
     const payload = {
       name: document.getElementById("name").value,
-      contact: document.getElementById("contact").value,
+      // the username goes into "contact" — the field the server and the
+      // Google Sheet already store — so nothing on the backend has to change
+      contact: "@" + tgRaw,
+      telegram: "@" + tgRaw,
       city: document.getElementById("city").value,
       business: document.getElementById("business").value,
       type: document.getElementById("type").value
@@ -3048,20 +3084,20 @@
       nav:{how:"How it works",benefits:"Benefits",cashback:"Cashback",apply:"Apply",cta:"Connect your business",ctaShort:"Connect",ctaTail:"business",ctaExchangeA:"Exchange RUB",ctaExchangeB:"USDT",exchange:"Exchange"},
       cta:{afterProblem:"Want to accept payments from visitors from Russia? Send a request and a manager will get in touch for a consultation.",afterBenefits:"A fit for your business? Send a request and we will discuss setup and answer your questions.",afterCashback:"Ready to accept payments and earn cashback? Send a request and a manager will get in touch for a consultation."},
       flow:{s1:"Payment received",s2:"Processing",s3:"Payout to business"},
-      hero:{eyebrow:"payment acceptance for business — Georgia and worldwide",h1:"Build a <em>bridge</em> between ruble payments and your revenue",p:"Your customer scans a QR code and pays in rubles with any Russian bank card. Money lands in your account the same day — in GEL, USD, EUR, or USDT. Plus cashback on every payment you accept. We also offer <span class=\"exchange-inline-link\" data-tab=\"exchange\">RUB to USDT exchange</span>.",cta1:"Submit application",cta2:"How it works"},
+      hero:{eyebrow:"payment acceptance for business worldwide",h1:"Build a <em>bridge</em> between ruble payments and your revenue",p:"Your customer scans a QR code and pays in rubles with any Russian bank card. Money lands in your account the same day — in GEL, USD, EUR, or USDT. Plus cashback on every payment you accept. We also offer <span class=\"exchange-inline-link\" data-tab=\"exchange\">RUB to USDT exchange</span>.",cta1:"Submit application",cta2:"How it works"},
       bridge:{left:"customer",right:"your account"},
       showcase:{eyebrow:"what it looks like",h2:"Payment in two taps — from the customer's side",p:"No new terminal at the till. The customer just takes out their phone.",f1:"The cashier shows a QR code on screen or on the receipt",f2:"The customer scans it with the camera in their banking app — it's a standard SBP QR code",f3:"Payment confirmed — the money is already on its way to your account",counterLabel:"till",amount:"1,038 ₽",amountLabel:"amount due",sbpBadge:"SBP",sbpNote:"The QR follows the <b>SBP</b> (Faster Payments System) standard — recognized by any Russian banking app",clientPays:"customer pays",youReceive:"you receive"},
       problem:{eyebrow:"why this matters",h2:"Your customers are already here. Their money isn't.",li1:"Mir cards don't work outside Russia — the customer simply can't pay at the till",li2:"They go looking for a currency exchange or withdraw cash at a poor rate — some just walk away without buying",li3:"Every failed payment is revenue that never reached your register",li4:"QR acceptance solves this in two taps, with no new hardware and no change to your process",chain3:"payment in rubles"},
-      steps:{eyebrow:"how to connect",h2:"Three steps to accepting payments",p:"From application to first transaction — no complex integration, no new hardware at the till. The whole process happens remotely, from anywhere in the world.",s1t:"Submit your application",s1d:"A short form or a message on Telegram — 2 minutes, minimal fields.",s2t:"We set up acceptance",s2d:"You'll need incorporation documents, director ID and your business address — we'll put the package together with you. Setup happens remotely; for businesses in Georgia, an in-person meeting at our office is also available — if that's more convenient, or for a special case worth discussing face to face.",s3t:"Start accepting payments",s3d:"The customer scans the QR in their banking app. Money lands in your account the same day."},
-      types:{eyebrow:"who it's for",h2:"From a single till to a whole chain — the solution scales with your business",p:"We work with companies, entrepreneurs and sole proprietors in Georgia and worldwide — in any field that takes payment from customers.",t1:"Retail & chains",d1:"Supermarkets, corner shops, retail chains — from one till to dozens",t2:"HoReCa",d2:"Cafés, restaurants, bars — payment right at the table or the counter",t3:"Tourism & services",d3:"Hotels, tours, rentals — accept payment where the tourist decides",t4:"Real estate",d4:"Rental and sales — large tickets where even a small cashback percentage adds up",t5:"Online stores",d5:"Payment on your website or in messenger — a payment link, no till needed",t6:"Online services",d6:"Subscriptions, courses, digital services — one-click payment"},
+      steps:{eyebrow:"how to connect",h2:"Three steps to accepting payments",p:"From application to first transaction — no complex integration, no new hardware at the till. The whole process happens remotely, from anywhere in the world.",s1t:"Submit your application",s1d:"A short form or a message on Telegram — 2 minutes, minimal fields.",s2t:"We set up acceptance",s2d:"You'll need incorporation documents, director ID and your business address — we'll put the package together with you. Setup happens remotely.",s3t:"Start accepting payments",s3d:"The customer scans the QR in their banking app. Money lands in your account the same day."},
+      types:{eyebrow:"who it's for",h2:"From a single till to a whole chain — the solution scales with your business",p:"We work with companies, entrepreneurs and sole proprietors worldwide — in any field that takes payment from customers.",t1:"Retail & chains",d1:"Supermarkets, corner shops, retail chains — from one till to dozens",t2:"HoReCa",d2:"Cafés, restaurants, bars — payment right at the table or the counter",t3:"Tourism & services",d3:"Hotels, tours, rentals — accept payment where the tourist decides",t4:"Real estate",d4:"Rental and sales — large tickets where even a small cashback percentage adds up",t5:"Online stores",d5:"Payment on your website or in messenger — a payment link, no till needed",t6:"Online services",d6:"Subscriptions, courses, digital services — one-click payment"},
       benefits:{eyebrow:"benefits",h2:"Everything you need to stop losing payments from customers in Russia",t1:"Multi-currency payouts",d1:"Get paid in GEL, USD, EUR, or USDT — your choice.",t2:"Same-day payout",d2:"No delays in settlement — funds land the same day the customer pays.",t3:"No new hardware",d3:"QR instead of a new terminal. The application is a short questionnaire, nothing more.",t4:"Cashback on turnover",d4:"The only offer on the market where you earn on accepting payments, on top of revenue.",t5:"Certified security",d5:"Payment infrastructure is certified to PCI DSS Level 1.",t6:"Support that responds",d6:"We answer questions on setup and day-to-day operations without long queues."},
       tech:{pipe4:"Payment confirmed",snipNote:"Schematic illustration — not API documentation",eyebrow:"technical capabilities",h2:"Flexible integration for any business format",p:"From a simple QR at the till to full integration into your website or app.",t1:"SDK & API",d1:"Fast integration of payment acceptance into any digital product.",t2:"Telegram bot",d2:"Generate a payment QR straight from the messenger — no dashboard needed.",t3:"Payment links",d3:"Send a link to the customer — payment without a till or terminal.",t4:"AFT transactions",d4:"Flexible payout configuration to bank details.",t5:"Smart cascading",d5:"Automatic routing to an available bank — the payment goes through the first time.",t6:"Turnkey software",d6:"A ready solution built for your business, no development from scratch."},
       cashback:{eyebrow:"something others don't offer",h2:"Higher cashback for smaller businesses",p:"The customer pays the fee — you don't lose anything from your revenue. Smaller businesses get a higher cashback percentage so the bonus is meaningful even on modest turnover. For larger businesses and chains the percentage is more modest, but volume keeps the amount substantial.",figBig:"up to 0.5%",figCap:"cashback for small and local businesses",r1:"up to $20,000",r2:"$20,000 – $60,000",r3:"$60,000 – $200,000",r4:"$200,000 and above",th1:"Monthly turnover",th3:"Your cashback",note:"The exact percentage is fixed in the contract and depends on turnover and average ticket size. Cashback is credited together with your regular payout."},
       trust:{caption:"Numbers from the payment infrastructure we run on",stat1:"transactions",stat1suffix:"M+",stat2:"successful payments",stat3:"partners in 5 countries",stat4:"SLA reliability",stat4num:"99.98%",item2:"Same-day payout",item3:"24/7 support",item4:"Built-in CRM & analytics"},
-      apply:{eyebrow:"get started",h2:"Connect QR payments and start earning cashback",p:"Fill in the form — we'll get in touch within 15 minutes and work out terms for your turnover. Or reach out directly.",tg:"Message us on Telegram",name:"Name",namePh:"How should we address you",contact:"Phone / Telegram",contactPh:"+995 5xx xx xx xx or @username",city:"City",cityPh:"Batumi, Tbilisi…",business:"Business name",businessPh:"What's your business called",type:"Business type",typeOpt0:"Select an option",typeOpt1:"Supermarket / retail chain",typeOpt2:"Café, restaurant, bar",typeOpt3:"Retail store",typeOpt4:"Services (salon, spa, rental)",typeOpt5:"Other",consent:"By submitting this form you agree to the processing of your personal data.",submit:"Submit application",successH:"Application sent",successP:"We'll be in touch shortly to discuss your connection terms.",error:"Couldn't send the application. Try messaging us on Telegram directly."},
-      exchange:{eyebrow:"currency exchange",h2:"Currency and crypto exchange",p:"We accept payment in rubles by QR — and pay out USDT or GEL. GEL can be received to a bank account or in cash from an ATM. Ruble operations are carried out with passport identity verification, in line with National Bank of Georgia requirements. The bot also supports swapping USDT to BTC, ETH, LTC and GEL.",license:"Compliant with National Bank of Georgia requirements",cta:"Message the bot",give:"you send",get:"you receive",reqLabel:"Passport verification",reqValue:"for ruble operations",dir:"RUB → USDT · GEL · USDT → BTC · ETH · LTC · GEL",cryptoLabel:"crypto swaps",gelWays:"to a bank account or in cash"},
+      apply:{eyebrow:"get started",h2:"Connect QR payments and start earning cashback",p:"Fill in the form — we'll get in touch within 15 minutes and work out terms for your turnover. Or reach out directly.",tg:"Message us on Telegram",name:"Name",namePh:"How should we address you",contact:"Phone",contactPh:"+995 5xx xx xx xx",tg_user:"Telegram username",tgUserPh:"@username",tgUserErr:"Enter your Telegram username: Latin letters, digits and _, at least 5 characters — e.g. @most_payy",city:"City",cityPh:"Batumi, Tbilisi…",business:"Business name",businessPh:"What's your business called",type:"Business type",typeOpt0:"Select an option",typeOpt1:"Supermarket / retail chain",typeOpt2:"Café, restaurant, bar",typeOpt3:"Retail store",typeOpt4:"Services (salon, spa, rental)",typeOpt5:"Other",consent:"By submitting this form you agree to the processing of your personal data.",submit:"Submit application",successH:"Application sent",successP:"We'll be in touch shortly to discuss your connection terms.",error:"Couldn't send the application. Try messaging us on Telegram directly."},
+      exchange:{eyebrow:"currency exchange",h2:"Currency and crypto exchange",p:"We accept payment in rubles by QR — and pay out USDT or GEL. GEL can be received to a bank account or in cash from an ATM. Ruble operations offer two verification options: by passport, at a better rate, or by phone number. The bot also supports swapping USDT to BTC, ETH, LTC and GEL.",license:"Compliant with National Bank of Georgia requirements",cta:"Message the bot",give:"you send",get:"you receive",reqLabel:"Verification for ruble operations",vPassport:"By passport",vPassportTag:"better rate",vPhone:"By phone number",dir:"RUB → USDT · GEL · USDT → BTC · ETH · LTC · GEL",cryptoLabel:"crypto swaps",gelWays:"to a bank account or in cash"},
       referral:{eyebrow:"partner program",h2:"Refer a business — earn a reward",p:"Recommend us to a business that signs up for QR payment acceptance — and earn a percentage of its turnover for as long as it stays with us. No limit on how many businesses you refer.",cta:"Message us on Telegram",figCap:"of the referred business's turnover, every month"},
-      footer:{note:"MOST is a connection partner for QR payment acceptance for businesses in Georgia and worldwide. Payments are processed on certified international payment infrastructure.",link1:"How it works",link2:"Apply"}
+      footer:{note:"MOST is a connection partner for QR payment acceptance for businesses worldwide. Payments are processed on certified international payment infrastructure.",link1:"How it works",link2:"Apply"}
     },
 
   };
